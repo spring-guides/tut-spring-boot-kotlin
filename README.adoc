@@ -122,7 +122,7 @@ compileTestKotlin {
 
  - `kotlin-stdlib-jdk8` is the Java 8 variant of Kotlin standard library
  - `kotlin-reflect` is Kotlin reflection library (mandatory as of Spring Framework 5)
- - `jackson-module-kotlin` is almost mandatory to serialize/deserialize Kotlin classes
+ - `jackson-module-kotlin` adds support for serialization/deserialization of Kotlin classes and data classes (single constructor classes can be used automatically, and those with secondary constructors or static factories are also supported)
 
 `build.gradle`
 [source,groovy]
