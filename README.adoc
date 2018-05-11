@@ -895,3 +895,7 @@ class HtmlController(private val repository: ArticleRepository,
 ----
 
 Restart the web application, refresh `http://localhost:8080/`, you should see the banner on the blog homepage.
+
+== Conclusion
+
+We have now finished to build this sample Kotlin blog application. The source code https://github.com/spring-guides/tut-spring-boot-kotlin[is available on Github]. You can also have a look to https://docs.spring.io/spring/docs/current/spring-framework-reference/languages.html#kotlin[Spring Framework] and https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-kotlin.html[Spring Boot] reference documentation if you need more details on specific features.
