@@ -389,7 +389,7 @@ data class User(
 		val description: String? = null)
 ----
 
-Optional parameters with default values are defined at the last position in order to make in possible to omit them when using positional arguments (Kotlin also supports https://kotlinlang.org/docs/reference/functions.html#named-arguments[named arguments]). Notice that in Kotlin it is not unusual to group concise class declarations in the same file. 
+Optional parameters with default values are defined at the last position in order to make it possible to omit them when using positional arguments (Kotlin also supports https://kotlinlang.org/docs/reference/functions.html#named-arguments[named arguments]). Notice that in Kotlin it is not unusual to group concise class declarations in the same file.
 
 We also declares our Spring Data JPA repositories as following.
 
@@ -546,9 +546,9 @@ We update the "blog" Mustache templates.
 {{> footer}}
 ----
 
-And we create an "article new one".
+And we create an "article" new one.
 
-`src/main/resources/templates/blog.mustache`
+`src/main/resources/templates/article.mustache`
 [source]
 ----
 {{> header}}
