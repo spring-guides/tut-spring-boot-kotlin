@@ -8,11 +8,11 @@ projects: [spring-data-jpa,spring-framework,spring-boot]
 :project_id: spring-boot
 :tabsize: 2
 
-This guide shows you how to build efficiently a sample blog application by combining the power of https://projects.spring.io/spring-boot/[Spring Boot] and http://kotlinlang.org/[Kotlin].
+This tutorial shows you how to build efficiently a sample blog application by combining the power of https://projects.spring.io/spring-boot/[Spring Boot] and http://kotlinlang.org/[Kotlin].
 
 If you are starting with Kotlin, you can learn the language by reading the https://kotlinlang.org/docs/reference/[reference documentation] and following the online https://try.kotlinlang.org[Kotlin Koans tutorial].
 
-Spring Kotlin support is documented in https://docs.spring.io/spring/docs/current/spring-framework-reference/languages.html#kotlin[Spring Framework] and https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-kotlin.html[Spring Boot] reference documentation. If you need help, search or ask questions with https://stackoverflow.com/questions/tagged/kotlin+spring[`spring` and `kotlin` tags on StackOverflow] or come discuss in the `#spring` channel of http://slack.kotlinlang.org/[Kotlin Slack].
+Spring Kotlin support is documented in the https://docs.spring.io/spring/docs/current/spring-framework-reference/languages.html#kotlin[Spring Framework] and https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-kotlin.html[Spring Boot] reference documentation. If you need help, search or ask questions with the https://stackoverflow.com/questions/tagged/kotlin+spring[`spring` and `kotlin` tags on StackOverflow] or come discuss in the `#spring` channel of http://slack.kotlinlang.org/[Kotlin Slack].
 
 == Creating a New Project
 
@@ -21,7 +21,7 @@ First we need to create a Spring Boot application, which can be done in a number
 [[using-the-initializr-website]]
 === Using the Initializr Website
 
-Go to http://start.spring.io and choose Kotlin language. You can also directly go to https://start.spring.io/#!language=kotlin in order to get Kotlin preselected.
+Go to https://start.spring.io and choose Kotlin language. You can also directly go to https://start.spring.io/#!language=kotlin in order to get Kotlin preselected.
 
 Then choose Gradle build system, "blog" artifact, "blog" package name (in advanced settings) and also add "Web", "Mustache", "JPA" and "H2" dependencies as starting points, then click on "Generate Project".
 
@@ -32,7 +32,7 @@ The .zip file contains a standard Gradle project in the root directory, so you m
 [[using-command-line]]
 === Using command line
 
-You can use Initializr HTTP API https://docs.spring.io/initializr/docs/current/reference/htmlsingle/#command-line[from the command line] with, for example, curl on a UN*X like system: 
+You can use the Initializr HTTP API https://docs.spring.io/initializr/docs/current/reference/htmlsingle/#command-line[from the command line] with, for example, curl on a UN*X like system:
 
 [source]
 ----
@@ -231,7 +231,7 @@ Start the web application by running the `main` function of `BlogApplication.kt`
 
 == Testing with JUnit 5
 
-While JUnit 4 is still the default testing framework provided with Spring Boot 2, JUnit 5 provides various features very handy with Kotlin, including https://docs.spring.io/spring/docs/current/spring-framework-reference/testing.html#testcontext-junit-jupiter-di[autowiring of contructor/method parameters] which allows to use non-nullable `val` properties and the possibility to use `@BeforeAll`/`@AfterAll` on regular non-static methods.
+While JUnit 4 is still the default testing framework provided with Spring Boot, JUnit 5 provides various features very handy with Kotlin, including https://docs.spring.io/spring/docs/current/spring-framework-reference/testing.html#testcontext-junit-jupiter-di[autowiring of contructor/method parameters] which allows to use non-nullable `val` properties and the possibility to use `@BeforeAll`/`@AfterAll` on regular non-static methods.
 
 === Switching from JUnit 4 to JUnit 5
 
