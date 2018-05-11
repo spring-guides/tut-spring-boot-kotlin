@@ -154,7 +154,7 @@ import org.springframework.boot.runApplication
 class BlogApplication
 
 fun main(args: Array<String>) {
-    runApplication<BlogApplication>(*args)
+	runApplication<BlogApplication>(*args)
 }
 ----
 
@@ -205,7 +205,7 @@ We also need to create the associated Mustache templates.
 ----
 <html>
 <head>
-    <title>{{title}}</title>
+	<title>{{title}}</title>
 </head>
 <body>
 ----
@@ -454,19 +454,19 @@ fun LocalDateTime.format() = this.format(englishDateFormatter)
 private val daysLookup = (1..31).associate { it.toLong() to getOrdinal(it) }
 
 private val englishDateFormatter = DateTimeFormatterBuilder()
-        .appendPattern("MMMM")
-        .appendLiteral(" ")
-        .appendText(ChronoField.DAY_OF_MONTH, daysLookup)
-        .appendLiteral(" ")
-        .appendPattern("yyyy")
-        .toFormatter(Locale.ENGLISH)
+		.appendPattern("MMMM")
+		.appendLiteral(" ")
+		.appendText(ChronoField.DAY_OF_MONTH, daysLookup)
+		.appendLiteral(" ")
+		.appendPattern("yyyy")
+		.toFormatter(Locale.ENGLISH)
 
 private fun getOrdinal(n: Int) = when {
-    n in 11..13 -> "${n}th"
-    n % 10 == 1 -> "${n}st"
-    n % 10 == 2 -> "${n}nd"
-    n % 10 == 3 -> "${n}rd"
-    else -> "${n}th"
+	n in 11..13 -> "${n}th"
+	n % 10 == 1 -> "${n}st"
+	n % 10 == 2 -> "${n}nd"
+	n % 10 == 3 -> "${n}rd"
+	else -> "${n}th"
 }
 ----
 
@@ -493,15 +493,15 @@ We introduce a `MarkdownConverter` bean, which leverages https://kotlinlang.org/
 @Service
 class MarkdownConverter : (String?) -> String {
 
-    private val parser = Parser.builder().extensions(Arrays.asList(AutolinkExtension.create())).build()
-    private val renderer = HtmlRenderer.builder().build()
+	private val parser = Parser.builder().extensions(Arrays.asList(AutolinkExtension.create())).build()
+	private val renderer = HtmlRenderer.builder().build()
 
-    override fun invoke(input: String?): String {
-        if (input == null || input == "") {
-            return ""
-        }
-        return renderer.render(parser.parse(input))
-    }
+	override fun invoke(input: String?): String {
+		if (input == null || input == "") {
+			return ""
+		}
+		return renderer.render(parser.parse(input))
+	}
 }
 ----
 
@@ -516,7 +516,6 @@ class BlogApplication {
 	@Bean
 	fun mustacheCompiler(loader: Mustache.TemplateLoader?) =
 			Mustache.compiler().escapeHTML(false).withLoader(loader)
-	
 }
 ----
 
@@ -531,17 +530,17 @@ We update the "blog" Mustache templates.
 
 <div class="articles">
 
-    {{#articles}}
-        <section>
-            <header class="article-header">
-                <h2 class="article-title"><a href="/article/{{id}}">{{title}}</a></h2>
-                <div class="article-meta">By  <strong>{{author.firstname}}</strong>, on <strong>{{addedAt}}</strong></div>
-            </header>
-            <div class="article-description">
-                {{headline}}
-            </div>
-        </section>
-    {{/articles}}
+	{{#articles}}
+		<section>
+			<header class="article-header">
+				<h2 class="article-title"><a href="/article/{{id}}">{{title}}</a></h2>
+				<div class="article-meta">By  <strong>{{author.firstname}}</strong>, on <strong>{{addedAt}}</strong></div>
+			</header>
+			<div class="article-description">
+				{{headline}}
+			</div>
+		</section>
+	{{/articles}}
 </div>
 
 {{> footer}}
@@ -555,16 +554,16 @@ And we create an "article new one".
 {{> header}}
 
 <section class="article">
-    <header class="article-header">
-        <h1 class="article-title">{{article.title}}</h1>
-        <p class="article-meta">By  <strong>{{article.author.firstname}}</strong>, on <strong>{{article.addedAt}}</strong></p>
-    </header>
+	<header class="article-header">
+		<h1 class="article-title">{{article.title}}</h1>
+		<p class="article-meta">By  <strong>{{article.author.firstname}}</strong>, on <strong>{{article.addedAt}}</strong></p>
+	</header>
 
-    <div class="article-description">
-        {{article.headline}}
+	<div class="article-description">
+		{{article.headline}}
 
-        {{article.content}}
-    </div>
+		{{article.content}}
+	</div>
 </section>
 
 {{> footer}}
@@ -580,40 +579,40 @@ class HtmlController(private val repository: ArticleRepository,
 					 private val markdownConverter: MarkdownConverter) {
 
 		@GetMapping("/")
-    	fun blog(model: Model): String {
-    		model["title"] = properties.title
-    		model["banner"] = properties.banner
-    		model["articles"] = repository.findAllByOrderByAddedAtDesc().map { it.render() }
-    		return "blog"
-    	}
+		fun blog(model: Model): String {
+			model["title"] = properties.title
+			model["banner"] = properties.banner
+			model["articles"] = repository.findAllByOrderByAddedAtDesc().map { it.render() }
+			return "blog"
+		}
 
-    	@GetMapping("/article/{id}")
-    	fun article(@PathVariable id: Long, model: Model): String {
-    		val article = repository
-    				.findById(id)
-    				.orElseThrow { IllegalArgumentException("Wrong article id provided") }
-    				.render()
-    		model["title"] = article.title
-    		model["article"] = article
-    		return "article"
-    	}
+		@GetMapping("/article/{id}")
+		fun article(@PathVariable id: Long, model: Model): String {
+			val article = repository
+					.findById(id)
+					.orElseThrow { IllegalArgumentException("Wrong article id provided") }
+					.render()
+			model["title"] = article.title
+			model["article"] = article
+			return "article"
+		}
 
-    	fun Article.render() = RenderedArticle(
-    			title,
-    			markdownConverter.invoke(headline),
-    			markdownConverter.invoke(content),
-    			author,
-    			id,
-    			addedAt.format()
-    	)
+		fun Article.render() = RenderedArticle(
+				title,
+				markdownConverter.invoke(headline),
+				markdownConverter.invoke(content),
+				author,
+				id,
+				addedAt.format()
+		)
 
-    	data class RenderedArticle(
-    			val title: String,
-    			val headline: String,
-    			val content: String,
-    			val author: User,
-    			val id: Long?,
-    			val addedAt: String)
+		data class RenderedArticle(
+				val title: String,
+				val headline: String,
+				val content: String,
+				val author: User,
+				val id: Long?,
+				val addedAt: String)
 
 }
 ----
@@ -855,16 +854,16 @@ Edit the template and the controller accordingly.
 
 <div class="articles">
 
-    {{#banner.title}}
-    <section>
-        <header class="banner">
-            <h2 class="banner-title">{{banner.title}}</h2>
-        </header>
-        <div class="banner-content">
-            {{banner.content}}
-        </div>
-    </section>
-    {{/banner.title}}
+	{{#banner.title}}
+	<section>
+		<header class="banner">
+			<h2 class="banner-title">{{banner.title}}</h2>
+		</header>
+		<div class="banner-content">
+			{{banner.content}}
+		</div>
+	</section>
+	{{/banner.title}}
 
 	...
 
