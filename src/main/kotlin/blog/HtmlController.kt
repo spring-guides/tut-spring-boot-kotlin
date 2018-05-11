@@ -23,7 +23,7 @@ class HtmlController(private val repository: ArticleRepository,
 	fun article(@PathVariable id: Long, model: Model): String {
 		val article = repository
 				.findById(id)
-				.orElseThrow { IllegalArgumentException("Wrong article slug provided") }
+				.orElseThrow { IllegalArgumentException("Wrong article id provided") }
 				.render()
 		model["title"] = article.title
 		model["article"] = article
