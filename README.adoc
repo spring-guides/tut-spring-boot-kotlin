@@ -773,7 +773,7 @@ class HttpApiTests(@Autowired val mockMvc: MockMvc) {
 }
 ----
 
-Notice that `when` is a reserved Kotlin keyword, that's why we choose to use https://github.com/nhaarman/mockito-kotlin/[mockito-kotlin] library which provides a `whenever` alias (using escaped `{backtick}when{backtick}`). In order to use it, add following dependency.
+Notice that `when` is a reserved Kotlin keyword, that's why we choose to use https://github.com/nhaarman/mockito-kotlin/[mockito-kotlin] library which provides a `whenever` alias (using escaped `{backtick}when{backtick}` is also possible). In order to use it, add following dependency.
 
 `build.gradle`
 [source,groovy]
