@@ -569,7 +569,7 @@ And we create an "article" new one.
 {{> footer}}
 ----
 
-We update the `HtmlController` in order to render blog and article pages with rendered markdown and formatted date.
+We update the `HtmlController` in order to render blog and article pages with rendered markdown and formatted date. `ArticleRepository` and `MarkdownConverter` constructor parameters will be automatically autowired since `HtmlController` has a single constructor (implicit `@Autowired`).
 
 `src/main/kotlin/blog/HtmlController.kt`
 [source,kotlin]
