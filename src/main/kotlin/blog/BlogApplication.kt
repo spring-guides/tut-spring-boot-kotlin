@@ -17,13 +17,13 @@ class BlogApplication {
 
 	@Bean
 	fun databaseInitializer(userRepository: UserRepository, articleRepository: ArticleRepository) = CommandLineRunner {
-		val smaldlini = User("smaldini", "Stéphane", "Maldini")
-		userRepository.save(smaldlini)
+		val smaldini = User("smaldini", "Stéphane", "Maldini")
+		userRepository.save(smaldini)
 		articleRepository.save(Article(
 				"Reactor Bismuth is out",
 				"Lorem ipsum",
 				"dolor **sit** amet https://projectreactor.io/",
-				smaldlini,
+				smaldini,
 				1
 
 		))
@@ -31,7 +31,7 @@ class BlogApplication {
 				"Reactor Aluminium has landed",
 				"Lorem ipsum",
 				"dolor **sit** amet https://projectreactor.io/",
-				smaldlini,
+				smaldini,
 				2
 
 		))

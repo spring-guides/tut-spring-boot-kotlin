@@ -47,13 +47,13 @@ class HttpApiTests(@Autowired val mockMvc: MockMvc) {
 	@Test
 	fun `List users`() {
 		val juergen = User("springjuergen", "Juergen", "Hoeller")
-		val smaldlini = User("smaldini", "Stéphane", "Maldini")
-		whenever(userRepository.findAll()).thenReturn(listOf(juergen, smaldlini))
+		val smaldini = User("smaldini", "Stéphane", "Maldini")
+		whenever(userRepository.findAll()).thenReturn(listOf(juergen, smaldini))
 		mockMvc.perform(get("/api/user/").accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk)
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
 				.andExpect(jsonPath("\$.[0].login").value(juergen.login))
-				.andExpect(jsonPath("\$.[1].login").value(smaldlini.login))
+				.andExpect(jsonPath("\$.[1].login").value(smaldini.login))
 	}
 
 }
