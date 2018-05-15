@@ -19,13 +19,13 @@ class BlogApplication {
 	fun databaseInitializer(userRepository: UserRepository, articleRepository: ArticleRepository) = CommandLineRunner {
 		val smaldini = User("smaldini", "Stéphane", "Maldini")
 		userRepository.save(smaldini)
+
 		articleRepository.save(Article(
 				"Reactor Bismuth is out",
 				"Lorem ipsum",
 				"dolor **sit** amet https://projectreactor.io/",
 				smaldini,
 				1
-
 		))
 		articleRepository.save(Article(
 				"Reactor Aluminium has landed",
@@ -33,7 +33,6 @@ class BlogApplication {
 				"dolor **sit** amet https://projectreactor.io/",
 				smaldini,
 				2
-
 		))
 	}
 

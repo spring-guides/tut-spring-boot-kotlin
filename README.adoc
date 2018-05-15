@@ -341,7 +341,6 @@ class IntegrationTests(@Autowired val restTemplate: TestRestTemplate) {
 	@Test
 	fun `Assert article page title, content and status code`() {
 		println(">> TODO")
-
 	}
 
 	@AfterAll
@@ -627,13 +626,13 @@ We add data initialization to `BlogApplication`.
 fun databaseInitializer(userRepository: UserRepository, articleRepository: ArticleRepository) = CommandLineRunner {
 	val smaldini = User("smaldini", "Stéphane", "Maldini")
 	userRepository.save(smaldini)
+
 	articleRepository.save(Article(
 			"Reactor Bismuth is out",
 			"Lorem ipsum",
 			"dolor **sit** amet https://projectreactor.io/",
 			smaldini,
 			1
-
 	))
 	articleRepository.save(Article(
 			"Reactor Aluminium has landed",
@@ -641,7 +640,6 @@ fun databaseInitializer(userRepository: UserRepository, articleRepository: Artic
 			"dolor **sit** amet https://projectreactor.io/",
 			smaldini,
 			2
-
 	))
 }
 ----
@@ -675,14 +673,12 @@ class IntegrationTests(@Autowired val restTemplate: TestRestTemplate) {
 		assertThat(entity.statusCode).isEqualTo(HttpStatus.OK)
 		assertThat(entity.body).contains("Reactor Aluminium has landed",,
 				"<a href=\"https://projectreactor.io/\">https://projectreactor.io/</a>")
-
 	}
 
 	@AfterAll
 	fun teardown() {
 		println(">> Tear down")
 	}
-
 
 }
 ----
@@ -804,6 +800,7 @@ class BlogProperties {
 		var title: String? = null
 		lateinit var content: String
 	}
+
 }
 ----
 

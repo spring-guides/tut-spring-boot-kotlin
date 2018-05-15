@@ -13,7 +13,6 @@ import org.mockito.Mockito.any
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
-
 @ExtendWith(SpringExtension::class)
 @WebMvcTest
 // TODO Use constructor-based val property for @MockBean when supported, see issue spring-boot#13113

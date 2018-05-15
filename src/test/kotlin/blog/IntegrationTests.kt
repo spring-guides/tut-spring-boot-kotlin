@@ -37,7 +37,6 @@ class IntegrationTests(@Autowired val restTemplate: TestRestTemplate) {
 		assertThat(entity.statusCode).isEqualTo(HttpStatus.OK)
 		assertThat(entity.body).contains("Reactor Aluminium has landed",
 				"<a href=\"https://projectreactor.io/\">https://projectreactor.io/</a>")
-
 	}
 
 	@AfterAll

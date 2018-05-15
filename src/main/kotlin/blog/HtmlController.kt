@@ -48,5 +48,3 @@ class HtmlController(private val repository: ArticleRepository,
 			val addedAt: String)
 
 }
-
-

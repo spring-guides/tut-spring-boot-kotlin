@@ -13,4 +13,5 @@ class BlogProperties {
 		var title: String? = null
 		lateinit var content: String
 	}
+
 }
