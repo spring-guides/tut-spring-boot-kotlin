@@ -62,7 +62,7 @@ Follow the steps of the wizard to use the following parameters:
 
 ==== Plugins
 
-In addition to the obvious https://kotlinlang.org/docs/reference/using-gradle.html[Kotlin Gradle plugin], the default configuration also declares the https://kotlinlang.org/docs/reference/compiler-plugins.html#spring-support[kotlin-spring plugin] which automatically opens classes and methods (unlike in Java, the defaut qualifier is `final` in Kotlin) annotated or meta-annotated with Spring annotations. This is useful to be able to create `@Configuration` or `@Transactional` beans without having to add the `open` qualifier required by CGLIB proxies for example.
+In addition to the obvious https://kotlinlang.org/docs/reference/using-gradle.html[Kotlin Gradle plugin], the default configuration also declares the https://kotlinlang.org/docs/reference/compiler-plugins.html#spring-support[kotlin-spring plugin] which automatically opens classes and methods (unlike in Java, the default qualifier is `final` in Kotlin) annotated or meta-annotated with Spring annotations. This is useful to be able to create `@Configuration` or `@Transactional` beans without having to add the `open` qualifier required by CGLIB proxies for example.
 
 `build.gradle`
 [source,groovy]
