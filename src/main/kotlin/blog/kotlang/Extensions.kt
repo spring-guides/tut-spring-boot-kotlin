@@ -1,4 +1,4 @@
-package blog.kotlin
+package blog.kotlang
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatterBuilder

@@ -1,7 +1,9 @@
 package blog
 
-import blog.service.db.ArticleRepository
-import blog.service.db.UserRepository
+import blog.db.Article
+import blog.db.ArticleRepository
+import blog.db.User
+import blog.db.UserRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith

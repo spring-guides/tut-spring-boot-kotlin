@@ -1,7 +1,11 @@
-package blog
+package blog.web
 
-import blog.kotlin.format
-import blog.service.db.ArticleRepository
+import blog.service.web.MarkdownConverter
+import blog.config.BlogProperties
+import blog.kotlang.format
+import blog.db.Article
+import blog.db.ArticleRepository
+import blog.db.User
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.ui.set
@@ -33,20 +37,20 @@ class HtmlController(private val repository: ArticleRepository,
 	}
 
 	fun Article.render() = RenderedArticle(
-			title,
-			markdownConverter.invoke(headline),
-			markdownConverter.invoke(content),
-			author,
-			id,
-			addedAt.format()
-	)
+            title,
+            markdownConverter.invoke(headline),
+            markdownConverter.invoke(content),
+            author,
+            id,
+            addedAt.format()
+    )
 
 	data class RenderedArticle(
-			val title: String,
-			val headline: String,
-			val content: String,
-			val author: User,
-			val id: Long?,
-			val addedAt: String)
+            val title: String,
+            val headline: String,
+            val content: String,
+            val author: User,
+            val id: Long?,
+            val addedAt: String)
 
 }

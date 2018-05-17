@@ -1,6 +1,5 @@
 package blog.config
 
-import blog.BlogProperties
 import com.samskivert.mustache.Mustache
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean

@@ -1,7 +1,8 @@
-package blog
+package blog.web
 
-import blog.service.db.ArticleRepository
-import blog.service.db.UserRepository
+import blog.service.web.MarkdownConverter
+import blog.db.ArticleRepository
+import blog.db.UserRepository
 import org.springframework.web.bind.annotation.*
 
 @RestController

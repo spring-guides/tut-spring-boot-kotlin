@@ -1,8 +1,9 @@
 package blog.config
 
-import blog.*
-import blog.service.db.ArticleRepository
-import blog.service.db.UserRepository
+import blog.db.Article
+import blog.db.ArticleRepository
+import blog.db.User
+import blog.db.UserRepository
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
