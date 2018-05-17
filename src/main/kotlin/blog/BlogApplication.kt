@@ -11,6 +11,6 @@ class BlogApplication
 
 fun main(args: Array<String>) {
 	runApplication<BlogApplication>(*args){
-        println("------------------  Spring Boot Application Started-------------------")
+        println("|------------------  Spring Boot Application Starting-------------------|")
     }
 }
