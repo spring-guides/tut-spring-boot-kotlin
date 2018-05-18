@@ -1,4 +1,4 @@
-package blog
+package blog.config
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 
@@ -6,12 +6,12 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 @ConfigurationProperties("blog")
 class BlogProperties {
 
-	lateinit var title: String
-	val banner = Banner()
+    lateinit var title: String
+    val banner = Banner()
 
-	class Banner {
-		var title: String? = null
-		lateinit var content: String
-	}
+    class Banner {
+        var title: String? = null
+        lateinit var content: String
+    }
 
 }
