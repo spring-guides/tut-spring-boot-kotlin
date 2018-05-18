@@ -1,5 +1,10 @@
 package blog
 
+import blog.db.Article
+import blog.db.ArticleRepository
+import blog.db.User
+import blog.db.UserRepository
+import blog.service.web.MarkdownConverter
 import com.nhaarman.mockito_kotlin.whenever
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith

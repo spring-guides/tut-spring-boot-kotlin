@@ -1,5 +1,11 @@
-package blog
+package blog.web
 
+import blog.service.web.MarkdownConverter
+import blog.config.BlogProperties
+import blog.format
+import blog.db.Article
+import blog.db.ArticleRepository
+import blog.db.User
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.ui.set
@@ -8,8 +14,8 @@ import org.springframework.web.bind.annotation.PathVariable
 
 @Controller
 class HtmlController(private val repository: ArticleRepository,
-					 private val markdownConverter: MarkdownConverter,
-					 private val properties: BlogProperties) {
+                     private val markdownConverter: MarkdownConverter,
+                     private val properties: BlogProperties) {
 
 	@GetMapping("/")
 	fun blog(model: Model): String {
@@ -31,20 +37,20 @@ class HtmlController(private val repository: ArticleRepository,
 	}
 
 	fun Article.render() = RenderedArticle(
-			title,
-			markdownConverter.invoke(headline),
-			markdownConverter.invoke(content),
-			author,
-			id,
-			addedAt.format()
-	)
+            title,
+            markdownConverter.invoke(headline),
+            markdownConverter.invoke(content),
+            author,
+            id,
+            addedAt.format()
+    )
 
 	data class RenderedArticle(
-			val title: String,
-			val headline: String,
-			val content: String,
-			val author: User,
-			val id: Long?,
-			val addedAt: String)
+            val title: String,
+            val headline: String,
+            val content: String,
+            val author: User,
+            val id: Long?,
+            val addedAt: String)
 
 }

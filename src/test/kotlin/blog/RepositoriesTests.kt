@@ -1,5 +1,9 @@
 package blog
 
+import blog.db.Article
+import blog.db.ArticleRepository
+import blog.db.User
+import blog.db.UserRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -11,8 +15,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 @ExtendWith(SpringExtension::class)
 @DataJpaTest
 class RepositoriesTests(@Autowired val entityManager: TestEntityManager,
-						@Autowired val userRepository: UserRepository,
-						@Autowired val articleRepository: ArticleRepository) {
+                        @Autowired val userRepository: UserRepository,
+                        @Autowired val articleRepository: ArticleRepository) {
 
 	@Test
 	fun `When findById then return Article`() {
