@@ -2,7 +2,7 @@ package blog.web
 
 import blog.service.web.MarkdownConverter
 import blog.config.BlogProperties
-import blog.kotlang.format
+import blog.format
 import blog.db.Article
 import blog.db.ArticleRepository
 import blog.db.User
