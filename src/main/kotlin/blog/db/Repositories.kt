@@ -1,4 +1,4 @@
-package blog
+package blog.db
 
 import org.springframework.data.repository.CrudRepository
 

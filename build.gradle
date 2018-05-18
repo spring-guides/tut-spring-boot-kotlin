@@ -1,5 +1,6 @@
 buildscript {
-	ext {
+    ext.kotlin_version = '1.2.41'
+    ext {
 		kotlinVersion = '1.2.41'
 		springBootVersion = '2.0.2.RELEASE'
 	}
@@ -11,7 +12,8 @@ buildscript {
 		classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
 		classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
 		classpath("org.jetbrains.kotlin:kotlin-noarg:${kotlinVersion}")
-	}
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
 }
 
 apply plugin: 'kotlin'
@@ -27,13 +29,13 @@ sourceCompatibility = 1.8
 compileKotlin {
 	kotlinOptions {
 		freeCompilerArgs = ["-Xjsr305=strict"]
-		jvmTarget = "1.8"
+        jvmTarget = "1.8"
 	}
 }
 compileTestKotlin {
 	kotlinOptions {
 		freeCompilerArgs = ["-Xjsr305=strict"]
-		jvmTarget = "1.8"
+        jvmTarget = "1.8"
 	}
 }
 
@@ -63,4 +65,5 @@ dependencies {
 	testCompile("com.nhaarman:mockito-kotlin:1.5.0")
 	testImplementation('org.junit.jupiter:junit-jupiter-api')
 	testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine')
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 }

@@ -1,11 +1,14 @@
-package blog
+package blog.web
 
+import blog.service.web.MarkdownConverter
+import blog.db.ArticleRepository
+import blog.db.UserRepository
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/article")
 class ArticleController(private val repository: ArticleRepository,
-						private val markdownConverter: MarkdownConverter) {
+                        private val markdownConverter: MarkdownConverter) {
 
 	@GetMapping("/")
 	fun findAll() = repository.findAllByOrderByAddedAtDesc()

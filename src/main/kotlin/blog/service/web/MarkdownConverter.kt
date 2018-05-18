@@ -1,4 +1,4 @@
-package blog
+package blog.service.web
 
 import org.commonmark.ext.autolink.AutolinkExtension
 import org.commonmark.parser.Parser
