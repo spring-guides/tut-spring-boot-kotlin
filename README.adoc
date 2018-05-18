@@ -410,8 +410,8 @@ And we write JPA tests to check basic use case works as expected.
 @ExtendWith(SpringExtension::class)
 @DataJpaTest
 class RepositoriesTests(@Autowired val entityManager: TestEntityManager,
-						@Autowired val userRepository: UserRepository,
-						@Autowired val articleRepository: ArticleRepository) {
+                        @Autowired val userRepository: UserRepository,
+                        @Autowired val articleRepository: ArticleRepository) {
 
 	@Test
 	fun `When findById then return Article`() {
@@ -492,7 +492,7 @@ We introduce a `MarkdownConverter` bean, which leverages https://kotlinlang.org/
 @Service
 class MarkdownConverter : (String?) -> String {
 
-	private val parser = Parser.builder().extensions(Arrays.asList(AutolinkExtension.create())).build()
+	private val parser = Parser.builder().extensions(listOf(AutolinkExtension.create())).build()
 	private val renderer = HtmlRenderer.builder().build()
 
 	override fun invoke(input: String?): String {
@@ -623,7 +623,8 @@ We add data initialization to `BlogApplication`.
 [source,kotlin]
 ----
 @Bean
-fun databaseInitializer(userRepository: UserRepository, articleRepository: ArticleRepository) = CommandLineRunner {
+fun databaseInitializer(userRepository: UserRepository,
+                        articleRepository: ArticleRepository) = CommandLineRunner {
 	val smaldini = User("smaldini", "Stéphane", "Maldini")
 	userRepository.save(smaldini)
 

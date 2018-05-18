@@ -16,7 +16,8 @@ class BlogApplication {
 			Mustache.compiler().escapeHTML(false).withLoader(loader)
 
 	@Bean
-	fun databaseInitializer(userRepository: UserRepository, articleRepository: ArticleRepository) = CommandLineRunner {
+	fun databaseInitializer(userRepository: UserRepository,
+							articleRepository: ArticleRepository) = CommandLineRunner {
 		val smaldini = User("smaldini", "Stéphane", "Maldini")
 		userRepository.save(smaldini)
 
