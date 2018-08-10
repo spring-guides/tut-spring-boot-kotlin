@@ -177,7 +177,7 @@ Let's create a simple controller to display a simple web page.
 `src/main/kotlin/blog/HtmlController.kt`
 [source,kotlin]
 ----
-package blog.web
+package blog
 
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
