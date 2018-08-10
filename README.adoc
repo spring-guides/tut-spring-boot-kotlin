@@ -390,7 +390,7 @@ data class User(
 
 Optional parameters with default values are defined at the last position in order to make it possible to omit them when using positional arguments (Kotlin also supports https://kotlinlang.org/docs/reference/functions.html#named-arguments[named arguments]). Notice that in Kotlin it is not unusual to group concise class declarations in the same file.
 
-We also declares our Spring Data JPA repositories as following.
+We also declare our Spring Data JPA repositories as following.
 
 `src/main/kotlin/blog/Repositories.kt`
 [source,kotlin]
