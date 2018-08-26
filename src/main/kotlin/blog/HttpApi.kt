@@ -13,8 +13,8 @@ class ArticleController(private val repository: ArticleRepository,
 	@GetMapping("/{id}")
 	fun findOne(@PathVariable id: Long, @RequestParam converter: String?) = when (converter) {
 		"markdown" -> repository.findById(id).map { it.copy(
-				headline = markdownConverter.invoke(it.headline),
-				content = markdownConverter.invoke(it.content)) }
+				headline = markdownConverter(it.headline),
+				content = markdownConverter(it.content)) }
 		null -> repository.findById(id)
 		else -> throw IllegalArgumentException("Only markdown converter is supported")
 	}

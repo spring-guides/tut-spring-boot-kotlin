@@ -32,8 +32,8 @@ class HtmlController(private val repository: ArticleRepository,
 
 	fun Article.render() = RenderedArticle(
 			title,
-			markdownConverter.invoke(headline),
-			markdownConverter.invoke(content),
+			markdownConverter(headline),
+			markdownConverter(content),
 			author,
 			id,
 			addedAt.format()
