@@ -144,13 +144,7 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<dependencies>
-					<dependency>
-						<groupId>org.junit.platform</groupId>
-						<artifactId>junit-platform-surefire-provider</artifactId>
-						<version>${junit-platform.version}</version>
-					</dependency>
-				</dependencies>
+				<version>2.22.1</version>
 			</plugin>
 		</plugins>
 	</build>
