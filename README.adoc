@@ -599,8 +599,8 @@ class HtmlController(private val repository: ArticleRepository,
 
 		fun Article.render() = RenderedArticle(
 				title,
-				markdownConverter.invoke(headline),
-				markdownConverter.invoke(content),
+				markdownConverter(headline),
+				markdownConverter(content),
 				author,
 				id,
 				addedAt.format()
@@ -704,8 +704,8 @@ class ArticleController(private val repository: ArticleRepository,
 	@GetMapping("/{id}")
 	fun findOne(@PathVariable id: Long, @RequestParam converter: String?) = when (converter) {
 		"markdown" -> repository.findById(id).map { it.copy(
-				headline = markdownConverter.invoke(it.headline),
-				content = markdownConverter.invoke(it.content)) }
+				headline = markdownConverter(it.headline),
+				content = markdownConverter(it.content)) }
 		null -> repository.findById(id)
 		else -> throw IllegalArgumentException("Only markdown converter is supported")
 	}
@@ -747,7 +747,7 @@ class HttpApiTests(@Autowired val mockMvc: MockMvc) {
 		val spring5Article = Article("Spring Framework 5.0 goes GA", "Dear Spring community ...", "Lorem ipsum", juergen, 1)
 		val spring43Article = Article("Spring Framework 4.3 goes GA", "Dear Spring community ...", "Lorem ipsum", juergen, 2)
 		whenever(articleRepository.findAllByOrderByAddedAtDesc()).thenReturn(listOf(spring5Article, spring43Article))
-		whenever(markdownConverter.invoke(any())).thenAnswer { it.arguments[0] }
+		whenever(markdownConverter(any())).thenAnswer { it.arguments[0] }
 		mockMvc.perform(get("/api/article/").accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk)
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
