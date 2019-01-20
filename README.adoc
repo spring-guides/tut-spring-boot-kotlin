@@ -21,11 +21,20 @@ First we need to create a Spring Boot application, which can be done in a number
 [[using-the-initializr-website]]
 === Using the Initializr Website
 
-Go to https://start.spring.io and choose Kotlin language. You can also directly go to https://start.spring.io/#!language=kotlin in order to get Kotlin preselected.
+Visit https://start.spring.io and choose the Kotlin language. Or visit https://start.spring.io/#!language=kotlin to preselect Kotlin.
 
-Then choose Gradle build system, "blog" artifact, "blog" package name (in advanced settings) and also add "Web", "Mustache", "JPA" and "H2" dependencies as starting points, then click on "Generate Project".
+	. Select "Gradle Project" as the build tool
+	. Click "Switch to the full version" and enter the following artifact coordinates:
+		- **Artifact:** `blog`
+		- **Package Name:** `blog`
+	. Add the following dependencies:
+		- Web
+		- Mustache
+		- JPA
+		- H2
+	. Click "Generate Project".
 
-image::https://github.com/spring-guides/tut-spring-boot-kotlin/raw/master/images/initializr.png[]
+image::./images/initializr.png[]
 
 The .zip file contains a standard Gradle project in the root directory, so you might want to create an empty directory before you unpack it.
 
