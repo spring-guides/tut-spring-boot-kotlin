@@ -79,7 +79,7 @@ In addition to the obvious https://kotlinlang.org/docs/reference/using-gradle.ht
 buildscript {
 	ext {
 		kotlinVersion = '1.2.41'
-		springBootVersion = '2.0.2.RELEASE'
+		springBootVersion = '2.1.2.RELEASE'
 	}
 	repositories {
 		mavenCentral()
