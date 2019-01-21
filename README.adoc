@@ -270,12 +270,14 @@ dependencies {
 }
 ----
 
-Refresh Gradle configuration, and open `BlogApplicationTests` to replace `@RunWith(SpringRunner::class)` by `@ExtendWith(SpringExtension::class)`.
+Refresh Gradle configuration, open `BlogApplicationTests` and update imports as bellow and remove `@RunWith(SpringRunner::class)` since `@SpringBootTest` is already annotated with JUnit 5 `@ExtendWith(SpringExtension::class)` as of Spring Boot 2.1.
 
 `src/test/kotlin/blog/BlogApplicationTests.kt`
 [source,kotlin]
 ----
-@ExtendWith(SpringExtension::class)
+import org.junit.jupiter.api.Test
+import org.springframework.boot.test.context.SpringBootTest
+
 @SpringBootTest
 class BlogApplicationTests {
 
