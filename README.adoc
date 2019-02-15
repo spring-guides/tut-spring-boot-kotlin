@@ -518,7 +518,6 @@ In order to make lazy fetching working as expected, entities should be `open` as
 
 With Gradle:
 
-`build.gradle`
 [source,groovy]
 ----
 apply plugin: 'kotlin-allopen'
@@ -530,7 +529,6 @@ allOpen {
 
 Or with Maven:
 
-`pom.xml`
 [source,xml]
 ----
 <plugin>
@@ -875,7 +873,6 @@ class HttpControllersTests(@Autowired val mockMvc: MockMvc) {
 
 With Gradle:
 
-`build.gradle`
 [source,groovy]
 ----
 testImplementation('com.ninja-squad:springmockk:1.1.0')
@@ -883,7 +880,6 @@ testImplementation('com.ninja-squad:springmockk:1.1.0')
 
 Or with Maven:
 
-`pom.xml`
 [source,xml]
 ----
 <dependency>
