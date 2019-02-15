@@ -153,8 +153,8 @@ Spring Boot Gradle plugin automatically uses the Kotlin version declared via the
 [.reveal-maven]
 == Maven Build
 
-[[use-gradle]]
-[.use-gradle]
+[[use-maven]]
+[.use-maven]
 == Maven Build
 
 === Plugins
