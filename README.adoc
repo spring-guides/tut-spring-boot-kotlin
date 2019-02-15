@@ -265,7 +265,7 @@ Notice also that Kotlin compiler is configured to generate Java 8 bytecode (Java
 </dependencies>
 ----
 
-=== Understanding the generated Application
+== Understanding the generated Application
 
 `src/main/kotlin/blog/BlogApplication.kt`
 [source,kotlin]
