@@ -531,7 +531,7 @@ fun String.toSlug() = toLowerCase()
 		.replace("-+".toRegex(), "-")
 ----
 
-We will leverage this extension in the next section.
+We will leverage these extensions in the next section.
 
 == Persistence with JPA
 
