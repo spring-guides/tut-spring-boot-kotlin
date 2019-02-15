@@ -67,17 +67,15 @@ Follow the steps of the wizard to use the following parameters:
  - Name: "Blog"
  - Dependencies: "Web", "Mustache", JPA" and "H2"
 
-== Understanding the generated project
-
 [[reveal-gradle]]
 [.reveal-gradle]
-=== Gradle Build
+== Gradle Build
 
 [[use-gradle]]
 [.use-gradle]
-=== Gradle Build
+== Gradle Build
 
-==== Plugins
+=== Plugins
 
 In addition to the obvious https://kotlinlang.org/docs/reference/using-gradle.html[Kotlin Gradle plugin], the default configuration declares the https://kotlinlang.org/docs/reference/compiler-plugins.html#spring-support[kotlin-spring plugin] which automatically opens classes and methods (unlike in Java, the default qualifier is `final` in Kotlin) annotated or meta-annotated with Spring annotations. This is useful to be able to create `@Configuration` or `@Transactional` beans without having to add the `open` qualifier required by CGLIB proxies for example.
 
@@ -98,7 +96,7 @@ apply plugin: 'kotlin-jpa'
 apply plugin: 'io.spring.dependency-management'
 ----
 
-==== Compiler options
+=== Compiler options
 
 One of Kotlin's key features is https://kotlinlang.org/docs/reference/null-safety.html[null-safety] - which cleanly deals with `null` values at compile time rather than bumping into the famous `NullPointerException` at runtime. This makes applications safer through nullability declarations and expressing "value or no value" semantics without paying the cost of wrappers like `Optional`. Note that Kotlin allows using functional constructs with nullable values; check out this http://www.baeldung.com/kotlin-null-safety[comprehensive guide to Kotlin null-safety].
 
@@ -126,7 +124,7 @@ compileTestKotlin {
 }
 ----
 
-==== Dependencies
+=== Dependencies
 
 3 Kotlin specific libraries are required for such Spring Boot web application and configured by default:
 
@@ -153,13 +151,13 @@ Spring Boot Gradle plugin automatically uses the Kotlin version declared via the
 
 [[reveal-maven]]
 [.reveal-maven]
-=== Maven Build
+== Maven Build
 
 [[use-gradle]]
 [.use-gradle]
-=== Maven Build
+== Maven Build
 
-==== Plugins
+=== Plugins
 
 In addition to the obvious https://kotlinlang.org/docs/reference/using-maven.html[Kotlin Maven plugin], the default configuration declares the https://kotlinlang.org/docs/reference/compiler-plugins.html#spring-support[kotlin-spring plugin] which automatically opens classes and methods (unlike in Java, the default qualifier is `final` in Kotlin) annotated or meta-annotated with Spring annotations. This is useful to be able to create `@Configuration` or `@Transactional` beans without having to add the `open` qualifier required by CGLIB proxies for example.
 
@@ -217,7 +215,7 @@ This feature can be enabled by adding the `-Xjsr305` compiler flag with the `str
 
 Notice also that Kotlin compiler is configured to generate Java 8 bytecode (Java 6 by default).
 
-==== Dependencies
+=== Dependencies
 
 3 Kotlin specific libraries are required for such Spring Boot web application and configured by default:
 
@@ -267,7 +265,7 @@ Notice also that Kotlin compiler is configured to generate Java 8 bytecode (Java
 </dependencies>
 ----
 
-=== Application
+=== Understanding the generated Application
 
 `src/main/kotlin/blog/BlogApplication.kt`
 [source,kotlin]
