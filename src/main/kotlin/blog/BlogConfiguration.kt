@@ -13,16 +13,16 @@ class BlogConfiguration {
 
         val smaldini = userRepository.save(User("smaldini", "Stéphane", "Maldini"))
         articleRepository.save(Article(
-                "Reactor Bismuth is out",
-                "Lorem ipsum",
-                "dolor sit amet",
-                smaldini
+                title = "Reactor Bismuth is out",
+                headline = "Lorem ipsum",
+                content = "dolor sit amet",
+                author = smaldini
         ))
         articleRepository.save(Article(
-                "Reactor Aluminium has landed",
-                "Lorem ipsum",
-                "dolor sit amet",
-                smaldini
+                title = "Reactor Aluminium has landed",
+                headline = "Lorem ipsum",
+                content = "dolor sit amet",
+                author = smaldini
         ))
     }
 }

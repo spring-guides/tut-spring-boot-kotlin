@@ -361,7 +361,7 @@ While JUnit 4 is still the default testing framework provided with Spring Boot, 
 
 === Switching from JUnit 4 to JUnit 5
 
-Enable JUnit 5 support by adding the following line to your `build.gradle` file: 
+With Gradle, enable JUnit 5 support by adding the following line to your `build.gradle` file:
 
 `build.gradle`
 [source,groovy]
@@ -385,7 +385,28 @@ dependencies {
 }
 ----
 
-Refresh Gradle configuration, open `BlogApplicationTests` and update imports as bellow and remove `@RunWith(SpringRunner::class)` since `@SpringBootTest` is already annotated with JUnit 5 `@ExtendWith(SpringExtension::class)` as of Spring Boot 2.1.
+With Maven:
+[source,xml]
+----
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-test</artifactId>
+	<scope>test</scope>
+	<exclusions>
+		<exclusion>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</exclusion>
+	</exclusions>
+</dependency>
+<dependency>
+	<groupId>org.junit.jupiter</groupId>
+	<artifactId>junit-jupiter-engine</artifactId>
+	<scope>test</scope>
+</dependency>
+----
+
+Refresh the build configuration, open `BlogApplicationTests` and update imports as bellow and remove `@RunWith(SpringRunner::class)` (Spring Boot 2.1+ test annotations are already annotated with JUnit 5 `@ExtendWith(SpringExtension::class)`).
 
 `src/test/kotlin/blog/BlogApplicationTests.kt`
 [source,kotlin]
@@ -739,20 +760,22 @@ class BlogConfiguration {
 
         val smaldini = userRepository.save(User("smaldini", "Stéphane", "Maldini"))
         articleRepository.save(Article(
-                "Reactor Bismuth is out",
-                "Lorem ipsum",
-                "dolor sit amet",
-                smaldini
+                title = "Reactor Bismuth is out",
+                headline = "Lorem ipsum",
+                content = "dolor sit amet",
+                author = smaldini
         ))
         articleRepository.save(Article(
-                "Reactor Aluminium has landed",
-                "Lorem ipsum",
-                "dolor sit amet",
-                smaldini
+                title = "Reactor Aluminium has landed",
+                headline = "Lorem ipsum",
+                content = "dolor sit amet",
+                author = smaldini
         ))
     }
 }
 ----
+
+NOTE: Notice the usage of named parameters to make the code more readable.
 
 And we also update the integration tests accordingly.
 
@@ -830,7 +853,45 @@ For tests, instead of integration tests, we are going to leverage `@WebMvcTest` 
 
 Since `@MockBean` and `@SpyBean` annotations are specific to Mockito, we are going to leverage https://github.com/Ninja-Squad/springmockk[SpringMockK] which provides similar `@MockkBean` and `@SpykBean` annotations for Mockk.
 
-`src/test/kotlin/blog/HttpApiTests.kt`
+With Gradle:
+
+[source,groovy]
+----
+testCompile('org.springframework.boot:spring-boot-starter-test') {
+	exclude module: 'junit'
+	exclude module: 'mockito-core'
+}
+testImplementation('com.ninja-squad:springmockk:1.1.0')
+----
+
+Or with Maven:
+
+[source,xml]
+----
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-test</artifactId>
+	<scope>test</scope>
+	<exclusions>
+		<exclusion>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</exclusion>
+		<exclusion>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+		</exclusion>
+	</exclusions>
+</dependency>
+<dependency>
+	<groupId>com.ninja-squad</groupId>
+	<artifactId>springmockk</artifactId>
+	<version>1.1.0</version>
+	<scope>test</scope>
+</dependency>
+----
+
+`src/test/kotlin/blog/HttpControllersTests.kt`
 [source,kotlin]
 ----
 @WebMvcTest
@@ -869,25 +930,6 @@ class HttpControllersTests(@Autowired val mockMvc: MockMvc) {
 				.andExpect(jsonPath("\$.[1].login").value(smaldini.login))
 	}
 }
-----
-
-With Gradle:
-
-[source,groovy]
-----
-testImplementation('com.ninja-squad:springmockk:1.1.0')
-----
-
-Or with Maven:
-
-[source,xml]
-----
-<dependency>
-	<groupId>com.ninja-squad</groupId>
-	<artifactId>springmockk</artifactId>
-	<version>1.1.0</version>
-	<scope>test</scope>
-</dependency>
 ----
 
 NOTE: `$` needs to be escaped in strings as it is used for string interpolation.
