@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable
 
 @Controller
 class HtmlController(private val repository: ArticleRepository,
-					 private val markdownConverter: MarkdownConverter,
 					 private val properties: BlogProperties) {
 
 	@GetMapping("/")
@@ -19,32 +18,32 @@ class HtmlController(private val repository: ArticleRepository,
 		return "blog"
 	}
 
-	@GetMapping("/article/{id}")
-	fun article(@PathVariable id: Long, model: Model): String {
+	@GetMapping("/article/{slug}")
+	fun article(@PathVariable slug: String, model: Model): String {
 		val article = repository
-				.findById(id)
-				.orElseThrow { IllegalArgumentException("Wrong article id provided") }
-				.render()
+				.findBySlug(slug)
+				?.render()
+				?: throw IllegalArgumentException("Wrong article slug provided")
 		model["title"] = article.title
 		model["article"] = article
 		return "article"
 	}
 
 	fun Article.render() = RenderedArticle(
+			slug,
 			title,
-			markdownConverter(headline),
-			markdownConverter(content),
+			headline,
+			content,
 			author,
-			id,
 			addedAt.format()
 	)
 
 	data class RenderedArticle(
+			val slug: String,
 			val title: String,
 			val headline: String,
 			val content: String,
 			val author: User,
-			val id: Long?,
 			val addedAt: String)
 
 }
