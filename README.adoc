@@ -377,11 +377,11 @@ Then exclude `junit` from `spring-boot-starter-test` transitive dependencies and
 [source,groovy]
 ----
 dependencies {
-	testCompile('org.springframework.boot:spring-boot-starter-test') {
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude module: 'junit'
 	}
-	testImplementation('org.junit.jupiter:junit-jupiter-api')
-	testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine')
+	testImplementation 'org.junit.jupiter:junit-jupiter-api'
+	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 }
 ----
 
@@ -857,11 +857,11 @@ With Gradle:
 
 [source,groovy]
 ----
-testCompile('org.springframework.boot:spring-boot-starter-test') {
+testImplementation('org.springframework.boot:spring-boot-starter-test') {
 	exclude module: 'junit'
 	exclude module: 'mockito-core'
 }
-testImplementation('com.ninja-squad:springmockk:1.1.0')
+testImplementation 'com.ninja-squad:springmockk:1.1.0'
 ----
 
 Or with Maven:
