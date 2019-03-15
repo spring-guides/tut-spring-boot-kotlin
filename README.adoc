@@ -176,26 +176,22 @@ In order to be able to use Kotlin non-nullable properties with JPA, https://kotl
 			</plugin>
 			<plugin>
 				<groupId>org.jetbrains.kotlin</groupId>
-				<artifactId>kotlin-maven-noarg</artifactId>
-				<version>${kotlin.version}</version>
+				<artifactId>kotlin-maven-plugin</artifactId>
 				<configuration>
 					<compilerPlugins>
 						<plugin>jpa</plugin>
+						<plugin>spring</plugin>
 					</compilerPlugins>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.jetbrains.kotlin</groupId>
-				<artifactId>kotlin-maven-plugin</artifactId>
-				<configuration>
 					<args>
 						<arg>-Xjsr305=strict</arg>
 					</args>
-					<compilerPlugins>
-						<plugin>spring</plugin>
-					</compilerPlugins>
 				</configuration>
 				<dependencies>
+					<dependency>
+						<groupId>org.jetbrains.kotlin</groupId>
+						<artifactId>kotlin-maven-noarg</artifactId>
+						<version>${kotlin.version}</version>
+					</dependency>
 					<dependency>
 						<groupId>org.jetbrains.kotlin</groupId>
 						<artifactId>kotlin-maven-allopen</artifactId>
