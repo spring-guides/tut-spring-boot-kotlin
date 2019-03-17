@@ -49,7 +49,7 @@ $ mkdir blog && cd blog
 $ curl https://start.spring.io/starter.zip -d language=kotlin -d style=web,mustache,jpa,h2 -d packageName=blog -d name=Blog -o blog.zip
 ----
 
-Add `-d type=gradle-project` if you want to use Maven.
+Add `-d type=gradle-project` if you want to use Gradle.
 
 [[using-intellij-idea]]
 === Using IntelliJ IDEA
