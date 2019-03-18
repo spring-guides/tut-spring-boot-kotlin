@@ -23,15 +23,14 @@ First we need to create a Spring Boot application, which can be done in a number
 
 Visit https://start.spring.io and choose the Kotlin language. Or visit https://start.spring.io/#!language=kotlin to preselect Kotlin.
 
-	. let the default "Maven Project" or select "Gradle Project" depending on which build topl you want to use
-	. Click "Switch to the full version" and enter the following artifact coordinates:
-		- **Artifact:** `blog`
-		- **Package Name:** `blog`
+	. Let the default "Maven Project" or select "Gradle Project" depending on which build tool you want to use
+	. Enter the following artifact coordinates: `blog`
 	. Add the following dependencies:
 		- Web
 		- Mustache
 		- JPA
 		- H2
+		- Devtools
 	. Click "Generate Project".
 
 image::./images/initializr.png[]
@@ -46,7 +45,7 @@ You can use the Initializr HTTP API https://docs.spring.io/initializr/docs/curre
 [source]
 ----
 $ mkdir blog && cd blog
-$ curl https://start.spring.io/starter.zip -d language=kotlin -d style=web,mustache,jpa,h2 -d packageName=blog -d name=Blog -o blog.zip
+$ curl https://start.spring.io/starter.zip -d language=kotlin -d style=web,mustache,jpa,h2,devtools -d packageName=com.example.blog -d name=Blog -o blog.zip
 ----
 
 Add `-d type=gradle-project` if you want to use Gradle.
@@ -60,12 +59,11 @@ To access the wizard, go to File | New | Project, and select Spring Initializr.
 
 Follow the steps of the wizard to use the following parameters:
 
- - Package name: "blog"
  - Artifact: "blog"
  - Type: Maven project or Gradle Project
  - Language: Kotlin
  - Name: "Blog"
- - Dependencies: "Web", "Mustache", JPA" and "H2"
+ - Dependencies: "Web", "Mustache", JPA", "H2" and "Devtool"
 
 [[reveal-gradle]]
 [.reveal-gradle]
@@ -142,6 +140,7 @@ dependencies {
 	implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
 	implementation 'org.jetbrains.kotlin:kotlin-reflect'
 	implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+	runtimeOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.h2database:h2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
@@ -249,6 +248,11 @@ Notice also that Kotlin compiler is configured to generate Java 8 bytecode (Java
 	</dependency>
 
 	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-devtools</artifactId>
+		<scope>runtime</scope>
+	</dependency>
+	<dependency>
 		<groupId>com.h2database</groupId>
 		<artifactId>h2</artifactId>
 		<scope>runtime</scope>
@@ -266,7 +270,7 @@ Notice also that Kotlin compiler is configured to generate Java 8 bytecode (Java
 `src/main/kotlin/blog/BlogApplication.kt`
 [source,kotlin]
 ----
-package blog
+package com.example.blog
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
@@ -298,7 +302,7 @@ Let's create a simple controller to display a simple web page.
 `src/main/kotlin/blog/HtmlController.kt`
 [source,kotlin]
 ----
-package blog
+package com.example.blog
 
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model

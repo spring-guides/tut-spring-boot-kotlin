@@ -1,4 +1,4 @@
-package blog
+package com.example.blog
 
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every

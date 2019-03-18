@@ -1,4 +1,4 @@
-package blog
+package com.example.blog
 
 import java.time.LocalDateTime
 import javax.persistence.*
