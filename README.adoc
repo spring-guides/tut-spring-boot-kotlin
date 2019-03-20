@@ -357,7 +357,7 @@ Start the web application by running the `main` function of `BlogApplication.kt`
 
 == Testing with JUnit 5
 
-While JUnit 4 is still the default testing framework provided with Spring Boot, JUnit 5 provides various features very handy with Kotlin, including https://docs.spring.io/spring/docs/current/spring-framework-reference/testing.html#testcontext-junit-jupiter-di[autowiring of contructor/method parameters] which allows to use non-nullable `val` properties and the possibility to use `@BeforeAll`/`@AfterAll` on regular non-static methods.
+While JUnit 4 is still the default testing framework provided with Spring Boot, JUnit 5 provides various features very handy with Kotlin, including https://docs.spring.io/spring/docs/current/spring-framework-reference/testing.html#testcontext-junit-jupiter-di[autowiring of constructor/method parameters] which allows to use non-nullable `val` properties and the possibility to use `@BeforeAll`/`@AfterAll` on regular non-static methods.
 
 === Switching from JUnit 4 to JUnit 5
 
@@ -984,7 +984,7 @@ NOTE: Annotation processing is not yet supported with Maven due to https://youtr
 In IntelliJ IDEA:
 
  - Make sure Spring Boot plugin in enabled in menu File | Settings | Plugins | Spring Boot
- - Enable annotation processing via menu File | Settings | Build, Execution, Deployement | Compiler | Annotation Processors | Enable annotation processing
+ - Enable annotation processing via menu File | Settings | Build, Execution, Deployment | Compiler | Annotation Processors | Enable annotation processing
  - Since https://youtrack.jetbrains.com/issue/KT-15040[Kapt is not yet integrated in IDEA], you need to run manually the command `./gradlew kaptKotlin` to generate the metadata
 
 Your custom properties should now be recognized when editing `application.properties` (autocomplete, validation, etc.).
