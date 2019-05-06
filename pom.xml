@@ -111,6 +111,8 @@
 					</compilerPlugins>
 					<pluginOptions>
 						<option>all-open:annotation=javax.persistence.Entity</option>
+						<option>all-open:annotation=javax.persistence.Embeddable</option>
+						<option>all-open:annotation=javax.persistence.MappedSuperclass</option>
 					</pluginOptions>
 				</configuration>
 				<dependencies>
