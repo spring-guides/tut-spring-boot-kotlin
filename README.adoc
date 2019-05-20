@@ -21,9 +21,11 @@ First we need to create a Spring Boot application, which can be done in a number
 [[using-the-initializr-website]]
 === Using the Initializr Website
 
-Visit https://start.spring.io and choose the Kotlin language. Or visit https://start.spring.io/#!language=kotlin to preselect Kotlin.
+Visit https://start.spring.io and choose the Kotlin language.
+Gradle is the most commonly used build tool in Kotlin, and it provides a Kotlin DSL which is used by default when generating a Kotlin project, so this is the recommended choice. But you can also use Maven if you are more comfortable with it.
+Notice that you can use https://start.spring.io/#!language=kotlin&type=gradle-project to have Kotlin and Gradle selected by default.
 
-	. Let the default "Maven Project" or select "Gradle Project" depending on which build tool you want to use
+	. Select "Gradle Project" or let the default "Maven Project" depending on which build tool you want to use
 	. Enter the following artifact coordinates: `blog`
 	. Add the following dependencies:
 		- Web
@@ -80,18 +82,18 @@ In addition to the obvious https://kotlinlang.org/docs/reference/using-gradle.ht
 In order to be able to use Kotlin non-nullable properties with JPA, https://kotlinlang.org/docs/reference/compiler-plugins.html#jpa-support[Kotlin JPA plugin] is also enabled. It generates no-arg constructors for any class annotated with `@Entity`, `@MappedSuperclass` or `@Embeddable`.
 
 
-`build.gradle`
-[source,groovy]
+`build.gradle.kts`
+[source,kotlin]
 ----
-plugins {
-	id 'org.jetbrains.kotlin.plugin.jpa' version '1.2.71'
-	id 'org.springframework.boot' version '2.1.3.RELEASE'
-	id 'org.jetbrains.kotlin.jvm' version '1.2.71'
-	id 'org.jetbrains.kotlin.plugin.spring' version '1.2.71'
-}
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-apply plugin: 'kotlin-jpa'
-apply plugin: 'io.spring.dependency-management'
+plugins {
+	kotlin("plugin.jpa") version "1.2.71"
+	id("org.springframework.boot") version "2.1.5.RELEASE"
+	id("io.spring.dependency-management") version "1.0.7.RELEASE"
+	kotlin("jvm") version "1.2.71"
+	kotlin("plugin.spring") version "1.2.71"
+}
 ----
 
 === Compiler options
@@ -104,19 +106,12 @@ This feature can be enabled by adding the `-Xjsr305` compiler flag with the `str
 
 Notice also that Kotlin compiler is configured to generate Java 8 bytecode (Java 6 by default).
 
-`build.gradle`
-[source,groovy]
+`build.gradle.kts`
+[source,kotlin]
 ----
-sourceCompatibility = 1.8
-compileKotlin {
+tasks.withType<KotlinCompile> {
 	kotlinOptions {
-		freeCompilerArgs = ["-Xjsr305=strict"]
-		jvmTarget = "1.8"
-	}
-}
-compileTestKotlin {
-	kotlinOptions {
-		freeCompilerArgs = ["-Xjsr305=strict"]
+		freeCompilerArgs = listOf("-Xjsr305=strict")
 		jvmTarget = "1.8"
 	}
 }
@@ -130,19 +125,19 @@ compileTestKotlin {
  - `kotlin-reflect` is Kotlin reflection library
  - `jackson-module-kotlin` adds support for serialization/deserialization of Kotlin classes and data classes (single constructor classes can be used automatically, and those with secondary constructors or static factories are also supported)
 
-`build.gradle`
-[source,groovy]
+`build.gradle.kts`
+[source,kotlin]
 ----
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-mustache'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
-	implementation 'org.jetbrains.kotlin:kotlin-reflect'
-	implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
-	runtimeOnly 'org.springframework.boot:spring-boot-devtools'
-	runtimeOnly 'com.h2database:h2'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	implementation("org.springframework.boot:spring-boot-starter-mustache")
+	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+	implementation("org.jetbrains.kotlin:kotlin-reflect")
+	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+	runtimeOnly("com.h2database:h2:1.4.197") // Fixed version as a workaround for https://github.com/h2database/h2database/issues/1841
+	runtimeOnly("org.springframework.boot:spring-boot-devtools")
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 ----
 
@@ -252,9 +247,11 @@ Notice also that Kotlin compiler is configured to generate Java 8 bytecode (Java
 		<artifactId>spring-boot-devtools</artifactId>
 		<scope>runtime</scope>
 	</dependency>
+	<!-- Fixed version as a workaround for https://github.com/h2database/h2database/issues/1841 -->
 	<dependency>
 		<groupId>com.h2database</groupId>
 		<artifactId>h2</artifactId>
+		<version>1.4.197</version>
 		<scope>runtime</scope>
 	</dependency>
 	<dependency>
@@ -361,31 +358,33 @@ While JUnit 4 is still the default testing framework provided with Spring Boot, 
 
 === Switching from JUnit 4 to JUnit 5
 
-With Gradle, enable JUnit 5 support by adding the following line to your `build.gradle` file:
+With Gradle, enable JUnit 5 support by adding the following line to your `build.gradle.kts` file:
 
-`build.gradle`
-[source,groovy]
+`build.gradle.kts`
+[source,kotlin]
 ----
-test {
+tasks.withType<Test> {
 	useJUnitPlatform()
 }
 ----
 
 Then exclude `junit` from `spring-boot-starter-test` transitive dependencies and add `junit-jupiter-api` and `junit-jupiter-engine` ones.
 
-`build.gradle`
-[source,groovy]
+`build.gradle.kts`
+[source,kotlin]
 ----
 dependencies {
-	testImplementation('org.springframework.boot:spring-boot-starter-test') {
-		exclude module: 'junit'
+	testImplementation("org.springframework.boot:spring-boot-starter-test") {
+		exclude(module = "junit")
 	}
-	testImplementation 'org.junit.jupiter:junit-jupiter-api'
-	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+	testImplementation("org.junit.jupiter:junit-jupiter-api")
+	testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 }
 ----
 
 With Maven:
+
+`pom.xml`
 [source,xml]
 ----
 <dependency>
@@ -539,19 +538,24 @@ In order to make lazy fetching working as expected, entities should be `open` as
 
 With Gradle:
 
-[source,groovy]
+`build.gradle.kts`
+[source,kotlin]
 ----
-apply plugin: 'kotlin-allopen'
+plugins {
+	...
+	kotlin("plugin.allopen") version "1.2.71"
+}
 
 allOpen {
 	annotation("javax.persistence.Entity")
-	annotation('javax.persistence.Embeddable')
-	annotation('javax.persistence.MappedSuperclass')
+	annotation("javax.persistence.Embeddable")
+	annotation("javax.persistence.MappedSuperclass")
 }
 ----
 
 Or with Maven:
 
+`pom.xml`
 [source,xml]
 ----
 <plugin>
@@ -860,17 +864,21 @@ Since `@MockBean` and `@SpyBean` annotations are specific to Mockito, we are goi
 
 With Gradle:
 
-[source,groovy]
+`build.gradle.kts`
+[source,kotlin]
 ----
-testImplementation('org.springframework.boot:spring-boot-starter-test') {
-	exclude module: 'junit'
-	exclude module: 'mockito-core'
+testImplementation("org.springframework.boot:spring-boot-starter-test") {
+	exclude(module = "junit")
+	exclude(module = "mockito-core")
 }
-testImplementation 'com.ninja-squad:springmockk:1.1.0'
+testImplementation("org.junit.jupiter:junit-jupiter-api")
+testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+testImplementation("com.ninja-squad:springmockk:1.1.2")
 ----
 
 Or with Maven:
 
+`pom.xml`
 [source,xml]
 ----
 <dependency>
@@ -889,9 +897,14 @@ Or with Maven:
 	</exclusions>
 </dependency>
 <dependency>
+	<groupId>org.junit.jupiter</groupId>
+	<artifactId>junit-jupiter-engine</artifactId>
+	<scope>test</scope>
+</dependency>
+<dependency>
 	<groupId>com.ninja-squad</groupId>
 	<artifactId>springmockk</artifactId>
-	<version>1.1.0</version>
+	<version>1.1.2</version>
 	<scope>test</scope>
 </dependency>
 ----
@@ -974,11 +987,16 @@ class BlogApplication {
 
 To generate https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#configuration-metadata-annotation-processor[your own metadata] in order to get these custom properties recognized by your IDE, https://kotlinlang.org/docs/reference/kapt.html[kapt should be configured] with the `spring-boot-configuration-processor` dependency as following.
 
-`build.gradle`
-[source,groovy]
+`build.gradle.kts`
+[source,kotlin]
 ----
-apply plugin: 'kotlin-kapt'
+plugins {
+	...
+	kotlin("kapt") version "1.2.71"
+}
+
 dependencies {
+	...
 	kapt("org.springframework.boot:spring-boot-configuration-processor")
 }
 ----
