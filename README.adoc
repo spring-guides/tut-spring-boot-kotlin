@@ -405,7 +405,7 @@ With Maven:
 </dependency>
 ----
 
-Refresh the build configuration, open `BlogApplicationTests` and update imports as bellow and remove `@RunWith(SpringRunner::class)` (Spring Boot 2.1+ test annotations are already annotated with JUnit 5 `@ExtendWith(SpringExtension::class)`).
+Refresh the build configuration, open `BlogApplicationTests` and update imports as below and remove `@RunWith(SpringRunner::class)` (Spring Boot 2.1+ test annotations are already annotated with JUnit 5 `@ExtendWith(SpringExtension::class)`).
 
 `src/test/kotlin/blog/BlogApplicationTests.kt`
 [source,kotlin]
