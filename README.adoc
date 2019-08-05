@@ -28,11 +28,11 @@ Notice that you can use https://start.spring.io/#!language=kotlin&type=gradle-pr
 	. Select "Gradle Project" or let the default "Maven Project" depending on which build tool you want to use
 	. Enter the following artifact coordinates: `blog`
 	. Add the following dependencies:
-		- Web
+		- Spring Web Starter
 		- Mustache
-		- JPA
-		- H2
-		- Devtools
+		- Spring Data JPA
+		- H2 Database
+		- Spring Boot DevTools
 	. Click "Generate Project".
 
 image::./images/initializr.png[]
@@ -65,7 +65,7 @@ Follow the steps of the wizard to use the following parameters:
  - Type: Maven project or Gradle Project
  - Language: Kotlin
  - Name: "Blog"
- - Dependencies: "Web", "Mustache", JPA", "H2" and "Devtool"
+ - Dependencies: "Spring Web Starter", "Mustache", "Spring Data JPA", "H2 Database" and "Spring Boot DevTools"
 
 [[reveal-gradle]]
 [.reveal-gradle]
