@@ -1,11 +1,7 @@
----
-tags: [kotlin,rest,data,jpa]
-projects: [spring-data-jpa,spring-framework,spring-boot]
----
 :toc:
 :icons: font
 :source-highlighter: prettify
-:project_id: spring-boot
+:project_id: tut-spring-boot-kotlin
 :tabsize: 2
 
 This tutorial shows you how to build efficiently a sample blog application by combining the power of https://projects.spring.io/spring-boot/[Spring Boot] and https://kotlinlang.org/[Kotlin].
