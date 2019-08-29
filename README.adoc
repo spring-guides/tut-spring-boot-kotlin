@@ -260,7 +260,7 @@ Notice also that Kotlin compiler is configured to generate Java 8 bytecode (Java
 
 == Understanding the generated Application
 
-`src/main/kotlin/blog/BlogApplication.kt`
+`src/main/kotlin/com/example/blog/BlogApplication.kt`
 [source,kotlin]
 ----
 package com.example.blog
@@ -278,7 +278,7 @@ fun main(args: Array<String>) {
 
 Compared to Java, you can notice the lack of semicolons, the lack of brackets on empty class (you can add some if you need to declare beans via `@Bean` annotation) and the use of `runApplication` top level function. `runApplication<BlogApplication>(*args)` is Kotlin idiomatic alternative to `SpringApplication.run(BlogApplication::class.java, *args)` and can be used to customize the application with following syntax.
 
-`src/main/kotlin/blog/BlogApplication.kt`
+`src/main/kotlin/com/example/blog/BlogApplication.kt`
 [source,kotlin]
 ----
 fun main(args: Array<String>) {
@@ -292,7 +292,7 @@ fun main(args: Array<String>) {
 
 Let's create a simple controller to display a simple web page.
 
-`src/main/kotlin/blog/HtmlController.kt`
+`src/main/kotlin/com/example/blog/HtmlController.kt`
 [source,kotlin]
 ----
 package com.example.blog
@@ -403,7 +403,7 @@ With Maven:
 
 Refresh the build configuration, open `BlogApplicationTests` and update imports as below and remove `@RunWith(SpringRunner::class)` (Spring Boot 2.1+ test annotations are already annotated with JUnit 5 `@ExtendWith(SpringExtension::class)`).
 
-`src/test/kotlin/blog/BlogApplicationTests.kt`
+`src/test/kotlin/com/example/blog/BlogApplicationTests.kt`
 [source,kotlin]
 ----
 import org.junit.jupiter.api.Test
@@ -429,7 +429,7 @@ For the sake of this example, let's create an integration test in order to demon
  - JUnit 5 allows to inject constructor and method parameters, which is a good fit with Kotlin immutable and non-nullable properties
  - This code leverages `getForObject` and `getForEntity` Kotlin extensions (you need to import them)
 
-`src/test/kotlin/blog/IntegrationTests.kt`
+`src/test/kotlin/com/example/blog/IntegrationTests.kt`
 [source,kotlin]
 ----
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -459,7 +459,7 @@ junit.jupiter.testinstance.lifecycle.default = per_class
 
 With this configuration, we can now use `@BeforeAll` and `@AfterAll` annotations on regular methods like shown in updated version of `IntegrationTests` above.
 
-`src/test/kotlin/blog/IntegrationTests.kt`
+`src/test/kotlin/com/example/blog/IntegrationTests.kt`
 [source,kotlin]
 ----
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -495,7 +495,7 @@ class IntegrationTests(@Autowired val restTemplate: TestRestTemplate) {
 
 Instead of using util classes with abstract methods like in Java, it is usual in Kotlin to provide such functionalities via Kotlin extensions. Here we are going to add a `format()` function to the existing `LocalDateTime` type in order to generate text with the english date format.
 
-`src/main/kotlin/blog/Extensions.kt`
+`src/main/kotlin/com/example/blog/Extensions.kt`
 [source,kotlin]
 ----
 fun LocalDateTime.format() = this.format(englishDateFormatter)
@@ -574,7 +574,7 @@ Or with Maven:
 
 Then we create our model by using Kotlin https://kotlinlang.org/docs/reference/classes.html#constructors[primary constructor concise syntax] which allows to declare at the same time the properties and the constructor parameters.
 
-`src/main/kotlin/blog/Entities.kt`
+`src/main/kotlin/com/example/blog/Entities.kt`
 [source,kotlin]
 ----
 @Entity
@@ -605,7 +605,7 @@ NOTE: While Spring Data JPA makes it possible to use natural IDs (it could have 
 
 We also declare our Spring Data JPA repositories as following.
 
-`src/main/kotlin/blog/Repositories.kt`
+`src/main/kotlin/com/example/blog/Repositories.kt`
 [source,kotlin]
 ----
 interface ArticleRepository : CrudRepository<Article, Long> {
@@ -620,7 +620,7 @@ interface UserRepository : CrudRepository<User, Long> {
 
 And we write JPA tests to check basic use cases works as expected.
 
-`src/test/kotlin/blog/RepositoriesTests.kt`
+`src/test/kotlin/com/example/blog/RepositoriesTests.kt`
 [source,kotlin]
 ----
 @DataJpaTest
@@ -707,7 +707,7 @@ And we create an "article" new one.
 
 We update the `HtmlController` in order to render blog and article pages with the formatted date. `ArticleRepository` and `MarkdownConverter` constructor parameters will be automatically autowired since `HtmlController` has a single constructor (implicit `@Autowired`).
 
-`src/main/kotlin/blog/HtmlController.kt`
+`src/main/kotlin/com/example/blog/HtmlController.kt`
 [source,kotlin]
 ----
 @Controller
@@ -753,7 +753,7 @@ class HtmlController(private val repository: ArticleRepository) {
 
 Then, we add data initialization to a new `BlogConfiguration` class.
 
-`src/main/kotlin/blog/BlogConfiguration.kt`
+`src/main/kotlin/com/example/blog/BlogConfiguration.kt`
 [source,kotlin]
 ----
 @Configuration
@@ -784,7 +784,7 @@ NOTE: Notice the usage of named parameters to make the code more readable.
 
 And we also update the integration tests accordingly.
 
-`src/test/kotlin/blog/IntegrationTests.kt`
+`src/test/kotlin/com/example/blog/IntegrationTests.kt`
 [source,kotlin]
 ----
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -826,7 +826,7 @@ Start (or restart) the web application, and go to `http://localhost:8080/`, you 
 
 We are now going to implement the HTTP API via `@RestController` annotated controllers.
 
-`src/main/kotlin/blog/HttpControllers.kt`
+`src/main/kotlin/com/example/blog/HttpControllers.kt`
 [source,kotlin]
 ----
 @RestController
@@ -905,7 +905,7 @@ Or with Maven:
 </dependency>
 ----
 
-`src/test/kotlin/blog/HttpControllersTests.kt`
+`src/test/kotlin/com/example/blog/HttpControllersTests.kt`
 [source,kotlin]
 ----
 @WebMvcTest
@@ -952,7 +952,7 @@ NOTE: `$` needs to be escaped in strings as it is used for string interpolation.
 
 The recommended way to manage your application properties is to leverage `@ConfigurationProperties`. Immutable properties are https://github.com/spring-projects/spring-boot/issues/8762[not yet supported], but you can use `lateinit var` when you need to deal with non-nullable properties.
 
-`src/main/kotlin/blog/BlogProperties.kt`
+`src/main/kotlin/com/example/blog/BlogProperties.kt`
 [source,kotlin]
 ----
 @ConfigurationProperties("blog")
@@ -971,7 +971,7 @@ class BlogProperties {
 
 Then we enable it at `BlogApplication` level.
 
-`src/main/kotlin/blog/BlogApplication.kt`
+`src/main/kotlin/com/example/blog/BlogApplication.kt`
 [source,kotlin]
 ----
 @SpringBootApplication
@@ -1042,7 +1042,7 @@ Edit the template and the controller accordingly.
 {{> footer}}
 ----
 
-`src/main/kotlin/blog/HtmlController.kt`
+`src/main/kotlin/com/example/blog/HtmlController.kt`
 [source,kotlin]
 ----
 @Controller
