@@ -357,7 +357,7 @@ JUnit 5 now used by default in Spring Boot provides various features very handy 
 For the sake of this example, let's create an integration test in order to demonstrate various features:
 
  - We use real sentences between backticks instead of camel-case to provide expressive test function names
- - JUnit 5 allows to inject constructor and method parameters, which is a good fit with Kotlin immutable and non-nullable properties
+ - JUnit 5 allows to inject constructor and method parameters, which is a good fit with Kotlin read-only and non-nullable properties
  - This code leverages `getForObject` and `getForEntity` Kotlin extensions (you need to import them)
 
 `src/test/kotlin/com/example/blog/IntegrationTests.kt`
@@ -883,7 +883,7 @@ NOTE: `$` needs to be escaped in strings as it is used for string interpolation.
 == Configuration properties
 
 In Kotlin, the recommended way to manage your application properties is to leverage `@ConfigurationProperties` with
-`@ConstructorBinding` in order to be able to use immutable properties.
+`@ConstructorBinding` in order to be able to use read-only properties.
 
 `src/main/kotlin/com/example/blog/BlogProperties.kt`
 [source,kotlin]
