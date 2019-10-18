@@ -895,18 +895,6 @@ data class BlogProperties(var title: String, val banner: Banner) {
 }
 ----
 
-Then we enable it at `BlogApplication` level.
-
-`src/main/kotlin/com/example/blog/BlogApplication.kt`
-[source,kotlin]
-----
-@SpringBootApplication
-@EnableConfigurationProperties(BlogProperties::class)
-class BlogApplication {
-	// ...
-}
-----
-
 To generate https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#configuration-metadata-annotation-processor[your own metadata] in order to get these custom properties recognized by your IDE, https://kotlinlang.org/docs/reference/kapt.html[kapt should be configured] with the `spring-boot-configuration-processor` dependency as following.
 
 `build.gradle.kts`
@@ -985,6 +973,20 @@ class HtmlController(private val repository: ArticleRepository,
 
 	// ...
 ----
+
+Since `@ConfigurationProperties` are not scanned automatically in test slices, we need to configure it explicitly in our
+test annotated with `@WebMvcTest`.
+
+`src/main/kotlin/com/example/blog/BlogApplication.kt`
+[source,kotlin]
+----
+@WebMvcTest
+@EnableConfigurationProperties(BlogProperties::class)
+class HttpControllersTests(@Autowired val mockMvc: MockMvc) {
+    // ...
+}
+----
+
 
 Restart the web application, refresh `http://localhost:8080/`, you should see the banner on the blog homepage.
 
