@@ -1,17 +1,10 @@
 package com.example.blog
 
 import org.springframework.boot.context.properties.ConfigurationProperties
+import org.springframework.boot.context.properties.ConstructorBinding
 
-// TODO Use "val" instead of "lateinit var" when spring-boot#8762 will be fixed
+@ConstructorBinding
 @ConfigurationProperties("blog")
-class BlogProperties {
-
-	lateinit var title: String
-	val banner = Banner()
-
-	class Banner {
-		var title: String? = null
-		lateinit var content: String
-	}
-
+data class BlogProperties(var title: String, val banner: Banner) {
+	data class Banner(val title: String? = null, val content: String)
 }
