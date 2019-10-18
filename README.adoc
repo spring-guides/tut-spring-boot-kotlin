@@ -24,7 +24,7 @@ Notice that you can use https://start.spring.io/#!language=kotlin&type=gradle-pr
 	. Select "Gradle Project" or let the default "Maven Project" depending on which build tool you want to use
 	. Enter the following artifact coordinates: `blog`
 	. Add the following dependencies:
-		- Spring Web Starter
+		- Spring Web
 		- Mustache
 		- Spring Data JPA
 		- H2 Database
