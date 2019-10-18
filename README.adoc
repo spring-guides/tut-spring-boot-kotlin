@@ -84,11 +84,11 @@ In order to be able to use Kotlin non-nullable properties with JPA, https://kotl
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	kotlin("plugin.jpa") version "1.2.71"
-	id("org.springframework.boot") version "2.1.5.RELEASE"
-	id("io.spring.dependency-management") version "1.0.7.RELEASE"
-	kotlin("jvm") version "1.2.71"
-	kotlin("plugin.spring") version "1.2.71"
+	kotlin("plugin.jpa") version "1.3.50"
+	id("org.springframework.boot") version "2.2.0.RELEASE"
+	id("io.spring.dependency-management") version "1.0.8.RELEASE"
+	kotlin("jvm") version "1.3.50"
+	kotlin("plugin.spring") version "1.3.50"
 }
 ----
 
@@ -131,7 +131,7 @@ dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-	runtimeOnly("com.h2database:h2:1.4.197") // Fixed version as a workaround for https://github.com/h2database/h2database/issues/1841
+	runtimeOnly("com.h2database:h2:1.4.200") // See https://github.com/spring-projects/spring-boot/issues/18593 and https://github.com/h2database/h2database/issues/1841
 	runtimeOnly("org.springframework.boot:spring-boot-devtools")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
@@ -243,11 +243,11 @@ Notice also that Kotlin compiler is configured to generate Java 8 bytecode (Java
 		<artifactId>spring-boot-devtools</artifactId>
 		<scope>runtime</scope>
 	</dependency>
-	<!-- Fixed version as a workaround for https://github.com/h2database/h2database/issues/1841 -->
+	<!-- See https://github.com/spring-projects/spring-boot/issues/18593 and https://github.com/h2database/h2database/issues/1841 -->
 	<dependency>
 		<groupId>com.h2database</groupId>
 		<artifactId>h2</artifactId>
-		<version>1.4.197</version>
+		<version>1.4.200</version>
 		<scope>runtime</scope>
 	</dependency>
 	<dependency>
@@ -350,76 +350,7 @@ Start the web application by running the `main` function of `BlogApplication.kt`
 
 == Testing with JUnit 5
 
-While JUnit 4 is still the default testing framework provided with Spring Boot, JUnit 5 provides various features very handy with Kotlin, including https://docs.spring.io/spring/docs/current/spring-framework-reference/testing.html#testcontext-junit-jupiter-di[autowiring of constructor/method parameters] which allows to use non-nullable `val` properties and the possibility to use `@BeforeAll`/`@AfterAll` on regular non-static methods.
-
-=== Switching from JUnit 4 to JUnit 5
-
-With Gradle, enable JUnit 5 support by adding the following line to your `build.gradle.kts` file:
-
-`build.gradle.kts`
-[source,kotlin]
-----
-tasks.withType<Test> {
-	useJUnitPlatform()
-}
-----
-
-Then exclude `junit` from `spring-boot-starter-test` transitive dependencies and add `junit-jupiter-api` and `junit-jupiter-engine` ones.
-
-`build.gradle.kts`
-[source,kotlin]
-----
-dependencies {
-	testImplementation("org.springframework.boot:spring-boot-starter-test") {
-		exclude(module = "junit")
-	}
-	testImplementation("org.junit.jupiter:junit-jupiter-api")
-	testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
-}
-----
-
-With Maven:
-
-`pom.xml`
-[source,xml]
-----
-<dependency>
-	<groupId>org.springframework.boot</groupId>
-	<artifactId>spring-boot-starter-test</artifactId>
-	<scope>test</scope>
-	<exclusions>
-		<exclusion>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-		</exclusion>
-	</exclusions>
-</dependency>
-<dependency>
-	<groupId>org.junit.jupiter</groupId>
-	<artifactId>junit-jupiter-engine</artifactId>
-	<scope>test</scope>
-</dependency>
-----
-
-Refresh the build configuration, open `BlogApplicationTests` and update imports as below and remove `@RunWith(SpringRunner::class)` (Spring Boot 2.1+ test annotations are already annotated with JUnit 5 `@ExtendWith(SpringExtension::class)`).
-
-`src/test/kotlin/com/example/blog/BlogApplicationTests.kt`
-[source,kotlin]
-----
-import org.junit.jupiter.api.Test
-import org.springframework.boot.test.context.SpringBootTest
-
-@SpringBootTest
-class BlogApplicationTests {
-
-	@Test
-	fun contextLoads() {
-	}
-
-}
-----
-
-The test should run fine both in command line and in the IDE.
+JUnit 5 now used by default in Spring Boot provides various features very handy with Kotlin, including https://docs.spring.io/spring/docs/current/spring-framework-reference/testing.html#testcontext-junit-jupiter-di[autowiring of constructor/method parameters] which allows to use non-nullable `val` properties and the possibility to use `@BeforeAll`/`@AfterAll` on regular non-static methods.
 
 === Writing JUnit 5 tests in Kotlin
 
@@ -539,7 +470,7 @@ With Gradle:
 ----
 plugins {
 	...
-	kotlin("plugin.allopen") version "1.2.71"
+	kotlin("plugin.allopen") version "1.3.50"
 }
 
 allOpen {
@@ -614,7 +545,7 @@ interface ArticleRepository : CrudRepository<Article, Long> {
 }
 
 interface UserRepository : CrudRepository<User, Long> {
-	fun findByLogin(login: String): User
+	fun findByLogin(login: String): User?
 }
 ----
 
@@ -725,7 +656,7 @@ class HtmlController(private val repository: ArticleRepository) {
 		val article = repository
 				.findBySlug(slug)
 				?.render()
-				?: throw IllegalArgumentException("Wrong article slug provided")
+				?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "This article does not exist")
 		model["title"] = article.title
 		model["article"] = article
 		return "article"
@@ -838,7 +769,7 @@ class ArticleController(private val repository: ArticleRepository) {
 
 	@GetMapping("/{slug}")
 	fun findOne(@PathVariable slug: String) =
-			repository.findBySlug(slug) ?: throw IllegalArgumentException("Wrong article slug provided")
+			repository.findBySlug(slug) ?: ResponseStatusException(HttpStatus.NOT_FOUND, "This article does not exist")
 
 }
 
@@ -850,7 +781,8 @@ class UserController(private val repository: UserRepository) {
 	fun findAll() = repository.findAll()
 
 	@GetMapping("/{login}")
-	fun findOne(@PathVariable login: String) = repository.findByLogin(login)
+	fun findOne(@PathVariable login: String) =
+			repository.findByLogin(login) ?: ResponseStatusException(HttpStatus.NOT_FOUND, "This user does not exist")
 }
 ----
 
@@ -869,7 +801,7 @@ testImplementation("org.springframework.boot:spring-boot-starter-test") {
 }
 testImplementation("org.junit.jupiter:junit-jupiter-api")
 testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
-testImplementation("com.ninja-squad:springmockk:1.1.2")
+testImplementation("com.ninja-squad:springmockk:1.1.3")
 ----
 
 Or with Maven:
@@ -900,7 +832,7 @@ Or with Maven:
 <dependency>
 	<groupId>com.ninja-squad</groupId>
 	<artifactId>springmockk</artifactId>
-	<version>1.1.2</version>
+	<version>1.1.3</version>
 	<scope>test</scope>
 </dependency>
 ----
@@ -950,22 +882,16 @@ NOTE: `$` needs to be escaped in strings as it is used for string interpolation.
 
 == Configuration properties
 
-The recommended way to manage your application properties is to leverage `@ConfigurationProperties`. Immutable properties are https://github.com/spring-projects/spring-boot/issues/8762[not yet supported], but you can use `lateinit var` when you need to deal with non-nullable properties.
+In Kotlin, the recommended way to manage your application properties is to leverage `@ConfigurationProperties` with
+`@ConstructorBinding` in order to be able to use immutable properties.
 
 `src/main/kotlin/com/example/blog/BlogProperties.kt`
 [source,kotlin]
 ----
+@ConstructorBinding
 @ConfigurationProperties("blog")
-class BlogProperties {
-
-	lateinit var title: String
-	val banner = Banner()
-
-	class Banner {
-		var title: String? = null
-		lateinit var content: String
-	}
-
+data class BlogProperties(var title: String, val banner: Banner) {
+	data class Banner(val title: String? = null, val content: String)
 }
 ----
 
@@ -988,7 +914,7 @@ To generate https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle
 ----
 plugins {
 	...
-	kotlin("kapt") version "1.2.71"
+	kotlin("kapt") version "1.3.50"
 }
 
 dependencies {
@@ -997,7 +923,7 @@ dependencies {
 }
 ----
 
-NOTE: Annotation processing is not yet supported with Maven due to https://youtrack.jetbrains.com/issue/KT-18022[KT-18022], see https://github.com/spring-io/initializr/issues/438[initializr#438] for more details.
+NOTE: Note that some features (such as detecting the default value or deprecated items) are not working due to limitations in the model kapt provides. Also annotation processing is not yet supported with Maven due to https://youtrack.jetbrains.com/issue/KT-18022[KT-18022], see https://github.com/spring-io/initializr/issues/438[initializr#438] for more details.
 
 In IntelliJ IDEA:
 
