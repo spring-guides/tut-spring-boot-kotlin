@@ -131,7 +131,7 @@ dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-	runtimeOnly("com.h2database:h2:1.4.200") // See https://github.com/spring-projects/spring-boot/issues/18593 and https://github.com/h2database/h2database/issues/1841
+	runtimeOnly("com.h2database:h2")
 	runtimeOnly("org.springframework.boot:spring-boot-devtools")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
@@ -243,11 +243,9 @@ Notice also that Kotlin compiler is configured to generate Java 8 bytecode (Java
 		<artifactId>spring-boot-devtools</artifactId>
 		<scope>runtime</scope>
 	</dependency>
-	<!-- See https://github.com/spring-projects/spring-boot/issues/18593 and https://github.com/h2database/h2database/issues/1841 -->
 	<dependency>
 		<groupId>com.h2database</groupId>
 		<artifactId>h2</artifactId>
-		<version>1.4.200</version>
 		<scope>runtime</scope>
 	</dependency>
 	<dependency>
@@ -895,6 +893,18 @@ data class BlogProperties(var title: String, val banner: Banner) {
 }
 ----
 
+Then we enable it at `BlogApplication` level.
+
+`src/main/kotlin/com/example/blog/BlogApplication.kt`
+[source,kotlin]
+----
+@SpringBootApplication
+@EnableConfigurationProperties(BlogProperties::class)
+class BlogApplication {
+	// ...
+}
+----
+
 To generate https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#configuration-metadata-annotation-processor[your own metadata] in order to get these custom properties recognized by your IDE, https://kotlinlang.org/docs/reference/kapt.html[kapt should be configured] with the `spring-boot-configuration-processor` dependency as following.
 
 `build.gradle.kts`
@@ -973,20 +983,6 @@ class HtmlController(private val repository: ArticleRepository,
 
 	// ...
 ----
-
-Since `@ConfigurationProperties` are not scanned automatically in test slices, we need to configure it explicitly in our
-test annotated with `@WebMvcTest`.
-
-`src/main/kotlin/com/example/blog/BlogApplication.kt`
-[source,kotlin]
-----
-@WebMvcTest
-@EnableConfigurationProperties(BlogProperties::class)
-class HttpControllersTests(@Autowired val mockMvc: MockMvc) {
-    // ...
-}
-----
-
 
 Restart the web application, refresh `http://localhost:8080/`, you should see the banner on the blog homepage.
 

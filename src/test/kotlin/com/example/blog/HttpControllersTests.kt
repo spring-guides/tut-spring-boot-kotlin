@@ -12,7 +12,6 @@ import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @WebMvcTest
-@EnableConfigurationProperties(BlogProperties::class)
 class HttpControllersTests(@Autowired val mockMvc: MockMvc) {
 
 	@MockkBean
