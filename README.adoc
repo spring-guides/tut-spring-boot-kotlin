@@ -784,7 +784,7 @@ class UserController(private val repository: UserRepository) {
 }
 ----
 
-For tests, instead of integration tests, we are going to leverage `@WebMvcTest` and https://mockk.io/[Mockk] wich is similar to https://site.mockito.org/[Mockito] but better suited for Kotlin.
+For tests, instead of integration tests, we are going to leverage `@WebMvcTest` and https://mockk.io/[Mockk] which is similar to https://site.mockito.org/[Mockito] but better suited for Kotlin.
 
 Since `@MockBean` and `@SpyBean` annotations are specific to Mockito, we are going to leverage https://github.com/Ninja-Squad/springmockk[SpringMockK] which provides similar `@MockkBean` and `@SpykBean` annotations for Mockk.
 
