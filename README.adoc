@@ -6,7 +6,7 @@
 
 This tutorial shows you how to build efficiently a sample blog application by combining the power of https://projects.spring.io/spring-boot/[Spring Boot] and https://kotlinlang.org/[Kotlin].
 
-If you are starting with Kotlin, you can learn the language by reading the https://kotlinlang.org/docs/reference/[reference documentation], following the online https://try.kotlinlang.org[Kotlin Koans tutorial] or just using https://docs.spring.io/spring/docs/current/spring-framework-reference/[Spring Framework reference documentation] which now provides code samples in Kotlin.
+If you are starting with Kotlin, you can learn the language by reading the https://kotlinlang.org/docs/reference/[reference documentation], following the online https://play.kotlinlang.org/[Kotlin Koans tutorial] or just using https://docs.spring.io/spring/docs/current/spring-framework-reference/[Spring Framework reference documentation] which now provides code samples in Kotlin.
 
 Spring Kotlin support is documented in the https://docs.spring.io/spring/docs/current/spring-framework-reference/languages.html#kotlin[Spring Framework] and https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-kotlin.html[Spring Boot] reference documentation. If you need help, search or ask questions with the https://stackoverflow.com/questions/tagged/kotlin+spring[`spring` and `kotlin` tags on StackOverflow] or come discuss in the `#spring` channel of https://slack.kotlinlang.org/[Kotlin Slack].
 
