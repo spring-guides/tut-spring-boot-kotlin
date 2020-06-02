@@ -38,7 +38,7 @@ The .zip file contains a standard project in the root directory, so you might wa
 [[using-command-line]]
 === Using command line
 
-You can use the Initializr HTTP API https://docs.spring.io/initializr/docs/current/reference/htmlsingle/#command-line[from the command line] with, for example, curl on a UN*X like system:
+You can use the Initializr HTTP API https://docs.spring.io/initializr/docs/current/reference/html/#command-line[from the command line] with, for example, curl on a UN*X like system:
 
 [source]
 ----
