@@ -43,7 +43,7 @@ You can use the Initializr HTTP API https://docs.spring.io/initializr/docs/curre
 [source]
 ----
 $ mkdir blog && cd blog
-$ curl https://start.spring.io/starter.zip -d language=kotlin -d style=web,mustache,jpa,h2,devtools -d packageName=com.example.blog -d name=Blog -o blog.zip
+$ curl https://start.spring.io/starter.zip -d language=kotlin -d dependencies=web,mustache,jpa,h2,devtools -d packageName=com.example.blog -d name=Blog -o blog.zip
 ----
 
 Add `-d type=gradle-project` if you want to use Gradle.
