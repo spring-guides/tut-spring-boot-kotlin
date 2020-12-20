@@ -547,7 +547,7 @@ interface UserRepository : CrudRepository<User, Long> {
 }
 ----
 
-And we write JPA tests to check basic use cases works as expected.
+And we write JPA tests to check whether basic use cases work as expected.
 
 `src/test/kotlin/com/example/blog/RepositoriesTests.kt`
 [source,kotlin]
