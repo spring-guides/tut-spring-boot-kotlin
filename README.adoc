@@ -2,9 +2,10 @@
 :icons: font
 :source-highlighter: prettify
 :project_id: tut-spring-boot-kotlin
+:images: https://raw.githubusercontent.com/spring-guides/tut-spring-boot-kotlin/master/images
 :tabsize: 2
 
-This tutorial shows you how to build efficiently a sample blog application by combining the power of https://projects.spring.io/spring-boot/[Spring Boot] and https://kotlinlang.org/[Kotlin].
+This tutorial shows you how to build efficiently a sample blog application by combining the power of https://spring.io/projects/spring-boot/[Spring Boot] and https://kotlinlang.org/[Kotlin].
 
 If you are starting with Kotlin, you can learn the language by reading the https://kotlinlang.org/docs/reference/[reference documentation], following the online https://play.kotlinlang.org/[Kotlin Koans tutorial] or just using https://docs.spring.io/spring/docs/current/spring-framework-reference/[Spring Framework reference documentation] which now provides code samples in Kotlin.
 
@@ -31,7 +32,7 @@ Notice that you can use https://start.spring.io/#!language=kotlin&type=gradle-pr
 		- Spring Boot DevTools
 	. Click "Generate Project".
 
-image::./images/initializr.png[]
+image::{images}/initializr.png[]
 
 The .zip file contains a standard project in the root directory, so you might want to create an empty directory before you unpack it.
 
