@@ -1,13 +1,13 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	id("org.springframework.boot") version "2.2.2.RELEASE"
-	id("io.spring.dependency-management") version "1.0.8.RELEASE"
-	kotlin("jvm") version "1.3.61"
-	kotlin("plugin.spring") version "1.3.61"
-	kotlin("plugin.allopen") version "1.3.61"
-	kotlin("plugin.jpa") version "1.3.61"
-	kotlin("kapt") version "1.3.61"
+	id("org.springframework.boot") version "2.4.4"
+	id("io.spring.dependency-management") version "1.0.11.RELEASE"
+	kotlin("jvm") version "1.4.32"
+	kotlin("plugin.spring") version "1.4.32"
+	kotlin("plugin.allopen") version "1.4.32"
+	kotlin("plugin.jpa") version "1.4.32"
+	kotlin("kapt") version "1.4.32"
 }
 
 group = "com.example"
@@ -34,7 +34,7 @@ dependencies {
 	}
 	testImplementation("org.junit.jupiter:junit-jupiter-api")
 	testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
-	testImplementation("com.ninja-squad:springmockk:1.1.3")
+	testImplementation("com.ninja-squad:springmockk:3.0.1")
 }
 
 tasks.withType<KotlinCompile> {

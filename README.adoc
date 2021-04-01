@@ -85,11 +85,11 @@ In order to be able to use Kotlin non-nullable properties with JPA, https://kotl
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	kotlin("plugin.jpa") version "1.3.61"
-	id("org.springframework.boot") version "2.2.2.RELEASE"
+	kotlin("plugin.jpa") version "1.4.32"
+	id("org.springframework.boot") version "2.4.4"
 	id("io.spring.dependency-management") version "1.0.8.RELEASE"
-	kotlin("jvm") version "1.3.61"
-	kotlin("plugin.spring") version "1.3.61"
+	kotlin("jvm") version "1.4.32"
+	kotlin("plugin.spring") version "1.4.32"
 }
 ----
 
@@ -469,7 +469,7 @@ With Gradle:
 ----
 plugins {
 	...
-	kotlin("plugin.allopen") version "1.3.61"
+	kotlin("plugin.allopen") version "1.4.32"
 }
 
 allOpen {
@@ -800,7 +800,7 @@ testImplementation("org.springframework.boot:spring-boot-starter-test") {
 }
 testImplementation("org.junit.jupiter:junit-jupiter-api")
 testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
-testImplementation("com.ninja-squad:springmockk:1.1.3")
+testImplementation("com.ninja-squad:springmockk:3.0.1")
 ----
 
 Or with Maven:
@@ -831,7 +831,7 @@ Or with Maven:
 <dependency>
 	<groupId>com.ninja-squad</groupId>
 	<artifactId>springmockk</artifactId>
-	<version>1.1.3</version>
+	<version>3.0.1</version>
 	<scope>test</scope>
 </dependency>
 ----
@@ -913,7 +913,7 @@ To generate https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle
 ----
 plugins {
 	...
-	kotlin("kapt") version "1.3.61"
+	kotlin("kapt") version "1.4.32"
 }
 
 dependencies {
