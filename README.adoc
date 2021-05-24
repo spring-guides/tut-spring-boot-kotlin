@@ -423,7 +423,7 @@ class IntegrationTests(@Autowired val restTemplate: TestRestTemplate) {
 
 == Creating your own extensions
 
-Instead of using util classes with abstract methods like in Java, it is usual in Kotlin to provide such functionalities via Kotlin extensions. Here we are going to add a `format()` function to the existing `LocalDateTime` type in order to generate text with the english date format.
+Instead of using util classes with abstract methods like in Java, it is usual in Kotlin to provide such functionalities via Kotlin extensions. Here we are going to add a `format()` function to the existing `LocalDateTime` type in order to generate text with the English date format.
 
 `src/main/kotlin/com/example/blog/Extensions.kt`
 [source,kotlin]
