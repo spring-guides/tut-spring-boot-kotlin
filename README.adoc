@@ -64,13 +64,10 @@ Follow the steps of the wizard to use the following parameters:
  - Name: "Blog"
  - Dependencies: "Spring Web Starter", "Mustache", "Spring Data JPA", "H2 Database" and "Spring Boot DevTools"
 
-[[reveal-gradle]]
-[.reveal-gradle]
-== Gradle Build
+[[gradle-build]]
+== Understanding the Gradle Build
 
-[[use-gradle]]
-[.use-gradle]
-== Gradle Build
+If you're using a Maven Build, you can <<maven-build, skip to the dedicated section>>.
 
 === Plugins
 
@@ -140,13 +137,10 @@ dependencies {
 
 Spring Boot Gradle plugin automatically uses the Kotlin version declared via the Kotlin Gradle plugin.
 
-[[reveal-maven]]
-[.reveal-maven]
-== Maven Build
+You can now take a <<understanding-generated-app, deeper look at the generated application>>.
 
-[[use-maven]]
-[.use-maven]
-== Maven Build
+[[maven-build]]
+== Understanding the Maven Build
 
 === Plugins
 
@@ -257,6 +251,7 @@ Notice also that Kotlin compiler is configured to generate Java 8 bytecode (Java
 </dependencies>
 ----
 
+[[understanding-generated-app]]
 == Understanding the generated Application
 
 `src/main/kotlin/com/example/blog/BlogApplication.kt`
