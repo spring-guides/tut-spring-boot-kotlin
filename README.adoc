@@ -713,6 +713,7 @@ And we also update the integration tests accordingly.
 [source,kotlin]
 ----
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class IntegrationTests(@Autowired val restTemplate: TestRestTemplate) {
 
 	@BeforeAll
