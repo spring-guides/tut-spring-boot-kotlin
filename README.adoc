@@ -309,7 +309,7 @@ class HtmlController {
 ----
 
 Notice that we are using here a https://kotlinlang.org/docs/reference/extensions.html[Kotlin extension] that allows to add Kotlin functions or operators to existing Spring types. Here we import the `org.springframework.ui.set` extension function in order to be able to write `model["title"] = "Blog"` instead of `model.addAttribute("title", "Blog")`.
-The https://docs.spring.io/spring-framework/docs/current/kdoc-api/spring-framework/[Spring Framework KDoc API] lists all the Kotlin extensions provided to enrich the Java API.
+The https://docs.spring.io/spring-framework/docs/current/kdoc-api/[Spring Framework KDoc API] lists all the Kotlin extensions provided to enrich the Java API.
 
 We also need to create the associated Mustache templates.
 
