@@ -132,7 +132,7 @@ dependencies {
 }
 ----
 
-Recent version of H2 requiring special configuration to properly escape reserved keywords like `user`.
+Recent versions of H2 require special configuration to properly escape reserved keywords like `user`.
 
 `src/main/resources/application.properties`
 [source,properties]
