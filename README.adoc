@@ -82,11 +82,11 @@ In order to be able to use Kotlin non-nullable properties with JPA, https://kotl
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	kotlin("plugin.jpa") version "1.4.32"
-	id("org.springframework.boot") version "2.4.4"
+	kotlin("plugin.jpa") version "1.6.21"
+	id("org.springframework.boot") version "2.7.1"
 	id("io.spring.dependency-management") version "1.0.11.RELEASE"
-	kotlin("jvm") version "1.4.32"
-	kotlin("plugin.spring") version "1.4.32"
+	kotlin("jvm") version "1.6.21"
+	kotlin("plugin.spring") version "1.6.21"
 }
 ----
 
@@ -98,15 +98,12 @@ Although Java does not allow one to express null-safety in its type-system, Spri
 
 This feature can be enabled by adding the `-Xjsr305` compiler flag with the `strict` options.
 
-Notice also that Kotlin compiler is configured to generate Java 8 bytecode (Java 6 by default).
-
 `build.gradle.kts`
 [source,kotlin]
 ----
 tasks.withType<KotlinCompile> {
 	kotlinOptions {
 		freeCompilerArgs = listOf("-Xjsr305=strict")
-		jvmTarget = "1.8"
 	}
 }
 ----
@@ -133,6 +130,15 @@ dependencies {
 	runtimeOnly("org.springframework.boot:spring-boot-devtools")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
+----
+
+Recent version of H2 requiring special configuration to properly escape reserved keywords like `user`.
+
+`src/main/resources/application.properties`
+[source,properties]
+----
+spring.jpa.properties.hibernate.globally_quoted_identifiers=true
+spring.jpa.properties.hibernate.globally_quoted_identifiers_skip_column_definitions = true
 ----
 
 Spring Boot Gradle plugin automatically uses the Kotlin version declared via the Kotlin Gradle plugin.
@@ -423,7 +429,7 @@ Instead of using util classes with abstract methods like in Java, it is usual in
 `src/main/kotlin/com/example/blog/Extensions.kt`
 [source,kotlin]
 ----
-fun LocalDateTime.format() = this.format(englishDateFormatter)
+fun LocalDateTime.format(): String = this.format(englishDateFormatter)
 
 private val daysLookup = (1..31).associate { it.toLong() to getOrdinal(it) }
 
@@ -443,7 +449,7 @@ private fun getOrdinal(n: Int) = when {
 	else -> "${n}th"
 }
 
-fun String.toSlug() = toLowerCase()
+fun String.toSlug() = lowercase(Locale.getDefault())
 		.replace("\n", " ")
 		.replace("[^a-z\\d\\s]".toRegex(), " ")
 		.split(" ")
@@ -464,7 +470,7 @@ With Gradle:
 ----
 plugins {
 	...
-	kotlin("plugin.allopen") version "1.4.32"
+	kotlin("plugin.allopen") version "1.6.21"
 }
 
 allOpen {
@@ -908,7 +914,7 @@ To generate https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle
 ----
 plugins {
 	...
-	kotlin("kapt") version "1.4.32"
+	kotlin("kapt") version "1.6.21"
 }
 
 dependencies {
