@@ -20,9 +20,9 @@ First we need to create a Spring Boot application, which can be done in a number
 
 Visit https://start.spring.io and choose the Kotlin language.
 Gradle is the most commonly used build tool in Kotlin, and it provides a Kotlin DSL which is used by default when generating a Kotlin project, so this is the recommended choice. But you can also use Maven if you are more comfortable with it.
-Notice that you can use https://start.spring.io/#!language=kotlin&type=gradle-project to have Kotlin and Gradle selected by default.
+Notice that you can use https://start.spring.io/#!language=kotlin&type=gradle-project-kotlin to have Kotlin and Gradle selected by default.
 
-	. Select "Gradle Project" or let the default "Maven Project" depending on which build tool you want to use
+	. Select "Gradle - Kotlin" or "Maven" depending on which build tool you want to use
 	. Enter the following artifact coordinates: `blog`
 	. Add the following dependencies:
 		- Spring Web
@@ -31,8 +31,6 @@ Notice that you can use https://start.spring.io/#!language=kotlin&type=gradle-pr
 		- H2 Database
 		- Spring Boot DevTools
 	. Click "Generate Project".
-
-image::{images}/initializr.png[]
 
 The .zip file contains a standard project in the root directory, so you might want to create an empty directory before you unpack it.
 
@@ -44,7 +42,7 @@ You can use the Initializr HTTP API https://docs.spring.io/initializr/docs/curre
 [source]
 ----
 $ mkdir blog && cd blog
-$ curl https://start.spring.io/starter.zip -d language=kotlin -d dependencies=web,mustache,jpa,h2,devtools -d packageName=com.example.blog -d name=Blog -o blog.zip
+$ curl https://start.spring.io/starter.zip -d language=kotlin -d type=gradle-project-kotlin -d dependencies=web,mustache,jpa,h2,devtools -d packageName=com.example.blog -d name=Blog -o blog.zip
 ----
 
 Add `-d type=gradle-project` if you want to use Gradle.
@@ -59,7 +57,7 @@ To access the wizard, go to File | New | Project, and select Spring Initializr.
 Follow the steps of the wizard to use the following parameters:
 
  - Artifact: "blog"
- - Type: Maven project or Gradle Project
+ - Type: "Gradle - Kotlin" or "Maven"
  - Language: Kotlin
  - Name: "Blog"
  - Dependencies: "Spring Web Starter", "Mustache", "Spring Data JPA", "H2 Database" and "Spring Boot DevTools"
@@ -71,7 +69,7 @@ If you're using a Maven Build, you can <<maven-build, skip to the dedicated sect
 
 === Plugins
 
-In addition to the obvious https://kotlinlang.org/docs/reference/using-gradle.html[Kotlin Gradle plugin], the default configuration declares the https://kotlinlang.org/docs/reference/compiler-plugins.html#spring-support[kotlin-spring plugin] which automatically opens classes and methods (unlike in Java, the default qualifier is `final` in Kotlin) annotated or meta-annotated with Spring annotations. This is useful to be able to create `@Configuration` or `@Transactional` beans without having to add the `open` qualifier required by CGLIB proxies for example.
+In addition to the obvious https://kotlinlang.org/docs/gradle.html[Kotlin Gradle plugin], the default configuration declares the https://kotlinlang.org/docs/all-open-plugin.html#spring-support[kotlin-spring plugin] which automatically opens classes and methods (unlike in Java, the default qualifier is `final` in Kotlin) annotated or meta-annotated with Spring annotations. This is useful to be able to create `@Configuration` or `@Transactional` beans without having to add the `open` qualifier required by CGLIB proxies for example.
 
 In order to be able to use Kotlin non-nullable properties with JPA, https://kotlinlang.org/docs/reference/compiler-plugins.html#jpa-support[Kotlin JPA plugin] is also enabled. It generates no-arg constructors for any class annotated with `@Entity`, `@MappedSuperclass` or `@Embeddable`.
 
@@ -92,9 +90,9 @@ plugins {
 
 === Compiler options
 
-One of Kotlin's key features is https://kotlinlang.org/docs/reference/null-safety.html[null-safety] - which cleanly deals with `null` values at compile time rather than bumping into the famous `NullPointerException` at runtime. This makes applications safer through nullability declarations and expressing "value or no value" semantics without paying the cost of wrappers like `Optional`. Note that Kotlin allows using functional constructs with nullable values; check out this https://www.baeldung.com/kotlin-null-safety[comprehensive guide to Kotlin null-safety].
+One of Kotlin's key features is https://kotlinlang.org/docs/null-safety.html[null-safety] - which cleanly deals with `null` values at compile time rather than bumping into the famous `NullPointerException` at runtime. This makes applications safer through nullability declarations and expressing "value or no value" semantics without paying the cost of wrappers like `Optional`. Note that Kotlin allows using functional constructs with nullable values; check out this https://www.baeldung.com/kotlin/null-safety[comprehensive guide to Kotlin null-safety].
 
-Although Java does not allow one to express null-safety in its type-system, Spring Framework provides null-safety of the whole Spring Framework API via tooling-friendly annotations declared in the `org.springframework.lang` package. By default, types from Java APIs used in Kotlin are recognized as https://kotlinlang.org/docs/reference/java-interop.html#null-safety-and-platform-types[platform types] for which null-checks are relaxed. https://kotlinlang.org/docs/reference/java-interop.html#jsr-305-support[Kotlin support for JSR 305 annotations] + Spring nullability annotations provide null-safety for the whole Spring Framework API to Kotlin developers, with the advantage of dealing with `null` related issues at compile time.
+Although Java does not allow one to express null-safety in its type-system, Spring Framework provides null-safety of the whole Spring Framework API via tooling-friendly annotations declared in the `org.springframework.lang` package. By default, types from Java APIs used in Kotlin are recognized as https://kotlinlang.org/docs/reference/java-interop.html#null-safety-and-platform-types[platform types] for which null-checks are relaxed. https://kotlinlang.org/docs/java-interop.html#jsr-305-support[Kotlin support for JSR 305 annotations] + Spring nullability annotations provide null-safety for the whole Spring Framework API to Kotlin developers, with the advantage of dealing with `null` related issues at compile time.
 
 This feature can be enabled by adding the `-Xjsr305` compiler flag with the `strict` options.
 
@@ -110,7 +108,7 @@ tasks.withType<KotlinCompile> {
 
 === Dependencies
 
-2 Kotlin specific libraries are required for such Spring Boot web application and configured by default:
+2 Kotlin specific libraries are required (the standard library is added automatically with Gradle) for such Spring Boot web application and configured by default:
 
  - `kotlin-reflect` is Kotlin reflection library
  - `jackson-module-kotlin` adds support for serialization/deserialization of Kotlin classes and data classes (single constructor classes can be used automatically, and those with secondary constructors or static factories are also supported)
@@ -192,7 +190,7 @@ In order to be able to use Kotlin non-nullable properties with JPA, https://kotl
 	</build>
 ----
 
-One of Kotlin's key features is https://kotlinlang.org/docs/reference/null-safety.html[null-safety] - which cleanly deals with `null` values at compile time rather than bumping into the famous `NullPointerException` at runtime. This makes applications safer through nullability declarations and expressing "value or no value" semantics without paying the cost of wrappers like `Optional`. Note that Kotlin allows using functional constructs with nullable values; check out this https://www.baeldung.com/kotlin-null-safety[comprehensive guide to Kotlin null-safety].
+One of Kotlin's key features is https://kotlinlang.org/docs/null-safety.html[null-safety] - which cleanly deals with `null` values at compile time rather than bumping into the famous `NullPointerException` at runtime. This makes applications safer through nullability declarations and expressing "value or no value" semantics without paying the cost of wrappers like `Optional`. Note that Kotlin allows using functional constructs with nullable values; check out this https://www.baeldung.com/kotlin-null-safety[comprehensive guide to Kotlin null-safety].
 
 Although Java does not allow one to express null-safety in its type-system, Spring Framework provides null-safety of the whole Spring Framework API via tooling-friendly annotations declared in the `org.springframework.lang` package. By default, types from Java APIs used in Kotlin are recognized as https://kotlinlang.org/docs/reference/java-interop.html#null-safety-and-platform-types[platform types] for which null-checks are relaxed. https://kotlinlang.org/docs/reference/java-interop.html#jsr-305-support[Kotlin support for JSR 305 annotations] + Spring nullability annotations provide null-safety for the whole Spring Framework API to Kotlin developers, with the advantage of dealing with `null` related issues at compile time.
 
@@ -312,7 +310,7 @@ class HtmlController {
 }
 ----
 
-Notice that we are using here a https://kotlinlang.org/docs/reference/extensions.html[Kotlin extension] that allows to add Kotlin functions or operators to existing Spring types. Here we import the `org.springframework.ui.set` extension function in order to be able to write `model["title"] = "Blog"` instead of `model.addAttribute("title", "Blog")`.
+Notice that we are using here a https://kotlinlang.org/docs/extensions.html[Kotlin extension] that allows to add Kotlin functions or operators to existing Spring types. Here we import the `org.springframework.ui.set` extension function in order to be able to write `model["title"] = "Blog"` instead of `model.addAttribute("title", "Blog")`.
 The https://docs.spring.io/spring-framework/docs/current/kdoc-api/[Spring Framework KDoc API] lists all the Kotlin extensions provided to enrich the Java API.
 
 We also need to create the associated Mustache templates.
@@ -376,7 +374,7 @@ class IntegrationTests(@Autowired val restTemplate: TestRestTemplate) {
 
 === Test instance lifecycle
 
-Sometimes you need to execute a method before or after all tests of a given class. Like Junit 4, JUnit 5 requires by default these methods to be static (which translates to https://kotlinlang.org/docs/reference/object-declarations.html#companion-objects[`companion object`] in Kotlin, which is quite verbose and not straightforward) because test classes are instantiated one time per test.
+Sometimes you need to execute a method before or after all tests of a given class. Like Junit 4, JUnit 5 requires by default these methods to be static (which translates to https://kotlinlang.org/docs/object-declarations.html#companion-objects[`companion object`] in Kotlin, which is quite verbose and not straightforward) because test classes are instantiated one time per test.
 
 But Junit 5 allows you to change this default behavior and instantiate test classes one time per class. This can be done in https://junit.org/junit5/docs/current/user-guide/#writing-tests-test-instance-lifecycle[various ways], here we will use a property file to change the default behavior for the whole project:
 
@@ -527,7 +525,7 @@ class User(
 
 Notice that we are using here our `String.toSlug()` extension to provide a default argument to the `slug` parameter of `Article` constructor. Optional parameters with default values are defined at the last position in order to make it possible to omit them when using positional arguments (Kotlin also supports https://kotlinlang.org/docs/reference/functions.html#named-arguments[named arguments]). Notice that in Kotlin it is not unusual to group concise class declarations in the same file.
 
-NOTE: Here we don't use https://kotlinlang.org/docs/reference/data-classes.html[`data` classes] with `val` properties because JPA is not designed to work with immutable classes or the methods generated automatically by `data` classes. If you are using other Spring Data flavor, most of them are designed to support such constructs so you should use classes like `data class User(val login: String, ...)` when using Spring Data MongoDB, Spring Data JDBC, etc.
+NOTE: Here we don't use https://kotlinlang.org/docs/data-classes.html[`data` classes] with `val` properties because JPA is not designed to work with immutable classes or the methods generated automatically by `data` classes. If you are using other Spring Data flavor, most of them are designed to support such constructs so you should use classes like `data class User(val login: String, ...)` when using Spring Data MongoDB, Spring Data JDBC, etc.
 
 NOTE: While Spring Data JPA makes it possible to use natural IDs (it could have been the `login` property in `User` class) via https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.entity-persistence.saving-entites[`Persistable`], it is not a good fit with Kotlin due to https://youtrack.jetbrains.com/issue/KT-6653[KT-6653], that's why it is recommended to always use entities with generated IDs in Kotlin.
 
