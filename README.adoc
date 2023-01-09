@@ -562,9 +562,9 @@ class RepositoriesTests @Autowired constructor(
 
 	@Test
 	fun `When findByIdOrNull then return Article`() {
-		val juergen = User("springjuergen", "Juergen", "Hoeller")
-		entityManager.persist(juergen)
-		val article = Article("Spring Framework 5.0 goes GA", "Dear Spring community ...", "Lorem ipsum", juergen)
+		val johnDoe = User("johnDoe", "John", "Doe")
+		entityManager.persist(johnDoe)
+		val article = Article("Lorem", "Lorem", "dolor sit amet", johnDoe)
 		entityManager.persist(article)
 		entityManager.flush()
 		val found = articleRepository.findByIdOrNull(article.id!!)
@@ -573,11 +573,11 @@ class RepositoriesTests @Autowired constructor(
 
 	@Test
 	fun `When findByLogin then return User`() {
-		val juergen = User("springjuergen", "Juergen", "Hoeller")
-		entityManager.persist(juergen)
+		val johnDoe = User("johnDoe", "John", "Doe")
+		entityManager.persist(johnDoe)
 		entityManager.flush()
-		val user = userRepository.findByLogin(juergen.login)
-		assertThat(user).isEqualTo(juergen)
+		val user = userRepository.findByLogin(johnDoe.login)
+		assertThat(user).isEqualTo(johnDoe)
 	}
 }
 ----
@@ -690,24 +690,24 @@ Then, we add data initialization to a new `BlogConfiguration` class.
 @Configuration
 class BlogConfiguration {
 
-    @Bean
-    fun databaseInitializer(userRepository: UserRepository,
-                            articleRepository: ArticleRepository) = ApplicationRunner {
+	@Bean
+	fun databaseInitializer(userRepository: UserRepository,
+							articleRepository: ArticleRepository) = ApplicationRunner {
 
-        val smaldini = userRepository.save(User("smaldini", "Stéphane", "Maldini"))
-        articleRepository.save(Article(
-                title = "Reactor Bismuth is out",
-                headline = "Lorem ipsum",
-                content = "dolor sit amet",
-                author = smaldini
-        ))
-        articleRepository.save(Article(
-                title = "Reactor Aluminium has landed",
-                headline = "Lorem ipsum",
-                content = "dolor sit amet",
-                author = smaldini
-        ))
-    }
+		val jdoe = userRepository.save(User("jdoe", "John", "Doe"))
+		articleRepository.save(Article(
+				title = "Lorem ipsum",
+				headline = "Lorem ipsum",
+				content = "dolor sit amet",
+				author = jdoe
+		))
+		articleRepository.save(Article(
+				title = "Lorem ipsum",
+				headline = "Lorem ipsum",
+				content = "dolor sit amet",
+				author = jdoe
+		))
+	}
 }
 ----
 
@@ -731,16 +731,16 @@ class IntegrationTests(@Autowired val restTemplate: TestRestTemplate) {
 		println(">> Assert blog page title, content and status code")
 		val entity = restTemplate.getForEntity<String>("/")
 		assertThat(entity.statusCode).isEqualTo(HttpStatus.OK)
-		assertThat(entity.body).contains("<h1>Blog</h1>", "Reactor")
+		assertThat(entity.body).contains("<h1>Blog</h1>", "Lorem")
 	}
 
 	@Test
 	fun `Assert article page title, content and status code`() {
 		println(">> Assert article page title, content and status code")
-		val title = "Reactor Aluminium has landed"
+		val title = "Lorem"
 		val entity = restTemplate.getForEntity<String>("/article/${title.toSlug()}")
 		assertThat(entity.statusCode).isEqualTo(HttpStatus.OK)
-		assertThat(entity.body).contains(title, "Lorem ipsum", "dolor sit amet")
+		assertThat(entity.body).contains(title, "Lorem", "dolor sit amet")
 	}
 
 	@AfterAll
@@ -844,36 +844,36 @@ Or with Maven:
 class HttpControllersTests(@Autowired val mockMvc: MockMvc) {
 
 	@MockkBean
-	private lateinit var userRepository: UserRepository
+	lateinit var userRepository: UserRepository
 
 	@MockkBean
-	private lateinit var articleRepository: ArticleRepository
+	lateinit var articleRepository: ArticleRepository
 
 	@Test
 	fun `List articles`() {
-		val juergen = User("springjuergen", "Juergen", "Hoeller")
-		val spring5Article = Article("Spring Framework 5.0 goes GA", "Dear Spring community ...", "Lorem ipsum", juergen)
-		val spring43Article = Article("Spring Framework 4.3 goes GA", "Dear Spring community ...", "Lorem ipsum", juergen)
-		every { articleRepository.findAllByOrderByAddedAtDesc() } returns listOf(spring5Article, spring43Article)
+		val johnDoe = User("johnDoe", "John", "Doe")
+		val lorem5Article = Article("Lorem", "Lorem", "dolor sit amet", johnDoe)
+		val ipsumArticle = Article("Ipsum", "Ipsum", "dolor sit amet", johnDoe)
+		every { articleRepository.findAllByOrderByAddedAtDesc() } returns listOf(lorem5Article, ipsumArticle)
 		mockMvc.perform(get("/api/article/").accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk)
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(jsonPath("\$.[0].author.login").value(juergen.login))
-				.andExpect(jsonPath("\$.[0].slug").value(spring5Article.slug))
-				.andExpect(jsonPath("\$.[1].author.login").value(juergen.login))
-				.andExpect(jsonPath("\$.[1].slug").value(spring43Article.slug))
+				.andExpect(jsonPath("\$.[0].author.login").value(johnDoe.login))
+				.andExpect(jsonPath("\$.[0].slug").value(lorem5Article.slug))
+				.andExpect(jsonPath("\$.[1].author.login").value(johnDoe.login))
+				.andExpect(jsonPath("\$.[1].slug").value(ipsumArticle.slug))
 	}
 
 	@Test
 	fun `List users`() {
-		val juergen = User("springjuergen", "Juergen", "Hoeller")
-		val smaldini = User("smaldini", "Stéphane", "Maldini")
-		every { userRepository.findAll() } returns listOf(juergen, smaldini)
+		val johnDoe = User("johnDoe", "John", "Doe")
+		val janeDoe = User("janeDoe", "Jane", "Doe")
+		every { userRepository.findAll() } returns listOf(johnDoe, janeDoe)
 		mockMvc.perform(get("/api/user/").accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk)
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(jsonPath("\$.[0].login").value(juergen.login))
-				.andExpect(jsonPath("\$.[1].login").value(smaldini.login))
+				.andExpect(jsonPath("\$.[0].login").value(johnDoe.login))
+				.andExpect(jsonPath("\$.[1].login").value(janeDoe.login))
 	}
 }
 ----

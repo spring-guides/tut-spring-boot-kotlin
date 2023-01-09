@@ -7,22 +7,22 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class BlogConfiguration {
 
-    @Bean
-    fun databaseInitializer(userRepository: UserRepository,
+	@Bean
+	fun databaseInitializer(userRepository: UserRepository,
 							articleRepository: ArticleRepository) = ApplicationRunner {
 
-        val smaldini = userRepository.save(User("smaldini", "Stéphane", "Maldini"))
-        articleRepository.save(Article(
-				title = "Reactor Bismuth is out",
-				headline = "Lorem ipsum",
+		val johnDoe = userRepository.save(User("johnDoe", "John", "Doe"))
+		articleRepository.save(Article(
+				title = "Lorem",
+				headline = "Lorem",
 				content = "dolor sit amet",
-				author = smaldini
+				author = johnDoe
 		))
-        articleRepository.save(Article(
-				title = "Reactor Aluminium has landed",
-				headline = "Lorem ipsum",
+		articleRepository.save(Article(
+				title = "Ipsum",
+				headline = "Ipsum",
 				content = "dolor sit amet",
-				author = smaldini
+				author = johnDoe
 		))
-    }
+	}
 }
