@@ -103,7 +103,7 @@ This feature can be enabled by adding the `-Xjsr305` compiler flag with the `str
 ----
 tasks.withType<KotlinCompile> {
 	kotlinOptions {
-		freeCompilerArgs = listOf("-Xjsr305=strict")
+		freeCompilerArgs += "-Xjsr305=strict"
 	}
 }
 ----
