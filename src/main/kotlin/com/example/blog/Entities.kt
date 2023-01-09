@@ -1,7 +1,7 @@
 package com.example.blog
 
 import java.time.LocalDateTime
-import javax.persistence.*
+import jakarta.persistence.*
 
 @Entity
 class Article(

@@ -14,15 +14,15 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.1</version>
+		<version>3.0.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>1.8</java.version>
-		<kotlin.version>1.6.21</kotlin.version>
+		<java.version>17</java.version>
+		<kotlin.version>1.8.0</kotlin.version>
 	</properties>
 
 	<dependencies>
@@ -44,7 +44,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.jetbrains.kotlin</groupId>
-			<artifactId>kotlin-stdlib-jdk8</artifactId>
+			<artifactId>kotlin-stdlib</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.jetbrains.kotlin</groupId>
@@ -65,16 +65,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>org.junit.vintage</groupId>
-					<artifactId>junit-vintage-engine</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.mockito</groupId>
-					<artifactId>mockito-core</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
@@ -84,7 +74,7 @@
 		<dependency>
 			<groupId>com.ninja-squad</groupId>
 			<artifactId>springmockk</artifactId>
-			<version>3.1.1</version>
+			<version>4.0.0</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -110,9 +100,9 @@
 						<plugin>all-open</plugin>
 					</compilerPlugins>
 					<pluginOptions>
-						<option>all-open:annotation=javax.persistence.Entity</option>
-						<option>all-open:annotation=javax.persistence.Embeddable</option>
-						<option>all-open:annotation=javax.persistence.MappedSuperclass</option>
+						<option>all-open:annotation=jakarta.persistence.Entity</option>
+						<option>all-open:annotation=jakarta.persistence.Embeddable</option>
+						<option>all-open:annotation=jakarta.persistence.MappedSuperclass</option>
 					</pluginOptions>
 				</configuration>
 				<dependencies>

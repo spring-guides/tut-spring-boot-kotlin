@@ -82,11 +82,11 @@ In order to be able to use Kotlin non-nullable properties with JPA, https://kotl
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	kotlin("plugin.jpa") version "1.6.21"
-	id("org.springframework.boot") version "2.7.1"
-	id("io.spring.dependency-management") version "1.0.11.RELEASE"
-	kotlin("jvm") version "1.6.21"
-	kotlin("plugin.spring") version "1.6.21"
+	id("org.springframework.boot") version "3.0.1"
+	id("io.spring.dependency-management") version "1.1.0"
+	kotlin("jvm") version "1.8.0"
+	kotlin("plugin.spring") version "1.8.0"
+	kotlin("plugin.jpa") version "1.8.0"
 }
 ----
 
@@ -110,9 +110,8 @@ tasks.withType<KotlinCompile> {
 
 === Dependencies
 
-3 Kotlin specific libraries are required for such Spring Boot web application and configured by default:
+2 Kotlin specific libraries are required for such Spring Boot web application and configured by default:
 
- - `kotlin-stdlib-jdk8` is the Java 8 variant of Kotlin standard library
  - `kotlin-reflect` is Kotlin reflection library
  - `jackson-module-kotlin` adds support for serialization/deserialization of Kotlin classes and data classes (single constructor classes can be used automatically, and those with secondary constructors or static factories are also supported)
 
@@ -125,7 +124,6 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	runtimeOnly("com.h2database:h2")
 	runtimeOnly("org.springframework.boot:spring-boot-devtools")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
@@ -206,8 +204,8 @@ Notice also that Kotlin compiler is configured to generate Java 8 bytecode (Java
 
 3 Kotlin specific libraries are required for such Spring Boot web application and configured by default:
 
- - `kotlin-stdlib-jdk8` is the Java 8 variant of Kotlin standard library
- - `kotlin-reflect` is Kotlin reflection library (mandatory as of Spring Framework 5)
+ - `kotlin-stdlib` is the Kotlin standard library
+ - `kotlin-reflect` is Kotlin reflection library
  - `jackson-module-kotlin` adds support for serialization/deserialization of Kotlin classes and data classes (single constructor classes can be used automatically, and those with secondary constructors or static factories are also supported)
 
 `pom.xml`
@@ -236,7 +234,7 @@ Notice also that Kotlin compiler is configured to generate Java 8 bytecode (Java
 	</dependency>
 	<dependency>
 		<groupId>org.jetbrains.kotlin</groupId>
-		<artifactId>kotlin-stdlib-jdk8</artifactId>
+		<artifactId>kotlin-stdlib</artifactId>
 	</dependency>
 
 	<dependency>
@@ -470,13 +468,13 @@ With Gradle:
 ----
 plugins {
 	...
-	kotlin("plugin.allopen") version "1.6.21"
+	kotlin("plugin.allopen") version "1.8.0"
 }
 
 allOpen {
-	annotation("javax.persistence.Entity")
-	annotation("javax.persistence.Embeddable")
-	annotation("javax.persistence.MappedSuperclass")
+	annotation("jakarta.persistence.Entity")
+	annotation("jakarta.persistence.Embeddable")
+	annotation("jakarta.persistence.MappedSuperclass")
 }
 ----
 
@@ -495,9 +493,9 @@ Or with Maven:
 			<plugin>all-open</plugin>
 		</compilerPlugins>
 		<pluginOptions>
-			<option>all-open:annotation=javax.persistence.Entity</option>
-			<option>all-open:annotation=javax.persistence.Embeddable</option>
-			<option>all-open:annotation=javax.persistence.MappedSuperclass</option>
+			<option>all-open:annotation=jakarta.persistence.Entity</option>
+			<option>all-open:annotation=jakarta.persistence.Embeddable</option>
+			<option>all-open:annotation=jakarta.persistence.MappedSuperclass</option>
 		</pluginOptions>
 	</configuration>
 </plugin>
@@ -796,12 +794,11 @@ With Gradle:
 [source,kotlin]
 ----
 testImplementation("org.springframework.boot:spring-boot-starter-test") {
-	exclude(module = "junit")
 	exclude(module = "mockito-core")
 }
 testImplementation("org.junit.jupiter:junit-jupiter-api")
 testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
-testImplementation("com.ninja-squad:springmockk:3.0.1")
+testImplementation("com.ninja-squad:springmockk:4.0.0")
 ----
 
 Or with Maven:
@@ -813,16 +810,6 @@ Or with Maven:
 	<groupId>org.springframework.boot</groupId>
 	<artifactId>spring-boot-starter-test</artifactId>
 	<scope>test</scope>
-	<exclusions>
-		<exclusion>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-		</exclusion>
-		<exclusion>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-core</artifactId>
-		</exclusion>
-	</exclusions>
 </dependency>
 <dependency>
 	<groupId>org.junit.jupiter</groupId>
@@ -832,7 +819,7 @@ Or with Maven:
 <dependency>
 	<groupId>com.ninja-squad</groupId>
 	<artifactId>springmockk</artifactId>
-	<version>3.0.1</version>
+	<version>4.0.0</version>
 	<scope>test</scope>
 </dependency>
 ----
@@ -882,13 +869,11 @@ NOTE: `$` needs to be escaped in strings as it is used for string interpolation.
 
 == Configuration properties
 
-In Kotlin, the recommended way to manage your application properties is to leverage `@ConfigurationProperties` with
-`@ConstructorBinding` in order to be able to use read-only properties.
+In Kotlin, the recommended way to manage your application properties is to use read-only properties.
 
 `src/main/kotlin/com/example/blog/BlogProperties.kt`
 [source,kotlin]
 ----
-@ConstructorBinding
 @ConfigurationProperties("blog")
 data class BlogProperties(var title: String, val banner: Banner) {
 	data class Banner(val title: String? = null, val content: String)
@@ -914,7 +899,7 @@ To generate https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle
 ----
 plugins {
 	...
-	kotlin("kapt") version "1.6.21"
+	kotlin("kapt") version "1.8.0"
 }
 
 dependencies {
