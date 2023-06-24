@@ -137,7 +137,7 @@ Recente versões de `H2` exigem configurações especiais adequadamente de keywo
 [source,properties]
 ----
 spring.jpa.properties.hibernate.globally_quoted_identifiers=true
-spring.jpa.properties.hibernate.globally_quoted_identifiers_skip_column_definitions = true
+spring.jpa.properties.hibernate.globally_quoted_identifiers_skip_column_definitions=true
 ----
 
 O plugin Spring Boot Gradle usa automaticamente a versão Kotlin declarada através do plugin Kotlin Gradle.
@@ -149,9 +149,11 @@ Você pode ver <<understanding-generated-app, deeper look at the generated appli
 
 === Plugins
 
-In addition to the obvious https://kotlinlang.org/docs/reference/using-maven.html[Kotlin Maven plugin], the default configuration declares the https://kotlinlang.org/docs/reference/compiler-plugins.html#spring-support[kotlin-spring plugin] which automatically opens classes and methods (unlike in Java, the default qualifier is `final` in Kotlin) annotated or meta-annotated with Spring annotations. This is useful to be able to create `@Configuration` or `@Transactional` beans without having to add the `open` qualifier required by CGLIB proxies for example.
+Além do óbvio https://kotlinlang.org/docs/reference/using-maven.html[Kotlin Maven plugin], a configuração padrão declara o https://kotlinlang.org/docs/reference/compiler-plugins.html#spring-support[kotlin-spring plugin] que automaticamente classes e métodos são `opens` (ao contrário do Java, o qualificador padrão do kotlin é `final`) anotado ou meta-annotated com Spring annotations. 
+Isto é útil para habilitar a criação de beas `@Configuration` or `@Transactional` sem ter que adicionar o qualificador `open` exigido por exemplo por CGLIB proxies.
 
-In order to be able to use Kotlin non-nullable properties with JPA, https://kotlinlang.org/docs/reference/compiler-plugins.html#jpa-support[Kotlin JPA plugin] is also enabled. It generates no-arg constructors for any class annotated with `@Entity`, `@MappedSuperclass` or `@Embeddable`.
+Para poder usar a propriedade do Kotlin non-nullable com JPA, https://kotlinlang.org/docs/reference/compiler-plugins.html#jpa-support[Kotlin JPA plugin] também está habilitado. 
+Gera construtores `no-arg` para qualquer classe anotada com `@Entity`, `@MappedSuperclass` or `@Embeddable`.
 
 `pom.xml`
 [source,xml]
@@ -193,13 +195,16 @@ In order to be able to use Kotlin non-nullable properties with JPA, https://kotl
 	</build>
 ----
 
-One of Kotlin's key features is https://kotlinlang.org/docs/null-safety.html[null-safety] - which cleanly deals with `null` values at compile time rather than bumping into the famous `NullPointerException` at runtime. This makes applications safer through nullability declarations and expressing "value or no value" semantics without paying the cost of wrappers like `Optional`. Note that Kotlin allows using functional constructs with nullable values; check out this https://www.baeldung.com/kotlin-null-safety[comprehensive guide to Kotlin null-safety].
+Uma das principais características de Kotlin é https://kotlinlang.org/docs/null-safety.html[null-safety] - que lida de forma limpa com valores `null` em tempo de compilação em vez de esbarrar no famoso `NullPointerException` em tempo de execução. 
+Isso torna os aplicativos mais seguros por meio de declarações de `nullability` e expressões "value or no value" semântica sem pagar o custo de usar `Optional`. 
+Observe que Kotlin permite o uso de construções funcionais com valores anuláveis; veja https://www.baeldung.com/kotlin/null-safety[comprehensive guide to Kotlin null-safety].
 
-Although Java does not allow one to express null-safety in its type-system, Spring Framework provides null-safety of the whole Spring Framework API via tooling-friendly annotations declared in the `org.springframework.lang` package. By default, types from Java APIs used in Kotlin are recognized as https://kotlinlang.org/docs/reference/java-interop.html#null-safety-and-platform-types[platform types] for which null-checks are relaxed. https://kotlinlang.org/docs/reference/java-interop.html#jsr-305-support[Kotlin support for JSR 305 annotations] + Spring nullability annotations provide null-safety for the whole Spring Framework API to Kotlin developers, with the advantage of dealing with `null` related issues at compile time.
+Embora o Java não permita `null-safety` em seu `type-system`, Spring Framework fornece `null-safety` em toda toda sua API Spring Framework por meio de anotações `tooling-friendly` declaradas no pacote `org.springframework.lang`. 
+Por padrão, tipos de APIs Java usado em Kotlin são reconhecidos como https://kotlinlang.org/docs/reference/java-interop.html#null-safety-and-platform-types[platform types] onde `null-checks` são relaxados. https://kotlinlang.org/docs/reference/java-interop.html#jsr-305-support[Kotlin support for JSR 305 annotations] + anotação Spring nullability fornece `null-safety` por toda API Spring Framework para desenvolvedores Kotlin, com a vantagem de lidar com problemas relacionados com `null` em tempo de compilação.
 
-This feature can be enabled by adding the `-Xjsr305` compiler flag with the `strict` options.
+Este recurso pode ser habilitado adicionando a flag de compilação `-Xjsr305` com a opção `strict`.
 
-Notice also that Kotlin compiler is configured to generate Java 8 bytecode (Java 6 by default).
+Observe também que o compilador Kotlin está configurado para gerar código de bytes Java 8 (Java 6 por padrão).
 
 === Dependências
 
@@ -207,7 +212,7 @@ Notice also that Kotlin compiler is configured to generate Java 8 bytecode (Java
 
  - `kotlin-stdlib` is the Kotlin standard library
  - `kotlin-reflect` is Kotlin reflection library
- - `jackson-module-kotlin` adds support for serialization/deserialization of Kotlin classes and data classes (single constructor classes can be used automatically, and those with secondary constructors or static factories are also supported)
+ - `jackson-module-kotlin` adiocional suporte de serialization/deserialization de Kotlin class and data classes (classes de construtor único podem ser usadas automaticamente, e aquelas com construtores secundários ou `static factories` também são suportadas)
 
 `pom.xml`
 [source,xml]
