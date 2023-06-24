@@ -5,37 +5,37 @@
 :images: https://raw.githubusercontent.com/spring-guides/tut-spring-boot-kotlin/master/images
 :tabsize: 2
 
-This tutorial shows you how to build efficiently a sample blog application by combining the power of https://spring.io/projects/spring-boot/[Spring Boot] and https://kotlinlang.org/[Kotlin].
+Este tutorial mostra como criar eficientemente uma aplicação de um blog de exemplo combinando o poder de  https://spring.io/projects/spring-boot/[Spring Boot] and https://kotlinlang.org/[Kotlin].
 
-If you are starting with Kotlin, you can learn the language by reading the https://kotlinlang.org/docs/reference/[reference documentation], following the online https://play.kotlinlang.org/[Kotlin Koans tutorial] or just using https://docs.spring.io/spring/docs/current/spring-framework-reference/[Spring Framework reference documentation] which now provides code samples in Kotlin.
+Se você está começando com Kotlin, você pode aprender a linguagem lendo a https://kotlinlang.org/docs/reference/[documentação de referência], seguindo o online https://play.kotlinlang.org/[Tutorial de Kotlin Koans] ou apenas usando a https://docs.spring.io/spring/docs/current/spring-framework-reference/[documentação de referência do Spring Framework] que agora fornece exemplos de código no Kotlin.
 
-Spring Kotlin support is documented in the https://docs.spring.io/spring/docs/current/spring-framework-reference/languages.html#kotlin[Spring Framework] and https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-kotlin.html[Spring Boot] reference documentation. If you need help, search or ask questions with the https://stackoverflow.com/questions/tagged/kotlin+spring[`spring` and `kotlin` tags on StackOverflow] or come discuss in the `#spring` channel of https://slack.kotlinlang.org/[Kotlin Slack].
+O suporte ao Spring Kotlin está documentado na documentação de referência do https://docs.spring.io/spring/docs/current/spring-framework-reference/languages.html#kotlin[Spring Framework] e https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-kotlin.html[Spring Boot] reference documentation. Se precisar de ajuda, pesquise ou tire suas dúvidas com o https://stackoverflow.com/questions/tagged/kotlin+spring[`spring` e `kotlin` tags no StackOverflow] ou venha discutir no canal do https://slack.kotlinlang.org/[Kotlin Slack] `#spring`.
 
-== Creating a New Project
+== Criando um novo projeto
 
-First we need to create a Spring Boot application, which can be done in a number of ways.
+Primeiro precisamos criar uma aplicação `Spring Boot`, o que pode ser feito de várias maneiras.
 
-[[using-the-initializr-website]]
-=== Using the Initializr Website
+[[usando-o-site-initializr]]
+=== Usando o site Initializr
 
-Visit https://start.spring.io and choose the Kotlin language.
-Gradle is the most commonly used build tool in Kotlin, and it provides a Kotlin DSL which is used by default when generating a Kotlin project, so this is the recommended choice. But you can also use Maven if you are more comfortable with it.
-Notice that you can use https://start.spring.io/#!language=kotlin&type=gradle-project-kotlin to have Kotlin and Gradle selected by default.
+Visite https://start.spring.io e escolha a linguagem `Kotlin`.
+Gradle é a ferramenta de compilação mais comumente usada no Kotlin, e fornece uma DSL Kotlin que é usada por padrão ao gerar um projeto Kotlin, então esta é a escolha recomendada. Mas você também pode usar o Maven se estiver mais confortável com ele
+Observe que você pode usar https://start.spring.io/#!language=kotlin&type=gradle-project-kotlin para ter Kotlin e Gradle selecionados por padrão
 
-	. Select "Gradle - Kotlin" or "Maven" depending on which build tool you want to use
-	. Enter the following artifact coordinates: `blog`
-	. Add the following dependencies:
+	. Selecione "Gradle - Kotlin" ou "Maven" dependendo de qual ferramenta de compilação você deseja usar
+	. Insira as seguinte artefato: `blog`
+	. Adicione as seguintes dependências:
 		- Spring Web
 		- Mustache
 		- Spring Data JPA
 		- H2 Database
 		- Spring Boot DevTools
-	. Click "Generate Project".
+	. Clique em "Generate Project".
 
-The .zip file contains a standard project in the root directory, so you might want to create an empty directory before you unpack it.
+O arquivo .zip contém um projeto padrão no diretório raiz, portanto, convém criar um diretório vazio antes de descompactá-lo.
 
-[[using-command-line]]
-=== Using command line
+[[usando-linha-de-comando]]
+=== Usando linha de comando
 
 You can use the Initializr HTTP API https://docs.spring.io/initializr/docs/current/reference/html/#command-line[from the command line] with, for example, curl on a UN*X like system:
 
@@ -47,8 +47,8 @@ $ curl https://start.spring.io/starter.zip -d language=kotlin -d type=gradle-pro
 
 Add `-d type=gradle-project` if you want to use Gradle.
 
-[[using-intellij-idea]]
-=== Using IntelliJ IDEA
+[[usando-intellij-idea]]
+=== Usando IntelliJ IDEA
 
 Spring Initializr is also integrated in IntelliJ IDEA Ultimate edition and allows you to create and import a new project without having to leave the IDE for the command-line or the web UI.
 
@@ -60,10 +60,10 @@ Follow the steps of the wizard to use the following parameters:
  - Type: "Gradle - Kotlin" or "Maven"
  - Language: Kotlin
  - Name: "Blog"
- - Dependencies: "Spring Web Starter", "Mustache", "Spring Data JPA", "H2 Database" and "Spring Boot DevTools"
+ - Dependências: "Spring Web Starter", "Mustache", "Spring Data JPA", "H2 Database" and "Spring Boot DevTools"
 
 [[gradle-build]]
-== Understanding the Gradle Build
+== Entendendo o Gradle Build
 
 If you're using a Maven Build, you can <<maven-build, skip to the dedicated section>>.
 
@@ -88,7 +88,7 @@ plugins {
 }
 ----
 
-=== Compiler options
+=== Opções do compilador
 
 One of Kotlin's key features is https://kotlinlang.org/docs/null-safety.html[null-safety] - which cleanly deals with `null` values at compile time rather than bumping into the famous `NullPointerException` at runtime. This makes applications safer through nullability declarations and expressing "value or no value" semantics without paying the cost of wrappers like `Optional`. Note that Kotlin allows using functional constructs with nullable values; check out this https://www.baeldung.com/kotlin/null-safety[comprehensive guide to Kotlin null-safety].
 
@@ -106,7 +106,7 @@ tasks.withType<KotlinCompile> {
 }
 ----
 
-=== Dependencies
+=== Dependências
 
 2 Kotlin specific libraries are required (the standard library is added automatically with Gradle) for such Spring Boot web application and configured by default:
 
@@ -142,7 +142,7 @@ Spring Boot Gradle plugin automatically uses the Kotlin version declared via the
 You can now take a <<understanding-generated-app, deeper look at the generated application>>.
 
 [[maven-build]]
-== Understanding the Maven Build
+== Entendendo o Maven Build
 
 === Plugins
 
@@ -198,7 +198,7 @@ This feature can be enabled by adding the `-Xjsr305` compiler flag with the `str
 
 Notice also that Kotlin compiler is configured to generate Java 8 bytecode (Java 6 by default).
 
-=== Dependencies
+=== Dependências
 
 3 Kotlin specific libraries are required for such Spring Boot web application and configured by default:
 
@@ -254,7 +254,7 @@ Notice also that Kotlin compiler is configured to generate Java 8 bytecode (Java
 ----
 
 [[understanding-generated-app]]
-== Understanding the generated Application
+== Entendendo a aplicação gerada
 
 `src/main/kotlin/com/example/blog/BlogApplication.kt`
 [source,kotlin]
@@ -284,7 +284,7 @@ fun main(args: Array<String>) {
 }
 ----
 
-== Writing your first Kotlin controller
+== Escrevendo sua primeiro controller Kotlin
 
 Let's create a simple controller to display a simple web page.
 
@@ -344,11 +344,11 @@ We also need to create the associated Mustache templates.
 
 Start the web application by running the `main` function of `BlogApplication.kt`, and go to `http://localhost:8080/`, you should see a sober web page with a "Blog" headline. 
 
-== Testing with JUnit 5
+== Testando com JUnit 5
 
 JUnit 5 now used by default in Spring Boot provides various features very handy with Kotlin, including https://docs.spring.io/spring/docs/current/spring-framework-reference/testing.html#testcontext-junit-jupiter-di[autowiring of constructor/method parameters] which allows to use non-nullable `val` properties and the possibility to use `@BeforeAll`/`@AfterAll` on regular non-static methods.
 
-=== Writing JUnit 5 tests in Kotlin
+=== Escrevendo teste in Kotlin com JUnit 5
 
 For the sake of this example, let's create an integration test in order to demonstrate various features:
 
@@ -372,7 +372,7 @@ class IntegrationTests(@Autowired val restTemplate: TestRestTemplate) {
 }
 ----
 
-=== Test instance lifecycle
+=== Ciclo de vida da instância de teste
 
 Sometimes you need to execute a method before or after all tests of a given class. Like Junit 4, JUnit 5 requires by default these methods to be static (which translates to https://kotlinlang.org/docs/object-declarations.html#companion-objects[`companion object`] in Kotlin, which is quite verbose and not straightforward) because test classes are instantiated one time per test.
 
@@ -418,7 +418,7 @@ class IntegrationTests(@Autowired val restTemplate: TestRestTemplate) {
 }
 ----
 
-== Creating your own extensions
+== Criando suas próprias extensions
 
 Instead of using util classes with abstract methods like in Java, it is usual in Kotlin to provide such functionalities via Kotlin extensions. Here we are going to add a `format()` function to the existing `LocalDateTime` type in order to generate text with the English date format.
 
@@ -455,7 +455,7 @@ fun String.toSlug() = lowercase(Locale.getDefault())
 
 We will leverage these extensions in the next section.
 
-== Persistence with JPA
+== Persistencia de dados com JPA
 
 In order to make lazy fetching working as expected, entities should be `open` as described in https://youtrack.jetbrains.com/issue/KT-28525[KT-28525]. We are going to use the Kotlin `allopen` plugin for that purpose.
 
@@ -580,7 +580,7 @@ class RepositoriesTests @Autowired constructor(
 
 NOTE: We use here the `CrudRepository.findByIdOrNull` Kotlin extension provided by default with Spring Data, which is a nullable variant of the `Optional` based `CrudRepository.findById`. Read the great https://medium.com/@elizarov/null-is-your-friend-not-a-mistake-b63ff1751dd5[Null is your friend, not a mistake] blog post for more details.
 
-== Implementing the blog engine
+== Implementando o mecanismo de blog
 
 We update the "blog" Mustache templates.
 
@@ -749,7 +749,7 @@ class IntegrationTests(@Autowired val restTemplate: TestRestTemplate) {
 
 Start (or restart) the web application, and go to `http://localhost:8080/`, you should see the list of articles with clickable links to see a specific article.
 
-== Exposing HTTP API
+== Expondo a API HTTP
 
 We are now going to implement the HTTP API via `@RestController` annotated controllers.
 
@@ -865,7 +865,7 @@ class HttpControllersTests(@Autowired val mockMvc: MockMvc) {
 
 NOTE: `$` needs to be escaped in strings as it is used for string interpolation.
 
-== Configuration properties
+== Propriedades de configuração
 
 In Kotlin, the recommended way to manage your application properties is to use read-only properties.
 
@@ -971,6 +971,6 @@ class HtmlController(private val repository: ArticleRepository,
 
 Restart the web application, refresh `http://localhost:8080/`, you should see the banner on the blog homepage.
 
-== Conclusion
+== Conclusão
 
 We have now finished to build this sample Kotlin blog application. The source code https://github.com/spring-guides/tut-spring-boot-kotlin[is available on Github]. You can also have a look to https://docs.spring.io/spring/docs/current/spring-framework-reference/languages.html#kotlin[Spring Framework] and https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-kotlin.html[Spring Boot] reference documentation if you need more details on specific features.
