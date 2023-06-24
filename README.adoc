@@ -37,7 +37,7 @@ O arquivo .zip contém um projeto padrão no diretório raiz, portanto, convém 
 [[usando-linha-de-comando]]
 === Usando linha de comando
 
-You can use the Initializr HTTP API https://docs.spring.io/initializr/docs/current/reference/html/#command-line[from the command line] with, for example, curl on a UN*X like system:
+Você pode usar a API HTTP `Initializr` https://docs.spring.io/initializr/docs/current/reference/html/#command-line[por linha de comando], por exemplo, `curl` em sistemas baseados em UNIX like system:
 
 [source]
 ----
@@ -45,16 +45,16 @@ $ mkdir blog && cd blog
 $ curl https://start.spring.io/starter.zip -d language=kotlin -d type=gradle-project-kotlin -d dependencies=web,mustache,jpa,h2,devtools -d packageName=com.example.blog -d name=Blog -o blog.zip
 ----
 
-Add `-d type=gradle-project` if you want to use Gradle.
+Adicione `-d type=gradle-project` Se vocë quiser usar `Gradle`.
 
 [[usando-intellij-idea]]
 === Usando IntelliJ IDEA
 
-Spring Initializr is also integrated in IntelliJ IDEA Ultimate edition and allows you to create and import a new project without having to leave the IDE for the command-line or the web UI.
+O `Spring Initializr` também esta integrado no IntelliJ IDEA Ultimate edition e e permite que você `crie` e `import` um novo projeto sem ter que sair da IDE para a linha de comando ou a interface do usuário da Web.
 
-To access the wizard, go to File | New | Project, and select Spring Initializr.
+Para acessar o wizard, para o o menu File | New | Project, e selecione `Spring Initializr`.
 
-Follow the steps of the wizard to use the following parameters:
+Siga as etapas do assistente para usar os seguintes parâmetros::
 
  - Artifact: "blog"
  - Type: "Gradle - Kotlin" or "Maven"
@@ -66,13 +66,12 @@ Follow the steps of the wizard to use the following parameters:
 == Entendendo o Gradle Build
 
 If you're using a Maven Build, you can <<maven-build, skip to the dedicated section>>.
+Se você estiver usando o Maven, poderá pular para a seção dedicada.
 
 === Plugins
 
-In addition to the obvious https://kotlinlang.org/docs/gradle.html[Kotlin Gradle plugin], the default configuration declares the https://kotlinlang.org/docs/all-open-plugin.html#spring-support[kotlin-spring plugin] which automatically opens classes and methods (unlike in Java, the default qualifier is `final` in Kotlin) annotated or meta-annotated with Spring annotations. This is useful to be able to create `@Configuration` or `@Transactional` beans without having to add the `open` qualifier required by CGLIB proxies for example.
-
-In order to be able to use Kotlin non-nullable properties with JPA, https://kotlinlang.org/docs/reference/compiler-plugins.html#jpa-support[Kotlin JPA plugin] is also enabled. It generates no-arg constructors for any class annotated with `@Entity`, `@MappedSuperclass` or `@Embeddable`.
-
+Além do óbvio https://kotlinlang.org/docs/gradle.html[Kotlin Gradle plugin], a configuração padrão declara https://kotlinlang.org/docs/all-open-plugin.html#spring-support[kotlin-spring plugin] que abre automaticamente classes e métodos (ao contrário do Java, o qualificador padrão no Kotlin é `final`) anotados ou meta-anotados com anotações Spring. Isso é útil para poder criar beans `@Configuration` ou `@Transactional` sem ter que adicionar o qualificador `open` por exemplo, exigido por proxies CGLIB.
+Para poder usar as propriedades não non-nullable do Kotlin com JPA, o https://kotlinlang.org/docs/reference/compiler-plugins.html#jpa-support[Kotlin JPA plugin] também está ativado. Ele gera construtores `no-arg` para qualquer classe anotada com `@Entity`, `@MappedSuperclass` or `@Embeddable`.
 
 `build.gradle.kts`
 [source,kotlin]
@@ -90,11 +89,15 @@ plugins {
 
 === Opções do compilador
 
-One of Kotlin's key features is https://kotlinlang.org/docs/null-safety.html[null-safety] - which cleanly deals with `null` values at compile time rather than bumping into the famous `NullPointerException` at runtime. This makes applications safer through nullability declarations and expressing "value or no value" semantics without paying the cost of wrappers like `Optional`. Note that Kotlin allows using functional constructs with nullable values; check out this https://www.baeldung.com/kotlin/null-safety[comprehensive guide to Kotlin null-safety].
+Uma das principais características de Kotlin é https://kotlinlang.org/docs/null-safety.html[null-safety] - 
+Que lida de forma limpa com o valores `null` em tempo de compilação em vez de esbarrar no famoso `null` `NullPointerException` em tempo de execução. 
+Isso torna as aplicações mais seguras por meio de declarações nullability e expressando "value or no value" semântica sem pagar o custo de usar `Optional`. 
+Observe que Kotlin permite o uso de construções funcionais com valores anuláveis; veja https://www.baeldung.com/kotlin/null-safety[comprehensive guide to Kotlin null-safety].
 
-Although Java does not allow one to express null-safety in its type-system, Spring Framework provides null-safety of the whole Spring Framework API via tooling-friendly annotations declared in the `org.springframework.lang` package. By default, types from Java APIs used in Kotlin are recognized as https://kotlinlang.org/docs/reference/java-interop.html#null-safety-and-platform-types[platform types] for which null-checks are relaxed. https://kotlinlang.org/docs/java-interop.html#jsr-305-support[Kotlin support for JSR 305 annotations] + Spring nullability annotations provide null-safety for the whole Spring Framework API to Kotlin developers, with the advantage of dealing with `null` related issues at compile time.
+Embora o Java não permita que alguém expresse `null-safety` em seu `type-system`, Spring Framework fornece `null-safety` de toda API Spring Framework por meio de anotações `tooling-friendly` declarada no pacote `org.springframework.lang`. 
+Por padrão, tipos de APIs Java usado em Kotlin são reconhecidos como https://kotlinlang.org/docs/reference/java-interop.html#null-safety-and-platform-types[platform types] para os quais `null-checks` são relaxados. https://kotlinlang.org/docs/java-interop.html#jsr-305-support[Kotlin support for JSR 305 annotations] + anotações Spring nullability fornece `null-safety` por toda API Spring Framework para desenvolvedores Kotlin, com a vantagem de lidar com problemas relacionados com `null` em tempo de compilação.
 
-This feature can be enabled by adding the `-Xjsr305` compiler flag with the `strict` options.
+Este recurso pode ser habilitado adicionando a flag de compilação `-Xjsr305` com a opção `strict`.
 
 `build.gradle.kts`
 [source,kotlin]
@@ -108,10 +111,10 @@ tasks.withType<KotlinCompile> {
 
 === Dependências
 
-2 Kotlin specific libraries are required (the standard library is added automatically with Gradle) for such Spring Boot web application and configured by default:
+2 bibliotecas específicas do Kotlin são necessárias (a biblioteca padrão é adicionada automaticamente com o Gradle) para essa aplicação Web Spring Boot e configuradas por padrão:
 
- - `kotlin-reflect` is Kotlin reflection library
- - `jackson-module-kotlin` adds support for serialization/deserialization of Kotlin classes and data classes (single constructor classes can be used automatically, and those with secondary constructors or static factories are also supported)
+ - `kotlin-reflect` é a biblioteca de `reflection` do kotlin
+ - `jackson-module-kotlin` adiciona suporte para serialization/deserialization de classes Kotlin e data classes (classes de construtor único podem ser usadas automaticamente, e aquelas com construtores secundários ou static factories também são suportadas)
 
 `build.gradle.kts`
 [source,kotlin]
@@ -128,7 +131,7 @@ dependencies {
 }
 ----
 
-Recent versions of H2 require special configuration to properly escape reserved keywords like `user`.
+Recente versões de `H2` exigem configurações especiais adequadamente de keywords reservadas `user`.
 
 `src/main/resources/application.properties`
 [source,properties]
@@ -137,9 +140,9 @@ spring.jpa.properties.hibernate.globally_quoted_identifiers=true
 spring.jpa.properties.hibernate.globally_quoted_identifiers_skip_column_definitions = true
 ----
 
-Spring Boot Gradle plugin automatically uses the Kotlin version declared via the Kotlin Gradle plugin.
+O plugin Spring Boot Gradle usa automaticamente a versão Kotlin declarada através do plugin Kotlin Gradle.
 
-You can now take a <<understanding-generated-app, deeper look at the generated application>>.
+Você pode ver <<understanding-generated-app, deeper look at the generated application>>.
 
 [[maven-build]]
 == Entendendo o Maven Build
