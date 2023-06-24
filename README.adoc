@@ -280,7 +280,7 @@ fun main(args: Array<String>) {
 }
 ----
 
-Compared to Java, you can notice the lack of semicolons, the lack of brackets on empty class (you can add some if you need to declare beans via `@Bean` annotation) and the use of `runApplication` top level function. `runApplication<BlogApplication>(*args)` is Kotlin idiomatic alternative to `SpringApplication.run(BlogApplication::class.java, *args)` and can be used to customize the application with following syntax.
+Em comparação com Java, você pode notar a falta de ponto-e-vírgula, a falta de colchetes na classe vazia (você pode adicionar alguns se precisar declarar beans por meio de anotação `@Bean`) e o uso de `runApplication` função de nivel superior. `runApplication<BlogApplication>(*args)` é uma alternativa Kotlin idiomática para `SpringApplication.run(BlogApplication::class.java, *args)` e pode ser usado para customizar a aplicação com a seguinte sintaxe.
 
 `src/main/kotlin/com/example/blog/BlogApplication.kt`
 [source,kotlin]
@@ -294,7 +294,7 @@ fun main(args: Array<String>) {
 
 == Escrevendo sua primeiro controller Kotlin
 
-Let's create a simple controller to display a simple web page.
+Vamos criar um simples Controller para exibir uma página da Web simples.
 
 `src/main/kotlin/com/example/blog/HtmlController.kt`
 [source,kotlin]
@@ -318,10 +318,11 @@ class HtmlController {
 }
 ----
 
-Notice that we are using here a https://kotlinlang.org/docs/extensions.html[Kotlin extension] that allows to add Kotlin functions or operators to existing Spring types. Here we import the `org.springframework.ui.set` extension function in order to be able to write `model["title"] = "Blog"` instead of `model.addAttribute("title", "Blog")`.
-The https://docs.spring.io/spring-framework/docs/current/kdoc-api/[Spring Framework KDoc API] lists all the Kotlin extensions provided to enrich the Java API.
+Perceba que estamos usando aqui uma https://kotlinlang.org/docs/extensions.html[Kotlin extension] que permite adicionar funções ou operadores Kotlin aos tipo Spring existentes. 
+Aqui nós importamos o `org.springframework.ui.set` extension function in order to be able to write `model["title"] = "Blog"` em vez de `model.addAttribute("title", "Blog")`.
+A https://docs.spring.io/spring-framework/docs/current/kdoc-api/[Spring Framework KDoc API] lista todas as extensions Kotlin extensions fornecidas para entiquecer a API Java.
 
-We also need to create the associated Mustache templates.
+Também precisamos criar o associado template `Mustache`.
 
 `src/main/resources/templates/header.mustache`
 [source]
@@ -350,7 +351,7 @@ We also need to create the associated Mustache templates.
 {{> footer}}
 ----
 
-Start the web application by running the `main` function of `BlogApplication.kt`, and go to `http://localhost:8080/`, you should see a sober web page with a "Blog" headline. 
+Inicie a aplicação Web rodando a função `main` de `BlogApplication.kt`, e vá para `http://localhost:8080/`, você deve ver uma página da Web simples com um título "Blog". 
 
 == Testando com JUnit 5
 
