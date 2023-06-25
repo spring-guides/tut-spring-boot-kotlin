@@ -355,15 +355,15 @@ Inicie a aplicação Web rodando a função `main` de `BlogApplication.kt`, e v�
 
 == Testando com JUnit 5
 
-JUnit 5 now used by default in Spring Boot provides various features very handy with Kotlin, including https://docs.spring.io/spring/docs/current/spring-framework-reference/testing.html#testcontext-junit-jupiter-di[autowiring of constructor/method parameters] which allows to use non-nullable `val` properties and the possibility to use `@BeforeAll`/`@AfterAll` on regular non-static methods.
+JUnit 5 agora usado como padrão no Spring Boot fornece vários recursos muito úteis com Kotlin, incluindo https://docs.spring.io/spring/docs/current/spring-framework-reference/testing.html#testcontext-junit-jupiter-di[autowiring of constructor/method parameters] que permite usar propriedades `non-nullable` `val` e a possibilidade de usar `@BeforeAll`/`@AfterAll` sobre métodos regulares não estáticos.
 
 === Escrevendo teste in Kotlin com JUnit 5
 
-For the sake of this example, let's create an integration test in order to demonstrate various features:
+Para fins deste exemplo, vamos criar um teste de integração para demonstrar vários recursos:
 
- - We use real sentences between backticks instead of camel-case to provide expressive test function names
- - JUnit 5 allows to inject constructor and method parameters, which is a good fit with Kotlin read-only and non-nullable properties
- - This code leverages `getForObject` and `getForEntity` Kotlin extensions (you need to import them)
+ - Usamos sentenças reais entre backticks em vez de camel-case para fornecer nomes de função de teste expressivos
+ - JUnit 5 permite injetar parâmetros do construtor e do método, o que é um bom ajuste com as propriedades `read-only` e `non-nullable` do Kotlin
+ - Este código aproveita as Kotlin extensions `getForObject` e `getForEntity` (você precisa importá-las)
 
 `src/test/kotlin/com/example/blog/IntegrationTests.kt`
 [source,kotlin]
@@ -383,9 +383,9 @@ class IntegrationTests(@Autowired val restTemplate: TestRestTemplate) {
 
 === Ciclo de vida da instância de teste
 
-Sometimes you need to execute a method before or after all tests of a given class. Like Junit 4, JUnit 5 requires by default these methods to be static (which translates to https://kotlinlang.org/docs/object-declarations.html#companion-objects[`companion object`] in Kotlin, which is quite verbose and not straightforward) because test classes are instantiated one time per test.
+Às vezes, você precisa executar um método antes ou depois de todos os testes de uma determinada classe.  Como no Junit 4, JUnit 5 precisa por padrão que esses métodos sejam estáticos (que se traduz em https://kotlinlang.org/docs/object-declarations.html#companion-objects[`companion object`] em Kotlin, o que é bastante verbose  e não é simples) porque as classes de teste são instanciadas uma vez por teste.
 
-But Junit 5 allows you to change this default behavior and instantiate test classes one time per class. This can be done in https://junit.org/junit5/docs/current/user-guide/#writing-tests-test-instance-lifecycle[various ways], here we will use a property file to change the default behavior for the whole project:
+Mas Junit 5 Permite alterar esse comportamento padrão e instanciar classes de teste uma vez por classe. Isto pode ser feito em https://junit.org/junit5/docs/current/user-guide/#writing-tests-test-instance-lifecycle[various ways], Aqui usaremos um arquivo de propriedade para alterar o comportamento padrão de todo o projeto:
 
 `src/test/resources/junit-platform.properties`
 [source,properties]
@@ -393,7 +393,7 @@ But Junit 5 allows you to change this default behavior and instantiate test clas
 junit.jupiter.testinstance.lifecycle.default = per_class
 ----
 
-With this configuration, we can now use `@BeforeAll` and `@AfterAll` annotations on regular methods like shown in updated version of `IntegrationTests` above.
+Com essa configuração, agora podemos usar as annotations `@BeforeAll` e `@AfterAll` em métodos regulares como mostrado na versão atualizada do `IntegrationTests` abanixo.
 
 `src/test/kotlin/com/example/blog/IntegrationTests.kt`
 [source,kotlin]
@@ -429,7 +429,7 @@ class IntegrationTests(@Autowired val restTemplate: TestRestTemplate) {
 
 == Criando suas próprias extensions
 
-Instead of using util classes with abstract methods like in Java, it is usual in Kotlin to provide such functionalities via Kotlin extensions. Here we are going to add a `format()` function to the existing `LocalDateTime` type in order to generate text with the English date format.
+Em vez de usar classes util com métodos abstratos como em Java, é usual em Kotlin fornecer tais funcionalidades através de extension Kotlin. Aqui vamos adicionar uma função `format()` o tipo existente `LocalDateTime` para gerar texto com o formato de data em inglês.
 
 `src/main/kotlin/com/example/blog/Extensions.kt`
 [source,kotlin]
@@ -462,13 +462,13 @@ fun String.toSlug() = lowercase(Locale.getDefault())
 		.replace("-+".toRegex(), "-")
 ----
 
-We will leverage these extensions in the next section.
+Na próxima secção, utilizaremos estas extensões.
 
 == Persistencia de dados com JPA
 
-In order to make lazy fetching working as expected, entities should be `open` as described in https://youtrack.jetbrains.com/issue/KT-28525[KT-28525]. We are going to use the Kotlin `allopen` plugin for that purpose.
+Para fazer `lazy fetching` trabalhar como esperado, entidades devem ser `open` como descrito em https://youtrack.jetbrains.com/issue/KT-28525[KT-28525]. Nós usaresmo o plugin Kotlin `allopen` para este propósito.
 
-With Gradle:
+Com Gradle:
 
 `build.gradle.kts`
 [source,kotlin]
@@ -485,7 +485,7 @@ allOpen {
 }
 ----
 
-Or with Maven:
+Ou com Maven:
 
 `pom.xml`
 [source,xml]
@@ -508,7 +508,7 @@ Or with Maven:
 </plugin>
 ----
 
-Then we create our model by using Kotlin https://kotlinlang.org/docs/reference/classes.html#constructors[primary constructor concise syntax] which allows to declare at the same time the properties and the constructor parameters.
+Então criamos nosso modelo usando Kotlin https://kotlinlang.org/docs/reference/classes.html#constructors[com sintaxe concisa do construtor primário] que permite declarar ao mesmo tempo as propriedades e os parâmetros do construtor.
 
 `src/main/kotlin/com/example/blog/Entities.kt`
 [source,kotlin]
@@ -532,14 +532,15 @@ class User(
 		@Id @GeneratedValue var id: Long? = null)
 ----
 
-Notice that we are using here our `String.toSlug()` extension to provide a default argument to the `slug` parameter of `Article` constructor. Optional parameters with default values are defined at the last position in order to make it possible to omit them when using positional arguments (Kotlin also supports https://kotlinlang.org/docs/reference/functions.html#named-arguments[named arguments]). Notice that in Kotlin it is not unusual to group concise class declarations in the same file.
+Repare que estamos a utilizar aqui o nossa extension `String.toSlug()` para fornecer um argumento padrão ao parametro `slug` do constructor `Article`. 
+Os parâmetros opcionais com valores padrão são definidos na última posição para permitir a sua omissão quando se utilizam argumentos posicionais (Kotlin também suporta https://kotlinlang.org/docs/reference/functions.html#named-arguments[named arguments]). Observe que, em Kotlin, não é incomum agrupar declarações de classes concisas no mesmo arquivo.
 
-NOTE: Here we don't use https://kotlinlang.org/docs/data-classes.html[`data` classes] with `val` properties because JPA is not designed to work with immutable classes or the methods generated automatically by `data` classes. If you are using other Spring Data flavor, most of them are designed to support such constructs so you should use classes like `data class User(val login: String, ...)` when using Spring Data MongoDB, Spring Data JDBC, etc.
+Observe: Aqui não estamos uando https://kotlinlang.org/docs/data-classes.html[`data` classes] com propriedades `val` porque JPA não foi projetado para funcionar com classes imutáveis ou com os métodos gerados automaticamente pelo `data`. Se você estiver usando outra variante do Spring Data, a maioria deles foi projetada para suportar tais construções, portanto, você deve usar classes como `data class User(val login: String, ...)` Quando estiver usando Spring Data MongoDB, Spring Data JDBC, etc.
 
-NOTE: While Spring Data JPA makes it possible to use natural IDs (it could have been the `login` property in `User` class) via https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.entity-persistence.saving-entites[`Persistable`], it is not a good fit with Kotlin due to https://youtrack.jetbrains.com/issue/KT-6653[KT-6653], that's why it is recommended to always use entities with generated IDs in Kotlin.
+Observe: Enquanto Spring Data JPA possibilita o uso de IDs naturais (poderia ter sido a propriedade `login` em `User` class) via https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.entity-persistence.saving-entites[`Persistable`], não é uma boa opção para o Kotlin devido a https://youtrack.jetbrains.com/issue/KT-6653[KT-6653], É por isso que é recomendável sempre usar entidades com IDs gerados em Kotlin.
 
 
-We also declare our Spring Data JPA repositories as following.
+Também declaramos nosso repositorio Spring Data JPA como seguinte.
 
 `src/main/kotlin/com/example/blog/Repositories.kt`
 [source,kotlin]
@@ -554,7 +555,7 @@ interface UserRepository : CrudRepository<User, Long> {
 }
 ----
 
-And we write JPA tests to check whether basic use cases work as expected.
+E escrevemos JPA tests para verificar se os casos de uso básicos funcionam conforme o esperado.
 
 `src/test/kotlin/com/example/blog/RepositoriesTests.kt`
 [source,kotlin]
@@ -587,11 +588,11 @@ class RepositoriesTests @Autowired constructor(
 }
 ----
 
-NOTE: We use here the `CrudRepository.findByIdOrNull` Kotlin extension provided by default with Spring Data, which is a nullable variant of the `Optional` based `CrudRepository.findById`. Read the great https://medium.com/@elizarov/null-is-your-friend-not-a-mistake-b63ff1751dd5[Null is your friend, not a mistake] blog post for more details.
+Observação: Usamos aqui o `CrudRepository.findByIdOrNull` Kotlin extension fornecido por padrão com Spring Data, que é um `nullable` variante do `Optional` com base `CrudRepository.findById`. Leia o excelente blog post https://medium.com/@elizarov/null-is-your-friend-not-a-mistake-b63ff1751dd5[Null is your friend, not a mistake] para mais detalhes.
 
 == Implementando o mecanismo de blog
 
-We update the "blog" Mustache templates.
+Atualizamos o template Mustache "blog".
 
 `src/main/resources/templates/blog.mustache`
 [source]
@@ -618,7 +619,7 @@ We update the "blog" Mustache templates.
 {{> footer}}
 ----
 
-And we create an "article" new one.
+E criamos um novo "article".
 
 `src/main/resources/templates/article.mustache`
 [source]
@@ -641,7 +642,7 @@ And we create an "article" new one.
 {{> footer}}
 ----
 
-We update the `HtmlController` in order to render blog and article pages with the formatted date. `ArticleRepository` and `MarkdownConverter` constructor parameters will be automatically autowired since `HtmlController` has a single constructor (implicit `@Autowired`).
+Atualizamos o `HtmlController` para renderizar páginas de blogs e artigos com a data formatada. `ArticleRepository` e `MarkdownConverter` com parametro de constructor que serão automaticamente injetados além de `HtmlController` que tem um constructor unico (implicito `@Autowired`).
 
 `src/main/kotlin/com/example/blog/HtmlController.kt`
 [source,kotlin]
@@ -687,7 +688,7 @@ class HtmlController(private val repository: ArticleRepository) {
 }
 ----
 
-Then, we add data initialization to a new `BlogConfiguration` class.
+Então, adicionamos a inicialização de dados a uma nova classe `BlogConfiguration`.
 
 `src/main/kotlin/com/example/blog/BlogConfiguration.kt`
 [source,kotlin]
@@ -716,9 +717,9 @@ class BlogConfiguration {
 }
 ----
 
-NOTE: Notice the usage of named parameters to make the code more readable.
+Observação: Perceba o uso de parametros nomeados para tornar o código mais legível.
 
-And we also update the integration tests accordingly.
+E também Atualizamos o teste integrado accordingly consequentemente.
 
 `src/test/kotlin/com/example/blog/IntegrationTests.kt`
 [source,kotlin]
@@ -756,11 +757,11 @@ class IntegrationTests(@Autowired val restTemplate: TestRestTemplate) {
 }
 ----
 
-Start (or restart) the web application, and go to `http://localhost:8080/`, you should see the list of articles with clickable links to see a specific article.
+Inicie (ou reinicie) a aplicação Web, e acesse `http://localhost:8080/`, Você deverá ver a lista de artigos com links clicáveis para ver um artigo específico.
 
 == Expondo a API HTTP
 
-We are now going to implement the HTTP API via `@RestController` annotated controllers.
+Agora vamos implementar a API HTTP anotando os controller com `@RestController`.
 
 `src/main/kotlin/com/example/blog/HttpControllers.kt`
 [source,kotlin]
@@ -791,11 +792,11 @@ class UserController(private val repository: UserRepository) {
 }
 ----
 
-For tests, instead of integration tests, we are going to leverage `@WebMvcTest` and https://mockk.io/[Mockk] which is similar to https://site.mockito.org/[Mockito] but better suited for Kotlin.
+Para teste, em vez de testes integrados, usaremos `@WebMvcTest` e https://mockk.io/[Mockk] que são similares a https://site.mockito.org/[Mockito] mas mais integrado para Kotlin.
 
-Since `@MockBean` and `@SpyBean` annotations are specific to Mockito, we are going to leverage https://github.com/Ninja-Squad/springmockk[SpringMockK] which provides similar `@MockkBean` and `@SpykBean` annotations for Mockk.
+Como as anotações `@MockBean` e `@SpyBean` são específicas do Mockito, vamos aproveitar as anotações https://github.com/Ninja-Squad/springmockk[SpringMockK] que fornece anotações `@MockkBean` e `@SpykBean` semelhantes para o Mockk.
 
-With Gradle:
+Com Gradle:
 
 `build.gradle.kts`
 [source,kotlin]
@@ -808,7 +809,7 @@ testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 testImplementation("com.ninja-squad:springmockk:4.0.0")
 ----
 
-Or with Maven:
+Ou com Maven:
 
 `pom.xml`
 [source,xml]
@@ -872,11 +873,11 @@ class HttpControllersTests(@Autowired val mockMvc: MockMvc) {
 }
 ----
 
-NOTE: `$` needs to be escaped in strings as it is used for string interpolation.
+Observação: `$` precisa ser escapado em string, pois é usada para interpolação de strings.
 
 == Propriedades de configuração
 
-In Kotlin, the recommended way to manage your application properties is to use read-only properties.
+Em Kotlin, a maneira recomendada de gerenciar as propriedades da aplicação é usando propriedades `read-only`.
 
 `src/main/kotlin/com/example/blog/BlogProperties.kt`
 [source,kotlin]
@@ -887,7 +888,7 @@ data class BlogProperties(var title: String, val banner: Banner) {
 }
 ----
 
-Then we enable it at `BlogApplication` level.
+Em seguida, ativamos no nivel de `BlogApplication`.
 
 `src/main/kotlin/com/example/blog/BlogApplication.kt`
 [source,kotlin]
@@ -899,7 +900,7 @@ class BlogApplication {
 }
 ----
 
-To generate https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#configuration-metadata-annotation-processor[your own metadata] in order to get these custom properties recognized by your IDE, https://kotlinlang.org/docs/reference/kapt.html[kapt should be configured] with the `spring-boot-configuration-processor` dependency as following.
+Para gerar https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#configuration-metadata-annotation-processor[seus próprios metadados] para que essas propriedades personalisadas sejam reconhecidas pela IDE, https://kotlinlang.org/docs/reference/kapt.html[kapt deve ser configuraro] com a dependência `spring-boot-configuration-processor` como a seguir.
 
 `build.gradle.kts`
 [source,kotlin]
@@ -915,15 +916,16 @@ dependencies {
 }
 ----
 
-NOTE: Note that some features (such as detecting the default value or deprecated items) are not working due to limitations in the model kapt provides. Also annotation processing is not yet supported with Maven due to https://youtrack.jetbrains.com/issue/KT-18022[KT-18022], see https://github.com/spring-io/initializr/issues/438[initializr#438] for more details.
+Observação: Perceba que alguns recursos (como a detecção do valor padrão ou itens obsoletos) não estão funcionando devido a limitações no modelo fornecido pelo kapt. 
+Além disso, o processamento de anotações ainda não é compativel com o Maven devido ao https://youtrack.jetbrains.com/issue/KT-18022[KT-18022], veja https://github.com/spring-io/initializr/issues/438[initializr#438] para mais detalhes.
 
-In IntelliJ IDEA:
+No IntelliJ IDEA:
 
- - Make sure Spring Boot plugin in enabled in menu File | Settings | Plugins | Spring Boot
- - Enable annotation processing via menu File | Settings | Build, Execution, Deployment | Compiler | Annotation Processors | Enable annotation processing
- - Since https://youtrack.jetbrains.com/issue/KT-15040[Kapt is not yet integrated in IDEA], you need to run manually the command `./gradlew kaptKotlin` to generate the metadata
+ - Certifique-se de que o plugin do Spring Boot esteja ativado através do menu File | Settings | Plugins | Spring Boot
+ - Habilite o processamento de anotações pelo menu File | Settings | Build, Execution, Deployment | Compiler | Annotation Processors | Enable annotation processing
+ - Se https://youtrack.jetbrains.com/issue/KT-15040[Kapt ainda não está integrado no IDEA], você precisa executar manualmente o comando`./gradlew kaptKotlin` para gerar os metadados.
 
-Your custom properties should now be recognized when editing `application.properties` (autocomplete, validation, etc.).
+Suas propriedades personalizadas agora devem ser reconhecidas ao editar `application.properties` (autocomplete, validation, etc.).
 
 `src/main/resources/application.properties`
 [source,properties]
@@ -933,7 +935,7 @@ blog.banner.title=Warning
 blog.banner.content=The blog will be down tomorrow.
 ----
 
-Edit the template and the controller accordingly.
+Edite o template e o controller adequadamente.
 
 `src/main/resources/templates/blog.mustache`
 [source]
@@ -978,8 +980,8 @@ class HtmlController(private val repository: ArticleRepository,
 	// ...
 ----
 
-Restart the web application, refresh `http://localhost:8080/`, you should see the banner on the blog homepage.
+Reinicie a aplicação Web, atualize `http://localhost:8080/`, você deverá ver o banner na tela blog homepage.
 
 == Conclusão
 
-We have now finished to build this sample Kotlin blog application. The source code https://github.com/spring-guides/tut-spring-boot-kotlin[is available on Github]. You can also have a look to https://docs.spring.io/spring/docs/current/spring-framework-reference/languages.html#kotlin[Spring Framework] and https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-kotlin.html[Spring Boot] reference documentation if you need more details on specific features.
+Agora, terminados de criar esta aplicação de amostra de blog com kotlin. O código fonte https://github.com/spring-guides/tut-spring-boot-kotlin[está disponivel no Github]. Você também pode dar uma olhada na documentação de referencia https://docs.spring.io/spring/docs/current/spring-framework-reference/languages.html#kotlin[Spring Framework] e https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-kotlin.html[Spring Boot] se precisar de mais detalhes sobre recursos específicos.
