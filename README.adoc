@@ -134,7 +134,7 @@ Recent versions of H2 require special configuration to properly escape reserved 
 [source,properties]
 ----
 spring.jpa.properties.hibernate.globally_quoted_identifiers=true
-spring.jpa.properties.hibernate.globally_quoted_identifiers_skip_column_definitions = true
+spring.jpa.properties.hibernate.globally_quoted_identifiers_skip_column_definitions=true
 ----
 
 Spring Boot Gradle plugin automatically uses the Kotlin version declared via the Kotlin Gradle plugin.
