@@ -80,11 +80,11 @@ In order to be able to use Kotlin non-nullable properties with JPA, https://kotl
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	id("org.springframework.boot") version "3.0.1"
-	id("io.spring.dependency-management") version "1.1.0"
-	kotlin("jvm") version "1.8.0"
-	kotlin("plugin.spring") version "1.8.0"
-	kotlin("plugin.jpa") version "1.8.0"
+	id("org.springframework.boot") version "3.2.2"
+	id("io.spring.dependency-management") version "1.1.4"
+	kotlin("jvm") version "1.9.22"
+	kotlin("plugin.spring") version "1.9.22"
+	kotlin("plugin.jpa") version "1.9.22"
 }
 ----
 
@@ -466,7 +466,7 @@ With Gradle:
 ----
 plugins {
 	...
-	kotlin("plugin.allopen") version "1.8.0"
+	kotlin("plugin.allopen") version "1.9.22"
 }
 
 allOpen {
@@ -796,7 +796,7 @@ testImplementation("org.springframework.boot:spring-boot-starter-test") {
 }
 testImplementation("org.junit.jupiter:junit-jupiter-api")
 testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
-testImplementation("com.ninja-squad:springmockk:4.0.0")
+testImplementation("com.ninja-squad:springmockk:4.0.2")
 ----
 
 Or with Maven:
@@ -817,7 +817,7 @@ Or with Maven:
 <dependency>
 	<groupId>com.ninja-squad</groupId>
 	<artifactId>springmockk</artifactId>
-	<version>4.0.0</version>
+	<version>4.0.2</version>
 	<scope>test</scope>
 </dependency>
 ----
@@ -897,7 +897,7 @@ To generate https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle
 ----
 plugins {
 	...
-	kotlin("kapt") version "1.8.0"
+	kotlin("kapt") version "1.9.22"
 }
 
 dependencies {
