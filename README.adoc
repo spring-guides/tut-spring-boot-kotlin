@@ -359,7 +359,11 @@ For the sake of this example, let's create an integration test in order to demon
 `src/test/kotlin/com/example/blog/IntegrationTests.kt`
 [source,kotlin]
 ----
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+    classes = [BlogApplication::class]
+)
+@AutoConfigureTestRestTemplate
 class IntegrationTests(@Autowired val restTemplate: TestRestTemplate) {
 
 	@Test
@@ -389,7 +393,11 @@ With this configuration, we can now use `@BeforeAll` and `@AfterAll` annotations
 `src/test/kotlin/com/example/blog/IntegrationTests.kt`
 [source,kotlin]
 ----
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+    classes = [BlogApplication::class]
+)
+@AutoConfigureTestRestTemplate
 class IntegrationTests(@Autowired val restTemplate: TestRestTemplate) {
 
 	@BeforeAll
@@ -714,7 +722,11 @@ And we also update the integration tests accordingly.
 `src/test/kotlin/com/example/blog/IntegrationTests.kt`
 [source,kotlin]
 ----
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+    classes = [BlogApplication::class]
+)
+@AutoConfigureTestRestTemplate
 class IntegrationTests(@Autowired val restTemplate: TestRestTemplate) {
 
 	@BeforeAll
