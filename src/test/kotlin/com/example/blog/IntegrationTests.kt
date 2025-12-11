@@ -22,7 +22,8 @@ class IntegrationTests(@Autowired val restClient: RestTestClient) {
 	@Test
 	fun `Assert blog page title, content and status code`() {
 		println(">> Assert blog page title, content and status code")
-		restClient.get().uri("/").exchangeSuccessfully()
+		restClient.get().uri("/")
+			.exchangeSuccessfully()
 			.expectBody<String>()
 			.value { assertThat(it).contains("<h1>Blog</h1>", "Lorem") }
 	}
@@ -31,7 +32,8 @@ class IntegrationTests(@Autowired val restClient: RestTestClient) {
 	fun `Assert article page title, content and status code`() {
 		println(">> Assert article page title, content and status code")
 		val title = "Lorem"
-		val entity = restClient.get().uri("/article/${title.toSlug()}").exchangeSuccessfully()
+		restClient.get().uri("/article/${title.toSlug()}")
+			.exchangeSuccessfully()
 			.expectBody<String>()
 			.value { assertThat(it).contains(title, "Lorem", "dolor sit amet") }
 	}
@@ -40,5 +42,4 @@ class IntegrationTests(@Autowired val restClient: RestTestClient) {
 	fun teardown() {
 		println(">> Tear down")
 	}
-
 }
