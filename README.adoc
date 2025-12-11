@@ -5,15 +5,15 @@
 :images: https://raw.githubusercontent.com/spring-guides/tut-spring-boot-kotlin/master/images
 :tabsize: 2
 
-This tutorial shows you how to build efficiently a sample blog application by combining the power of https://spring.io/projects/spring-boot/[Spring Boot] and https://kotlinlang.org/[Kotlin].
+This tutorial shows you how to efficiently build a sample blog application by combining the power of https://spring.io/projects/spring-boot/[Spring Boot] and https://kotlinlang.org/[Kotlin].
 
-If you are starting with Kotlin, you can learn the language by reading the https://kotlinlang.org/docs/reference/[reference documentation], following the online https://play.kotlinlang.org/[Kotlin Koans tutorial] or just using https://docs.spring.io/spring/docs/current/spring-framework-reference/[Spring Framework reference documentation] which now provides code samples in Kotlin.
+If you are starting with Kotlin, you can learn the language by taking the https://kotlinlang.org/docs/kotlin-tour-welcome.html[Kotlin tour] or using the https://docs.spring.io/spring-framework/reference/[Spring Framework reference documentation], which provides code samples in Kotlin.
 
 Spring Kotlin support is documented in the https://docs.spring.io/spring/docs/current/spring-framework-reference/languages.html#kotlin[Spring Framework] and https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-kotlin.html[Spring Boot] reference documentation. If you need help, search or ask questions with the https://stackoverflow.com/questions/tagged/kotlin+spring[`spring` and `kotlin` tags on StackOverflow] or come discuss in the `#spring` channel of https://slack.kotlinlang.org/[Kotlin Slack].
 
 == Creating a New Project
 
-First we need to create a Spring Boot application, which can be done in a number of ways.
+First, we need to create a Spring Boot application, which can be done in a number of ways.
 
 [[using-the-initializr-website]]
 === Using the Initializr Website
@@ -27,7 +27,7 @@ Notice that you can use https://start.spring.io/#!language=kotlin&type=gradle-pr
 	. Add the following dependencies:
 		- Spring Web
 		- Mustache
-		- Spring Data JPA
+		- Spring Data JDBC
 		- H2 Database
 		- Spring Boot DevTools
 	. Click "Generate Project".
@@ -42,7 +42,7 @@ You can use the Initializr HTTP API https://docs.spring.io/initializr/docs/curre
 [source]
 ----
 $ mkdir blog && cd blog
-$ curl https://start.spring.io/starter.zip -d language=kotlin -d type=gradle-project-kotlin -d dependencies=web,mustache,jpa,h2,devtools -d packageName=com.example.blog -d name=Blog -o blog.zip
+$ curl https://start.spring.io/starter.zip -d language=kotlin -d type=gradle-project-kotlin -d dependencies=web,mustache,jdbc,h2,devtools -d packageName=com.example.blog -d name=Blog -o blog.zip
 ----
 
 Add `-d type=gradle-project` if you want to use Gradle.
@@ -60,7 +60,7 @@ Follow the steps of the wizard to use the following parameters:
  - Type: "Gradle - Kotlin" or "Maven"
  - Language: Kotlin
  - Name: "Blog"
- - Dependencies: "Spring Web Starter", "Mustache", "Spring Data JPA", "H2 Database" and "Spring Boot DevTools"
+ - Dependencies: "Spring Web Starter", "Mustache", "Spring Data JDBC", "H2 Database", and "Spring Boot DevTools"
 
 [[gradle-build]]
 == Understanding the Gradle Build
@@ -69,10 +69,7 @@ If you're using a Maven Build, you can <<maven-build, skip to the dedicated sect
 
 === Plugins
 
-In addition to the obvious https://kotlinlang.org/docs/gradle.html[Kotlin Gradle plugin], the default configuration declares the https://kotlinlang.org/docs/all-open-plugin.html#spring-support[kotlin-spring plugin] which automatically opens classes and methods (unlike in Java, the default qualifier is `final` in Kotlin) annotated or meta-annotated with Spring annotations. This is useful to be able to create `@Configuration` or `@Transactional` beans without having to add the `open` qualifier required by CGLIB proxies for example.
-
-In order to be able to use Kotlin non-nullable properties with JPA, https://kotlinlang.org/docs/reference/compiler-plugins.html#jpa-support[Kotlin JPA plugin] is also enabled. It generates no-arg constructors for any class annotated with `@Entity`, `@MappedSuperclass` or `@Embeddable`.
-
+In addition to the obvious https://kotlinlang.org/docs/gradle.html[Kotlin Gradle plugin], the default configuration declares the https://kotlinlang.org/docs/all-open-plugin.html[kotlin-spring plugin] which automatically opens classes and methods (unlike in Java, the default qualifier is `final` in Kotlin) annotated or meta-annotated with Spring annotations. This is useful to be able to create `@Configuration` or `@Transactional` beans without having to add the `open` qualifier required by CGLIB proxies for example.
 
 `build.gradle.kts`
 [source,kotlin]
@@ -82,17 +79,14 @@ plugins {
 	id("io.spring.dependency-management") version "1.1.7"
 	kotlin("jvm") version "2.2.21"
 	kotlin("plugin.spring") version "2.2.21"
-	kotlin("plugin.allopen") version "2.2.21"
-	kotlin("plugin.jpa") version "2.2.21"
-	kotlin("kapt") version "2.2.21"
 }
 ----
 
 === Compiler options
 
-One of Kotlin's key features is https://kotlinlang.org/docs/null-safety.html[null-safety] - which cleanly deals with `null` values at compile time rather than bumping into the famous `NullPointerException` at runtime. This makes applications safer through nullability declarations and expressing "value or no value" semantics without paying the cost of wrappers like `Optional`. Note that Kotlin allows using functional constructs with nullable values; check out this https://www.baeldung.com/kotlin/null-safety[comprehensive guide to Kotlin null-safety].
+One of Kotlin's key features is https://kotlinlang.org/docs/null-safety.html[null safety], which cleanly deals with `null` values at compile time rather than bumping into the famous `NullPointerException` at runtime. This makes applications safer through nullability declarations and expressing "value or no value" semantics without paying the cost of wrappers like `Optional`. Note that Kotlin allows using functional constructs with nullable values; check out this https://www.baeldung.com/kotlin/null-safety[comprehensive guide to Kotlin null-safety].
 
-Although Java does not allow one to express null-safety in its type-system, Spring Framework provides null-safety of the whole Spring Framework API via tooling-friendly annotations declared in the `org.springframework.lang` package. By default, types from Java APIs used in Kotlin are recognized as https://kotlinlang.org/docs/reference/java-interop.html#null-safety-and-platform-types[platform types] for which null-checks are relaxed. https://kotlinlang.org/docs/java-interop.html#jsr-305-support[Kotlin support for JSR 305 annotations] + Spring nullability annotations provide null-safety for the whole Spring Framework API to Kotlin developers, with the advantage of dealing with `null` related issues at compile time.
+Although Java does not allow one to express null-safety in its type-system, Spring Framework provides null-safety of the whole Spring Framework API via tooling-friendly annotations declared in the `org.springframework.lang` package. By default, types from Java APIs used in Kotlin are recognized as https://kotlinlang.org/docs/java-interop.html#null-safety-and-platform-types[platform types] for which null-checks are relaxed. https://kotlinlang.org/docs/java-interop.html#jsr-305-support[Kotlin support for JSR 305 annotations] + Spring nullability annotations provide null-safety for the whole Spring Framework API to Kotlin developers, with the advantage of dealing with `null` related issues at compile time.
 
 This feature can be enabled by adding the `-Xjsr305` compiler flag with the `strict` options.
 
@@ -108,35 +102,26 @@ kotlin {
 
 === Dependencies
 
-2 Kotlin specific libraries are required (the standard library is added automatically with Gradle) for such Spring Boot web application and configured by default:
+2 Kotlin specific libraries are required (the standard library is added automatically with Gradle) for such a Spring Boot web application and configured by default:
 
- - `kotlin-reflect` is Kotlin reflection library
+ - `kotlin-reflect` is the Kotlin reflection library
  - `jackson-module-kotlin` adds support for serialization/deserialization of Kotlin classes and data classes (single constructor classes can be used automatically, and those with secondary constructors or static factories are also supported)
 
 `build.gradle.kts`
 [source,kotlin]
 ----
 dependencies {
-	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
 	implementation("org.springframework.boot:spring-boot-starter-mustache")
-	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springframework.boot:spring-boot-starter-webmvc")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	runtimeOnly("com.h2database:h2")
 	runtimeOnly("org.springframework.boot:spring-boot-devtools")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.springframework.boot:spring-boot-starter-data-jdbc-test")
 	testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
-	testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test")
+	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 }
-----
-
-Recent versions of H2 require special configuration to properly escape reserved keywords like `user`.
-
-`src/main/resources/application.properties`
-[source,properties]
-----
-spring.jpa.properties.hibernate.globally_quoted_identifiers=true
-spring.jpa.properties.hibernate.globally_quoted_identifiers_skip_column_definitions=true
 ----
 
 Spring Boot Gradle plugin automatically uses the Kotlin version declared via the Kotlin Gradle plugin.
@@ -148,61 +133,52 @@ You can now take a <<understanding-generated-app, deeper look at the generated a
 
 === Plugins
 
-In addition to the obvious https://kotlinlang.org/docs/reference/using-maven.html[Kotlin Maven plugin], the default configuration declares the https://kotlinlang.org/docs/reference/compiler-plugins.html#spring-support[kotlin-spring plugin] which automatically opens classes and methods (unlike in Java, the default qualifier is `final` in Kotlin) annotated or meta-annotated with Spring annotations. This is useful to be able to create `@Configuration` or `@Transactional` beans without having to add the `open` qualifier required by CGLIB proxies for example.
-
-In order to be able to use Kotlin non-nullable properties with JPA, https://kotlinlang.org/docs/reference/compiler-plugins.html#jpa-support[Kotlin JPA plugin] is also enabled. It generates no-arg constructors for any class annotated with `@Entity`, `@MappedSuperclass` or `@Embeddable`.
+In addition to the obvious https://kotlinlang.org/docs/maven.html[Kotlin Maven plugin], the default configuration declares the https://kotlinlang.org/docs/all-open-plugin.html[kotlin-spring plugin] which automatically opens classes and methods (unlike in Java, the default qualifier is `final` in Kotlin) annotated or meta-annotated with Spring annotations. This is useful to be able to create `@Configuration` or `@Transactional` beans without having to add the `open` qualifier required by CGLIB proxies for example.
 
 `pom.xml`
 [source,xml]
 ----
 <build>
-		<sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
-		<testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
+	<sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
+	<testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
+	<plugins>
+		<plugin>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-maven-plugin</artifactId>
+		</plugin>
+	<plugin>
+		<artifactId>kotlin-maven-plugin</artifactId>
+		<groupId>org.jetbrains.kotlin</groupId>
+		<configuration>
+			<args>
+				<arg>-Xjsr305=strict</arg>
+				<arg>-Xannotation-default-target=param-property</arg>
+			</args>
+			<compilerPlugins>
+				<plugin>spring</plugin>
+			</compilerPlugins>
+		</configuration>
+		<dependencies>
+			<dependency>
 				<groupId>org.jetbrains.kotlin</groupId>
-				<artifactId>kotlin-maven-plugin</artifactId>
-				<configuration>
-					<compilerPlugins>
-						<plugin>jpa</plugin>
-						<plugin>spring</plugin>
-					</compilerPlugins>
-					<args>
-						<arg>-Xjsr305=strict</arg>
-						<arg>-Xannotation-default-target=param-property</arg>
-					</args>
-				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>org.jetbrains.kotlin</groupId>
-						<artifactId>kotlin-maven-noarg</artifactId>
-						<version>${kotlin.version}</version>
-					</dependency>
-					<dependency>
-						<groupId>org.jetbrains.kotlin</groupId>
-						<artifactId>kotlin-maven-allopen</artifactId>
-						<version>${kotlin.version}</version>
-					</dependency>
-				</dependencies>
-			</plugin>
-		</plugins>
-	</build>
+				<artifactId>kotlin-maven-allopen</artifactId>
+				<version>${kotlin.version}</version>
+			</dependency>
+		</dependencies>
+	</plugin>
+	</plugins>
+</build>
 ----
 
-One of Kotlin's key features is https://kotlinlang.org/docs/null-safety.html[null-safety] - which cleanly deals with `null` values at compile time rather than bumping into the famous `NullPointerException` at runtime. This makes applications safer through nullability declarations and expressing "value or no value" semantics without paying the cost of wrappers like `Optional`. Note that Kotlin allows using functional constructs with nullable values; check out this https://www.baeldung.com/kotlin-null-safety[comprehensive guide to Kotlin null-safety].
+One of Kotlin's key features is https://kotlinlang.org/docs/null-safety.html[null safety], which cleanly deals with `null` values at compile time rather than bumping into the famous `NullPointerException` at runtime. This makes applications safer through nullability declarations and expressing "value or no value" semantics without paying the cost of wrappers like `Optional`. Note that Kotlin allows using functional constructs with nullable values; check out this https://www.baeldung.com/kotlin-null-safety[comprehensive guide to Kotlin null-safety].
 
-Although Java does not allow one to express null-safety in its type-system, Spring Framework provides null-safety of the whole Spring Framework API via tooling-friendly https://jspecify.dev/[JSpecify] annotations. Kotlin support for JSpecify annotations + Spring nullability annotations provide null-safety for the whole Spring Framework API to Kotlin developers, with the advantage of dealing with `null` related issues at compile time.
+Although Java does not allow one to express null-safety in its type-system, Spring Framework provides null safety of the whole Spring Framework API via tooling-friendly https://jspecify.dev/[JSpecify] annotations. Kotlin support for JSpecify annotations, and Spring nullability annotations provide null safety for the whole Spring Framework API to Kotlin developers with the advantage of dealing with `null` related issues at compile time.
 
 === Dependencies
 
-3 Kotlin specific libraries are required for such Spring Boot web application and configured by default:
+Two Kotlin-specific libraries are required for such a Spring Boot web application and configured by default:
 
- - `kotlin-stdlib` is the Kotlin standard library
- - `kotlin-reflect` is Kotlin reflection library
+ - `kotlin-reflect` is the Kotlin reflection library
  - `jackson-module-kotlin` adds support for serialization/deserialization of Kotlin classes and data classes (single constructor classes can be used automatically, and those with secondary constructors or static factories are also supported)
 
 `pom.xml`
@@ -211,7 +187,7 @@ Although Java does not allow one to express null-safety in its type-system, Spri
 <dependencies>
 	<dependency>
 		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-data-jpa</artifactId>
+		<artifactId>spring-boot-starter-data-jdbc</artifactId>
 	</dependency>
 	<dependency>
 		<groupId>org.springframework.boot</groupId>
@@ -219,7 +195,7 @@ Although Java does not allow one to express null-safety in its type-system, Spri
 	</dependency>
 	<dependency>
 		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-web</artifactId>
+		<artifactId>spring-boot-starter-webmvc</artifactId>
 	</dependency>
 	<dependency>
 		<groupId>com.fasterxml.jackson.module</groupId>
@@ -229,11 +205,6 @@ Although Java does not allow one to express null-safety in its type-system, Spri
 		<groupId>org.jetbrains.kotlin</groupId>
 		<artifactId>kotlin-reflect</artifactId>
 	</dependency>
-	<dependency>
-		<groupId>org.jetbrains.kotlin</groupId>
-		<artifactId>kotlin-stdlib</artifactId>
-	</dependency>
-
 	<dependency>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-devtools</artifactId>
@@ -246,7 +217,7 @@ Although Java does not allow one to express null-safety in its type-system, Spri
 	</dependency>
 	<dependency>
 		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-test</artifactId>
+		<artifactId>spring-boot-starter-data-jdbc-test</artifactId>
 		<scope>test</scope>
 	</dependency>
 	<dependency>
@@ -255,11 +226,38 @@ Although Java does not allow one to express null-safety in its type-system, Spri
 		<scope>test</scope>
 	</dependency>
 	<dependency>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-data-jpa-test</artifactId>
+		<groupId>org.jetbrains.kotlin</groupId>
+		<artifactId>kotlin-test-junit5</artifactId>
 		<scope>test</scope>
 	</dependency>
 </dependencies>
+----
+
+== Database Schema
+
+We need to create a database schema file since Spring Data JDBC doesn't auto-create tables.
+
+`src/main/resources/schema.sql`
+[source,sql]
+----
+CREATE TABLE IF NOT EXISTS "users" (
+	"ID" BIGINT AUTO_INCREMENT PRIMARY KEY,
+	"LOGIN" VARCHAR(255) NOT NULL UNIQUE,
+	"FIRSTNAME" VARCHAR(255) NOT NULL,
+	"LASTNAME" VARCHAR(255) NOT NULL,
+	"DESCRIPTION" TEXT
+);
+
+CREATE TABLE IF NOT EXISTS "article" (
+	"ID" BIGINT AUTO_INCREMENT PRIMARY KEY,
+	"TITLE" VARCHAR(255) NOT NULL,
+	"HEADLINE" VARCHAR(500) NOT NULL,
+	"CONTENT" TEXT NOT NULL,
+	"author_id" BIGINT NOT NULL,
+	"SLUG" VARCHAR(255) NOT NULL UNIQUE,
+	"ADDED_AT" TIMESTAMP NOT NULL,
+	FOREIGN KEY ("author_id") REFERENCES "users"("ID")
+);
 ----
 
 [[understanding-generated-app]]
@@ -281,7 +279,7 @@ fun main(args: Array<String>) {
 }
 ----
 
-Compared to Java, you can notice the lack of semicolons, the lack of brackets on empty class (you can add some if you need to declare beans via `@Bean` annotation) and the use of `runApplication` top level function. `runApplication<BlogApplication>(*args)` is Kotlin idiomatic alternative to `SpringApplication.run(BlogApplication::class.java, *args)` and can be used to customize the application with following syntax.
+Compared to Java, you can notice the lack of semicolons, the lack of brackets on empty class (you can add some if you need to declare beans via `@Bean` annotation) and the use of `runApplication` top level function. `runApplication<BlogApplication>(*args)` is Kotlin idiomatic alternative to `SpringApplication.run(BlogApplication::class.java, *args)` and can be used to customize the application with the following syntax:
 
 `src/main/kotlin/com/example/blog/BlogApplication.kt`
 [source,kotlin]
@@ -315,11 +313,10 @@ class HtmlController {
 		model["title"] = "Blog"
 		return "blog"
 	}
-
 }
 ----
 
-Notice that we are using here a https://kotlinlang.org/docs/extensions.html[Kotlin extension] that allows to add Kotlin functions or operators to existing Spring types. Here we import the `org.springframework.ui.set` extension function in order to be able to write `model["title"] = "Blog"` instead of `model.addAttribute("title", "Blog")`.
+Notice that we are using here a https://kotlinlang.org/docs/extensions.html[Kotlin extension] that allows adding Kotlin functions or operators to existing Spring types. Here we import the `org.springframework.ui.set` extension function in order to be able to write `model["title"] = "Blog"` instead of `model.addAttribute("title", "Blog")`.
 The https://docs.spring.io/spring-framework/docs/current/kdoc-api/[Spring Framework KDoc API] lists all the Kotlin extensions provided to enrich the Java API.
 
 We also need to create the associated Mustache templates.
@@ -355,14 +352,14 @@ Start the web application by running the `main` function of `BlogApplication.kt`
 
 == Testing with JUnit
 
-JUnit, used by default in Spring Boot, provides various features very handy with Kotlin, including https://docs.spring.io/spring-framework/reference/testing/testcontext-framework/support-classes.html#testcontext-junit-jupiter-di[autowiring of constructor/method parameters] which allows to use non-nullable `val` properties and the possibility to use `@BeforeAll`/`@AfterAll` on regular non-static methods.
+JUnit, used by default in Spring Boot, provides various features very handy with Kotlin, including https://docs.spring.io/spring-framework/reference/testing/testcontext-framework/support-classes.html#testcontext-junit-jupiter-di[autowiring of constructor/method parameters] which allows using non-nullable `val` properties and the possibility to use `@BeforeAll`/`@AfterAll` on regular non-static methods.
 
 === Writing JUnit tests in Kotlin
 
-For the sake of this example, let's create an integration test in order to demonstrate various features:
+For the sake of this example, let's create an integration test to demonstrate various features:
 
- - We use real sentences between backticks instead of camel-case to provide expressive test function names
- - JUnit allows to inject constructor and method parameters, which is a good fit with Kotlin read-only and non-nullable properties
+ - We use real sentences between backticks instead of a camel-case to provide expressive test function names
+ - JUnit allows injecting constructor and method parameters, which is a good fit with Kotlin read-only and non-nullable properties
  - This code leverages the `expectBody` Kotlin extension (you need to import it)
 
 `src/test/kotlin/com/example/blog/IntegrationTests.kt`
@@ -375,11 +372,11 @@ class IntegrationTests(@Autowired val restClient: RestTestClient) {
 	@Test
 	fun `Assert blog page title, content and status code`() {
 		println(">> Assert blog page title, content and status code")
-		restClient.get().uri("/").exchangeSuccessfully()
+		restClient.get().uri("/")
+			.exchangeSuccessfully()
 			.expectBody<String>()
 			.value { assertThat(it).contains("<h1>Blog</h1>", "Lorem") }
 	}
-
 }
 ----
 
@@ -395,7 +392,7 @@ But Junit allows you to change this default behavior and instantiate test classe
 junit.jupiter.testinstance.lifecycle.default = per_class
 ----
 
-With this configuration, we can now use `@BeforeAll` and `@AfterAll` annotations on regular methods like shown in updated version of `IntegrationTests` above.
+With this configuration, we can now use the `@BeforeAll` and `@AfterAll` annotations on regular methods like shown in the updated version of `IntegrationTests` above.
 
 `src/test/kotlin/com/example/blog/IntegrationTests.kt`
 [source,kotlin]
@@ -412,7 +409,8 @@ class IntegrationTests(@Autowired val restClient: RestTestClient) {
 	@Test
 	fun `Assert blog page title, content and status code`() {
 		println(">> Assert blog page title, content and status code")
-		restClient.get().uri("/").exchangeSuccessfully()
+		restClient.get().uri("/")
+			.exchangeSuccessfully()
 			.expectBody<String>()
 			.value { assertThat(it).contains("<h1>Blog</h1>", "Lorem") }
 	}
@@ -426,7 +424,6 @@ class IntegrationTests(@Autowired val restClient: RestTestClient) {
 	fun teardown() {
 		println(">> Tear down")
 	}
-
 }
 ----
 
@@ -442,12 +439,12 @@ fun LocalDateTime.format(): String = this.format(englishDateFormatter)
 private val daysLookup = (1..31).associate { it.toLong() to getOrdinal(it) }
 
 private val englishDateFormatter = DateTimeFormatterBuilder()
-		.appendPattern("yyyy-MM-dd")
-		.appendLiteral(" ")
-		.appendText(ChronoField.DAY_OF_MONTH, daysLookup)
-		.appendLiteral(" ")
-		.appendPattern("yyyy")
-		.toFormatter(Locale.ENGLISH)
+	.appendPattern("yyyy-MM-dd")
+	.appendLiteral(" ")
+	.appendText(ChronoField.DAY_OF_MONTH, daysLookup)
+	.appendLiteral(" ")
+	.appendPattern("yyyy")
+	.toFormatter(Locale.ENGLISH)
 
 private fun getOrdinal(n: Int) = when {
 	n in 11..13 -> "${n}th"
@@ -458,91 +455,52 @@ private fun getOrdinal(n: Int) = when {
 }
 
 fun String.toSlug() = lowercase(Locale.getDefault())
-		.replace("\n", " ")
-		.replace("[^a-z\\d\\s]".toRegex(), " ")
-		.split(" ")
-		.joinToString("-")
-		.replace("-+".toRegex(), "-")
+	.replace("\n", " ")
+	.replace("[^a-z\\d\\s]".toRegex(), " ")
+	.split(" ")
+	.joinToString("-")
+	.replace("-+".toRegex(), "-")
 ----
 
 We will leverage these extensions in the next section.
 
-== Persistence with JPA
+== Fetching with Spring Data JDBC
 
-In order to make lazy fetching working as expected, entities should be `open` as described in https://youtrack.jetbrains.com/issue/KT-28525[KT-28525]. We are going to use the Kotlin `allopen` plugin for that purpose.
+To fetch data, with Spring Data JDBC, we use immutable data classes, which is a more idiomatic approach in Kotlin.
 
-With Gradle:
-
-`build.gradle.kts`
-[source,kotlin]
-----
-plugins {
-	...
-	kotlin("plugin.allopen") version "2.2.21"
-}
-
-allOpen {
-	annotation("jakarta.persistence.Entity")
-	annotation("jakarta.persistence.Embeddable")
-	annotation("jakarta.persistence.MappedSuperclass")
-}
-----
-
-Or with Maven:
-
-`pom.xml`
-[source,xml]
-----
-<plugin>
-	<artifactId>kotlin-maven-plugin</artifactId>
-	<groupId>org.jetbrains.kotlin</groupId>
-	<configuration>
-		...
-		<compilerPlugins>
-			...
-			<plugin>all-open</plugin>
-		</compilerPlugins>
-		<pluginOptions>
-			<option>all-open:annotation=jakarta.persistence.Entity</option>
-			<option>all-open:annotation=jakarta.persistence.Embeddable</option>
-			<option>all-open:annotation=jakarta.persistence.MappedSuperclass</option>
-		</pluginOptions>
-	</configuration>
-</plugin>
-----
-
-Then we create our model by using Kotlin https://kotlinlang.org/docs/classes.html#constructors[primary constructor concise syntax] which allows to declare at the same time the properties and the constructor parameters.
+We create our model by using Kotlin https://kotlinlang.org/docs/classes.html#constructors-and-initializer-blocks[primary constructor concise syntax] and https://kotlinlang.org/docs/data-classes.html[data classes] which allows declaring at the same time the properties and the constructor parameters.
 
 `src/main/kotlin/com/example/blog/Entities.kt`
 [source,kotlin]
 ----
-@Entity
-class Article(
-		var title: String,
-		var headline: String,
-		var content: String,
-		@ManyToOne var author: User,
-		var slug: String = title.toSlug(),
-		var addedAt: LocalDateTime = LocalDateTime.now(),
-		@Id @GeneratedValue var id: Long? = null)
+@Table("article")
+data class Article(
+	val title: String,
+	val headline: String,
+	val content: String,
+	@Column("author_id")
+	val author: AggregateReference<User, Long>,
+	val slug: String = title.toSlug(),
+	val addedAt: LocalDateTime = LocalDateTime.now(),
+	@Id val id: Long? = null
+)
 
-@Entity
-class User(
-		var login: String,
-		var firstname: String,
-		var lastname: String,
-		var description: String? = null,
-		@Id @GeneratedValue var id: Long? = null)
+@Table("users")
+data class User(
+	val login: String,
+	val firstname: String,
+	val lastname: String,
+	val description: String? = null,
+	@Id val id: Long? = null
+)
 ----
 
-Notice that we are using here our `String.toSlug()` extension to provide a default argument to the `slug` parameter of `Article` constructor. Optional parameters with default values are defined at the last position in order to make it possible to omit them when using positional arguments (Kotlin also supports https://kotlinlang.org/docs/functions.html#named-arguments[named arguments]). Notice that in Kotlin it is not unusual to group concise class declarations in the same file.
+Notice that we are using here our `String.toSlug()` extension to provide a default argument to the `slug` parameter of `Article` constructor. Optional parameters with default values are defined at the last position to make it possible to omit them when using positional arguments (Kotlin also supports https://kotlinlang.org/docs/functions.html#named-arguments[named arguments]). Notice that in Kotlin it is not unusual to group concise class declarations in the same file.
 
-NOTE: Here we don't use https://kotlinlang.org/docs/data-classes.html[`data` classes] with `val` properties because JPA is not designed to work with immutable classes or the methods generated automatically by `data` classes. If you are using other Spring Data flavor, most of them are designed to support such constructs so you should use classes like `data class User(val login: String, ...)` when using Spring Data MongoDB, Spring Data JDBC, etc.
-
-NOTE: While Spring Data JPA makes it possible to use natural IDs (it could have been the `login` property in `User` class) via https://docs.spring.io/spring-data/jpa/reference/jpa/entity-persistence.html#jpa.entity-persistence.saving-entities[`Persistable`], it is not a good fit with Kotlin due to https://youtrack.jetbrains.com/issue/KT-6653[KT-6653], that's why it is recommended to always use entities with generated IDs in Kotlin.
+The `@Table` annotation maps the classes to database tables, and `@Column` is used for the foreign key relationship. Spring Data JDBC uses `AggregateReference` to represent foreign key relationships, which only stores the ID rather than loading the entire related entity.
 
 
-We also declare our Spring Data JPA repositories as following.
+We also declare our Spring Data JDBC repositories as follows:
 
 `src/main/kotlin/com/example/blog/Repositories.kt`
 [source,kotlin]
@@ -557,40 +515,37 @@ interface UserRepository : CrudRepository<User, Long> {
 }
 ----
 
-And we write JPA tests to check whether basic use cases work as expected.
+And we write JDBC tests to check whether basic use cases work as expected.
 
 `src/test/kotlin/com/example/blog/RepositoriesTests.kt`
 [source,kotlin]
 ----
-@DataJpaTest
+@DataJdbcTest
 class RepositoriesTests @Autowired constructor(
-		val entityManager: TestEntityManager,
-		val userRepository: UserRepository,
-		val articleRepository: ArticleRepository) {
+	val userRepository: UserRepository,
+	val articleRepository: ArticleRepository
+) {
 
 	@Test
 	fun `When findByIdOrNull then return Article`() {
-		val johnDoe = User("johnDoe", "John", "Doe")
-		entityManager.persist(johnDoe)
-		val article = Article("Lorem", "Lorem", "dolor sit amet", johnDoe)
-		entityManager.persist(article)
-		entityManager.flush()
+		val johnDoe = userRepository.save(User("johnDoe", "John", "Doe"))
+		val article = articleRepository.save(
+			Article("Lorem", "Lorem", "dolor sit amet", AggregateReference.to(johnDoe.id!!))
+		)
 		val found = articleRepository.findByIdOrNull(article.id!!)
 		assertThat(found).isEqualTo(article)
 	}
 
 	@Test
 	fun `When findByLogin then return User`() {
-		val johnDoe = User("johnDoe", "John", "Doe")
-		entityManager.persist(johnDoe)
-		entityManager.flush()
+		val johnDoe = userRepository.save(User("johnDoe", "John", "Doe"))
 		val user = userRepository.findByLogin(johnDoe.login)
 		assertThat(user).isEqualTo(johnDoe)
 	}
 }
 ----
 
-NOTE: We use here the `CrudRepository.findByIdOrNull` Kotlin extension provided by default with Spring Data, which is a nullable variant of the `Optional` based `CrudRepository.findById`. Read the great https://medium.com/@elizarov/null-is-your-friend-not-a-mistake-b63ff1751dd5[Null is your friend, not a mistake] blog post for more details.
+NOTE: We use here the `CrudRepository.findByIdOrNull` Kotlin extension provided by default with Spring Data, which is a nullable variant of the `Optional` based `CrudRepository.findById`. Read the great https://elizarov.medium.com/null-is-your-friend-not-a-mistake-b63ff1751dd5[Null is your friend, not a mistake] blog post for more details.
 
 == Implementing the blog engine
 
@@ -644,53 +599,64 @@ And we create an "article" new one.
 {{> footer}}
 ----
 
-We update the `HtmlController` in order to render blog and article pages with the formatted date. `ArticleRepository` constructor parameter will be automatically autowired since `HtmlController` has a single constructor (implicit `@Autowired`).
+We update the `HtmlController` in order to render blog and article pages with the formatted date. Both `ArticleRepository` and `UserRepository` constructor parameters will be automatically autowired since `HtmlController` has a single constructor (implicit `@Autowired`). Notice that with Spring Data JDBC, we need to manually resolve the author relationship by looking up the user via their ID.
 
 `src/main/kotlin/com/example/blog/HtmlController.kt`
 [source,kotlin]
 ----
 @Controller
-class HtmlController(private val repository: ArticleRepository) {
+class HtmlController(
+	private val articleRepository: ArticleRepository,
+	private val userRepository: UserRepository,
+	private val properties: BlogProperties
+) {
 
 	@GetMapping("/")
 	fun blog(model: Model): String {
-		model["title"] = "Blog"
-		model["articles"] = repository.findAllByOrderByAddedAtDesc().map { it.render() }
+		model["title"] = properties.title
+		model["banner"] = properties.banner
+		model["articles"] = articleRepository.findAllByOrderByAddedAtDesc()
+			.map { it.render() }
 		return "blog"
 	}
 
 	@GetMapping("/article/{slug}")
 	fun article(@PathVariable slug: String, model: Model): String {
-		val article = repository
-				.findBySlug(slug)
-				?.render()
-				?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "This article does not exist")
-		model["title"] = article.title
-		model["article"] = article
+		val article = articleRepository.findBySlug(slug)
+			?: throw ResponseStatusException(NOT_FOUND, "This article does not exist")
+
+		val renderedArticle = article.render()
+		model["title"] = renderedArticle.title
+		model["article"] = renderedArticle
 		return "article"
 	}
 
-	fun Article.render() = RenderedArticle(
+	private fun Article.render(): RenderedArticle {
+		val author = userRepository.findById(author.id)
+			.orElseThrow { ResponseStatusException(NOT_FOUND, "Author not found") }
+
+		return RenderedArticle(
 			slug,
 			title,
 			headline,
 			content,
 			author,
 			addedAt.format()
-	)
+		)
+	}
 
 	data class RenderedArticle(
-			val slug: String,
-			val title: String,
-			val headline: String,
-			val content: String,
-			val author: User,
-			val addedAt: String)
-
+		val slug: String,
+		val title: String,
+		val headline: String,
+		val content: String,
+		val author: User,
+		val addedAt: String
+	)
 }
 ----
 
-Then, we add data initialization to a new `BlogConfiguration` class.
+Then, we add data initialization to a new `BlogConfiguration` class. Notice that with Spring Data JDBC, we use `AggregateReference.to()` to create foreign key references.
 
 `src/main/kotlin/com/example/blog/BlogConfiguration.kt`
 [source,kotlin]
@@ -699,27 +665,33 @@ Then, we add data initialization to a new `BlogConfiguration` class.
 class BlogConfiguration {
 
 	@Bean
-	fun databaseInitializer(userRepository: UserRepository,
-							articleRepository: ArticleRepository) = ApplicationRunner {
-
+	fun databaseInitializer(
+		userRepository: UserRepository,
+		articleRepository: ArticleRepository
+	) = ApplicationRunner {
 		val johnDoe = userRepository.save(User("johnDoe", "John", "Doe"))
-		articleRepository.save(Article(
+		articleRepository.save(
+			Article(
 				title = "Lorem",
 				headline = "Lorem",
 				content = "dolor sit amet",
-				author = johnDoe
-		))
-		articleRepository.save(Article(
+				author = AggregateReference.to(johnDoe.id!!)
+			)
+		)
+
+		articleRepository.save(
+			Article(
 				title = "Ipsum",
 				headline = "Ipsum",
 				content = "dolor sit amet",
-				author = johnDoe
-		))
+				author = AggregateReference.to(johnDoe.id)
+			)
+		)
 	}
 }
 ----
 
-NOTE: Notice the usage of named parameters to make the code more readable.
+NOTE: Notice the usage of named parameters to make the code more readable. The `AggregateReference.to()` method creates a reference to the related entity using only its ID.
 
 And we also update the integration tests accordingly.
 
@@ -738,7 +710,8 @@ class IntegrationTests(@Autowired val restClient: RestTestClient) {
 	@Test
 	fun `Assert blog page title, content and status code`() {
 		println(">> Assert blog page title, content and status code")
-		restClient.get().uri("/").exchangeSuccessfully()
+		restClient.get().uri("/")
+			.exchangeSuccessfully()
 			.expectBody<String>()
 			.value { assertThat(it).contains("<h1>Blog</h1>", "Lorem") }
 	}
@@ -747,7 +720,8 @@ class IntegrationTests(@Autowired val restClient: RestTestClient) {
 	fun `Assert article page title, content and status code`() {
 		println(">> Assert article page title, content and status code")
 		val title = "Lorem"
-		val entity = restClient.get().uri("/article/${title.toSlug()}").exchangeSuccessfully()
+		restClient.get().uri("/article/${title.toSlug()}")
+			.exchangeSuccessfully()
 			.expectBody<String>()
 			.value { assertThat(it).contains(title, "Lorem", "dolor sit amet") }
 	}
@@ -756,7 +730,6 @@ class IntegrationTests(@Autowired val restClient: RestTestClient) {
 	fun teardown() {
 		println(">> Tear down")
 	}
-
 }
 ----
 
@@ -771,15 +744,33 @@ We are now going to implement the HTTP API via `@RestController` annotated contr
 ----
 @RestController
 @RequestMapping("/api/article")
-class ArticleController(private val repository: ArticleRepository) {
+class ArticleController(
+	private val articleRepository: ArticleRepository,
+	private val userRepository: UserRepository
+) {
 
 	@GetMapping("/")
-	fun findAll() = repository.findAllByOrderByAddedAtDesc()
+	fun findAll() = articleRepository.findAllByOrderByAddedAtDesc().map { it.toDto() }
 
 	@GetMapping("/{slug}")
 	fun findOne(@PathVariable slug: String) =
-			repository.findBySlug(slug) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "This article does not exist")
+		articleRepository.findBySlug(slug)?.toDto()
+			?: throw ResponseStatusException(NOT_FOUND, "This article does not exist")
 
+	private fun Article.toDto(): ArticleDto {
+		val author = userRepository.findById(author.id)
+			.orElseThrow { ResponseStatusException(NOT_FOUND, "Author not found") }
+		return ArticleDto(slug, title, headline, content, author, addedAt.format())
+	}
+
+	data class ArticleDto(
+		val slug: String,
+		val title: String,
+		val headline: String,
+		val content: String,
+		val author: User,
+		val addedAt: String
+	)
 }
 
 @RestController
@@ -791,7 +782,8 @@ class UserController(private val repository: UserRepository) {
 
 	@GetMapping("/{login}")
 	fun findOne(@PathVariable login: String) =
-			repository.findByLogin(login) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "This user does not exist")
+		repository.findByLogin(login)
+			?: throw ResponseStatusException(NOT_FOUND, "This user does not exist")
 }
 ----
 
@@ -834,17 +826,19 @@ class HttpControllersTests(@Autowired val mockMvc: MockMvc) {
 
 	@Test
 	fun `List articles`() {
-		val johnDoe = User("johnDoe", "John", "Doe")
-		val lorem5Article = Article("Lorem", "Lorem", "dolor sit amet", johnDoe)
-		val ipsumArticle = Article("Ipsum", "Ipsum", "dolor sit amet", johnDoe)
+		val johnDoe = User("johnDoe", "John", "Doe", id = 1L)
+		val authorRef = AggregateReference.to<User, Long>(1L)
+		val lorem5Article = Article("Lorem", "Lorem", "dolor sit amet", authorRef)
+		val ipsumArticle = Article("Ipsum", "Ipsum", "dolor sit amet", authorRef)
+		every { userRepository.findById(1L) } returns Optional.of(johnDoe)
 		every { articleRepository.findAllByOrderByAddedAtDesc() } returns listOf(lorem5Article, ipsumArticle)
 		mockMvc.perform(get("/api/article/").accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk)
-				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(jsonPath("\$.[0].author.login").value(johnDoe.login))
-				.andExpect(jsonPath("\$.[0].slug").value(lorem5Article.slug))
-				.andExpect(jsonPath("\$.[1].author.login").value(johnDoe.login))
-				.andExpect(jsonPath("\$.[1].slug").value(ipsumArticle.slug))
+			.andExpect(status().isOk)
+			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+			.andExpect(jsonPath("\$.[0].author.login").value(johnDoe.login))
+			.andExpect(jsonPath("\$.[0].slug").value(lorem5Article.slug))
+			.andExpect(jsonPath("\$.[1].author.login").value(johnDoe.login))
+			.andExpect(jsonPath("\$.[1].slug").value(ipsumArticle.slug))
 	}
 
 	@Test
@@ -853,10 +847,10 @@ class HttpControllersTests(@Autowired val mockMvc: MockMvc) {
 		val janeDoe = User("janeDoe", "Jane", "Doe")
 		every { userRepository.findAll() } returns listOf(johnDoe, janeDoe)
 		mockMvc.perform(get("/api/user/").accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk)
-				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(jsonPath("\$.[0].login").value(johnDoe.login))
-				.andExpect(jsonPath("\$.[1].login").value(janeDoe.login))
+			.andExpect(status().isOk)
+			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+			.andExpect(jsonPath("\$.[0].login").value(johnDoe.login))
+			.andExpect(jsonPath("\$.[1].login").value(janeDoe.login))
 	}
 }
 ----
@@ -883,32 +877,8 @@ Then we enable it at `BlogApplication` level.
 ----
 @SpringBootApplication
 @EnableConfigurationProperties(BlogProperties::class)
-class BlogApplication {
-	// ...
-}
+class BlogApplication
 ----
-
-To generate https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#configuration-metadata-annotation-processor[your own metadata] in order to get these custom properties recognized by your IDE, https://kotlinlang.org/docs/reference/kapt.html[kapt should be configured] with the `spring-boot-configuration-processor` dependency as following.
-
-`build.gradle.kts`
-[source,kotlin]
-----
-plugins {
-	...
-	kotlin("kapt") version "2.2.21"
-}
-
-dependencies {
-	...
-	kapt("org.springframework.boot:spring-boot-configuration-processor")
-}
-----
-
-In IntelliJ IDEA:
-
- - Make sure Spring Boot plugin in enabled in menu File | Settings | Plugins | Spring Boot
- - Enable annotation processing via menu File | Settings | Build, Execution, Deployment | Compiler | Annotation Processors | Enable annotation processing
- - Since https://youtrack.jetbrains.com/issue/KT-15040[Kapt is not yet integrated in IDEA], you need to run manually the command `./gradlew kaptKotlin` to generate the metadata
 
 Your custom properties should now be recognized when editing `application.properties` (autocomplete, validation, etc.).
 
@@ -918,6 +888,7 @@ Your custom properties should now be recognized when editing `application.proper
 blog.title=Blog
 blog.banner.title=Warning
 blog.banner.content=The blog will be down tomorrow.
+spring.sql.init.mode=always
 ----
 
 Edit the template and the controller accordingly.
@@ -951,17 +922,20 @@ Edit the template and the controller accordingly.
 [source,kotlin]
 ----
 @Controller
-class HtmlController(private val repository: ArticleRepository,
-					 private val properties: BlogProperties) {
+class HtmlController(
+	private val articleRepository: ArticleRepository,
+	private val userRepository: UserRepository,
+	private val properties: BlogProperties
+) {
 
 	@GetMapping("/")
 	fun blog(model: Model): String {
 		model["title"] = properties.title
 		model["banner"] = properties.banner
-		model["articles"] = repository.findAllByOrderByAddedAtDesc().map { it.render() }
+		model["articles"] = articleRepository.findAllByOrderByAddedAtDesc()
+			.map { it.render() }
 		return "blog"
 	}
-
 	// ...
 ----
 
@@ -969,4 +943,4 @@ Restart the web application, refresh `http://localhost:8080/`, you should see th
 
 == Conclusion
 
-We have now finished to build this sample Kotlin blog application. The source code https://github.com/spring-guides/tut-spring-boot-kotlin[is available on Github]. You can also have a look to https://docs.spring.io/spring/docs/current/spring-framework-reference/languages.html#kotlin[Spring Framework] and https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-kotlin.html[Spring Boot] reference documentation if you need more details on specific features.
+We have now finished building this sample Kotlin blog application. The source code https://github.com/spring-guides/tut-spring-boot-kotlin[is available on GitHub]. You can also have a look at https://docs.spring.io/spring-framework/reference/languages/kotlin.html[Spring Framework] and https://docs.spring.io/spring-boot/index.html[Spring Boot] reference documentation if you need more details on specific features.

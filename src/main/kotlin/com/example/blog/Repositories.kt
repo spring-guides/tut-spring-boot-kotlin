@@ -10,4 +10,3 @@ interface ArticleRepository : CrudRepository<Article, Long> {
 interface UserRepository : CrudRepository<User, Long> {
 	fun findByLogin(login: String): User?
 }
-
