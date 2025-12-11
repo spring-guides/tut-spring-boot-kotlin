@@ -3,15 +3,15 @@ package com.example.blog
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
+import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest
+import org.springframework.boot.jpa.test.autoconfigure.TestEntityManager
 import org.springframework.data.repository.findByIdOrNull
 
 @DataJpaTest
 class RepositoriesTests @Autowired constructor(
-		val entityManager: TestEntityManager,
-		val userRepository: UserRepository,
-		val articleRepository: ArticleRepository) {
+	val entityManager: TestEntityManager,
+	val userRepository: UserRepository,
+	val articleRepository: ArticleRepository) {
 
 	@Test
 	fun `When findByIdOrNull then return Article`() {
