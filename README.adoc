@@ -75,10 +75,10 @@ In addition to the obvious https://kotlinlang.org/docs/gradle.html[Kotlin Gradle
 [source,kotlin]
 ----
 plugins {
-	id("org.springframework.boot") version "4.0.0"
-	id("io.spring.dependency-management") version "1.1.7"
-	kotlin("jvm") version "2.2.21"
-	kotlin("plugin.spring") version "2.2.21"
+    id("org.springframework.boot") version "4.0.0"
+    id("io.spring.dependency-management") version "1.1.7"
+    kotlin("jvm") version "2.2.21"
+    kotlin("plugin.spring") version "2.2.21"
 }
 ----
 
@@ -94,9 +94,9 @@ This feature can be enabled by adding the `-Xjsr305` compiler flag with the `str
 [source,kotlin]
 ----
 kotlin {
-	compilerOptions {
-		freeCompilerArgs.addAll("-Xjsr305=strict", "-Xannotation-default-target=param-property")
-	}
+    compilerOptions {
+        freeCompilerArgs.addAll("-Xjsr305=strict", "-Xannotation-default-target=param-property")
+    }
 }
 ----
 
@@ -111,16 +111,16 @@ kotlin {
 [source,kotlin]
 ----
 dependencies {
-	implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
-	implementation("org.springframework.boot:spring-boot-starter-mustache")
-	implementation("org.springframework.boot:spring-boot-starter-webmvc")
-	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	runtimeOnly("com.h2database:h2")
-	runtimeOnly("org.springframework.boot:spring-boot-devtools")
-	testImplementation("org.springframework.boot:spring-boot-starter-data-jdbc-test")
-	testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
-	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
+    implementation("org.springframework.boot:spring-boot-starter-mustache")
+    implementation("org.springframework.boot:spring-boot-starter-webmvc")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("org.jetbrains.kotlin:kotlin-reflect")
+    runtimeOnly("com.h2database:h2")
+    runtimeOnly("org.springframework.boot:spring-boot-devtools")
+    testImplementation("org.springframework.boot:spring-boot-starter-data-jdbc-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 }
 ----
 
@@ -139,34 +139,34 @@ In addition to the obvious https://kotlinlang.org/docs/maven.html[Kotlin Maven p
 [source,xml]
 ----
 <build>
-	<sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
-	<testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
-	<plugins>
-		<plugin>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-maven-plugin</artifactId>
-		</plugin>
-	<plugin>
-		<artifactId>kotlin-maven-plugin</artifactId>
-		<groupId>org.jetbrains.kotlin</groupId>
-		<configuration>
-			<args>
-				<arg>-Xjsr305=strict</arg>
-				<arg>-Xannotation-default-target=param-property</arg>
-			</args>
-			<compilerPlugins>
-				<plugin>spring</plugin>
-			</compilerPlugins>
-		</configuration>
-		<dependencies>
-			<dependency>
-				<groupId>org.jetbrains.kotlin</groupId>
-				<artifactId>kotlin-maven-allopen</artifactId>
-				<version>${kotlin.version}</version>
-			</dependency>
-		</dependencies>
-	</plugin>
-	</plugins>
+    <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
+    <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
+    <plugins>
+        <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+        </plugin>
+    <plugin>
+        <artifactId>kotlin-maven-plugin</artifactId>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <configuration>
+            <args>
+                <arg>-Xjsr305=strict</arg>
+                <arg>-Xannotation-default-target=param-property</arg>
+            </args>
+            <compilerPlugins>
+                <plugin>spring</plugin>
+            </compilerPlugins>
+        </configuration>
+        <dependencies>
+            <dependency>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-maven-allopen</artifactId>
+                <version>${kotlin.version}</version>
+            </dependency>
+        </dependencies>
+    </plugin>
+    </plugins>
 </build>
 ----
 
@@ -185,51 +185,51 @@ Two Kotlin-specific libraries are required for such a Spring Boot web applicatio
 [source,xml]
 ----
 <dependencies>
-	<dependency>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-data-jdbc</artifactId>
-	</dependency>
-	<dependency>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-mustache</artifactId>
-	</dependency>
-	<dependency>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-webmvc</artifactId>
-	</dependency>
-	<dependency>
-		<groupId>com.fasterxml.jackson.module</groupId>
-		<artifactId>jackson-module-kotlin</artifactId>
-	</dependency>
-	<dependency>
-		<groupId>org.jetbrains.kotlin</groupId>
-		<artifactId>kotlin-reflect</artifactId>
-	</dependency>
-	<dependency>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-devtools</artifactId>
-		<scope>runtime</scope>
-	</dependency>
-	<dependency>
-		<groupId>com.h2database</groupId>
-		<artifactId>h2</artifactId>
-		<scope>runtime</scope>
-	</dependency>
-	<dependency>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-data-jdbc-test</artifactId>
-		<scope>test</scope>
-	</dependency>
-	<dependency>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-webmvc-test</artifactId>
-		<scope>test</scope>
-	</dependency>
-	<dependency>
-		<groupId>org.jetbrains.kotlin</groupId>
-		<artifactId>kotlin-test-junit5</artifactId>
-		<scope>test</scope>
-	</dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-data-jdbc</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-mustache</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-webmvc</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>com.fasterxml.jackson.module</groupId>
+        <artifactId>jackson-module-kotlin</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-reflect</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-devtools</artifactId>
+        <scope>runtime</scope>
+    </dependency>
+    <dependency>
+        <groupId>com.h2database</groupId>
+        <artifactId>h2</artifactId>
+        <scope>runtime</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-data-jdbc-test</artifactId>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-webmvc-test</artifactId>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-test-junit5</artifactId>
+        <scope>test</scope>
+    </dependency>
 </dependencies>
 ----
 
@@ -241,22 +241,22 @@ We need to create a database schema file since Spring Data JDBC doesn't auto-cre
 [source,sql]
 ----
 CREATE TABLE IF NOT EXISTS "users" (
-	"ID" BIGINT AUTO_INCREMENT PRIMARY KEY,
-	"LOGIN" VARCHAR(255) NOT NULL UNIQUE,
-	"FIRSTNAME" VARCHAR(255) NOT NULL,
-	"LASTNAME" VARCHAR(255) NOT NULL,
-	"DESCRIPTION" TEXT
+    "ID" BIGINT AUTO_INCREMENT PRIMARY KEY,
+    "LOGIN" VARCHAR(255) NOT NULL UNIQUE,
+    "FIRSTNAME" VARCHAR(255) NOT NULL,
+    "LASTNAME" VARCHAR(255) NOT NULL,
+    "DESCRIPTION" TEXT
 );
 
 CREATE TABLE IF NOT EXISTS "article" (
-	"ID" BIGINT AUTO_INCREMENT PRIMARY KEY,
-	"TITLE" VARCHAR(255) NOT NULL,
-	"HEADLINE" VARCHAR(500) NOT NULL,
-	"CONTENT" TEXT NOT NULL,
-	"author_id" BIGINT NOT NULL,
-	"SLUG" VARCHAR(255) NOT NULL UNIQUE,
-	"ADDED_AT" TIMESTAMP NOT NULL,
-	FOREIGN KEY ("author_id") REFERENCES "users"("ID")
+    "ID" BIGINT AUTO_INCREMENT PRIMARY KEY,
+    "TITLE" VARCHAR(255) NOT NULL,
+    "HEADLINE" VARCHAR(500) NOT NULL,
+    "CONTENT" TEXT NOT NULL,
+    "author_id" BIGINT NOT NULL,
+    "SLUG" VARCHAR(255) NOT NULL UNIQUE,
+    "ADDED_AT" TIMESTAMP NOT NULL,
+    FOREIGN KEY ("author_id") REFERENCES "users"("ID")
 );
 ----
 
@@ -275,7 +275,7 @@ import org.springframework.boot.runApplication
 class BlogApplication
 
 fun main(args: Array<String>) {
-	runApplication<BlogApplication>(*args)
+    runApplication<BlogApplication>(*args)
 }
 ----
 
@@ -285,9 +285,9 @@ Compared to Java, you can notice the lack of semicolons, the lack of brackets on
 [source,kotlin]
 ----
 fun main(args: Array<String>) {
-	runApplication<BlogApplication>(*args) {
-		setBannerMode(Banner.Mode.OFF)
-	}
+    runApplication<BlogApplication>(*args) {
+        setBannerMode(Banner.Mode.OFF)
+    }
 }
 ----
 
@@ -308,11 +308,11 @@ import org.springframework.web.bind.annotation.GetMapping
 @Controller
 class HtmlController {
 
-	@GetMapping("/")
-	fun blog(model: Model): String {
-		model["title"] = "Blog"
-		return "blog"
-	}
+    @GetMapping("/")
+    fun blog(model: Model): String {
+        model["title"] = "Blog"
+        return "blog"
+    }
 }
 ----
 
@@ -326,7 +326,7 @@ We also need to create the associated Mustache templates.
 ----
 <html>
 <head>
-	<title>{{title}}</title>
+    <title>{{title}}</title>
 </head>
 <body>
 ----
@@ -369,14 +369,14 @@ For the sake of this example, let's create an integration test to demonstrate va
 @AutoConfigureRestTestClient
 class IntegrationTests(@Autowired val restClient: RestTestClient) {
 
-	@Test
-	fun `Assert blog page title, content and status code`() {
-		println(">> Assert blog page title, content and status code")
-		restClient.get().uri("/")
-			.exchangeSuccessfully()
-			.expectBody<String>()
-			.value { assertThat(it).contains("<h1>Blog</h1>", "Lorem") }
-	}
+    @Test
+    fun `Assert blog page title, content and status code`() {
+        println(">> Assert blog page title, content and status code")
+        restClient.get().uri("/")
+            .exchangeSuccessfully()
+            .expectBody<String>()
+            .value { assertThat(it).contains("<h1>Blog</h1>", "Lorem") }
+    }
 }
 ----
 
@@ -401,29 +401,29 @@ With this configuration, we can now use the `@BeforeAll` and `@AfterAll` annotat
 @AutoConfigureRestTestClient
 class IntegrationTests(@Autowired val restClient: RestTestClient) {
 
-	@BeforeAll
-	fun setup() {
-		println(">> Setup")
-	}
+    @BeforeAll
+    fun setup() {
+        println(">> Setup")
+    }
 
-	@Test
-	fun `Assert blog page title, content and status code`() {
-		println(">> Assert blog page title, content and status code")
-		restClient.get().uri("/")
-			.exchangeSuccessfully()
-			.expectBody<String>()
-			.value { assertThat(it).contains("<h1>Blog</h1>", "Lorem") }
-	}
+    @Test
+    fun `Assert blog page title, content and status code`() {
+        println(">> Assert blog page title, content and status code")
+        restClient.get().uri("/")
+            .exchangeSuccessfully()
+            .expectBody<String>()
+            .value { assertThat(it).contains("<h1>Blog</h1>", "Lorem") }
+    }
 
-	@Test
-	fun `Assert article page title, content and status code`() {
-		println(">> TODO")
-	}
+    @Test
+    fun `Assert article page title, content and status code`() {
+        println(">> TODO")
+    }
 
-	@AfterAll
-	fun teardown() {
-		println(">> Tear down")
-	}
+    @AfterAll
+    fun teardown() {
+        println(">> Tear down")
+    }
 }
 ----
 
@@ -439,27 +439,27 @@ fun LocalDateTime.format(): String = this.format(englishDateFormatter)
 private val daysLookup = (1..31).associate { it.toLong() to getOrdinal(it) }
 
 private val englishDateFormatter = DateTimeFormatterBuilder()
-	.appendPattern("yyyy-MM-dd")
-	.appendLiteral(" ")
-	.appendText(ChronoField.DAY_OF_MONTH, daysLookup)
-	.appendLiteral(" ")
-	.appendPattern("yyyy")
-	.toFormatter(Locale.ENGLISH)
+    .appendPattern("yyyy-MM-dd")
+    .appendLiteral(" ")
+    .appendText(ChronoField.DAY_OF_MONTH, daysLookup)
+    .appendLiteral(" ")
+    .appendPattern("yyyy")
+    .toFormatter(Locale.ENGLISH)
 
 private fun getOrdinal(n: Int) = when {
-	n in 11..13 -> "${n}th"
-	n % 10 == 1 -> "${n}st"
-	n % 10 == 2 -> "${n}nd"
-	n % 10 == 3 -> "${n}rd"
-	else -> "${n}th"
+    n in 11..13 -> "${n}th"
+    n % 10 == 1 -> "${n}st"
+    n % 10 == 2 -> "${n}nd"
+    n % 10 == 3 -> "${n}rd"
+    else -> "${n}th"
 }
 
 fun String.toSlug() = lowercase(Locale.getDefault())
-	.replace("\n", " ")
-	.replace("[^a-z\\d\\s]".toRegex(), " ")
-	.split(" ")
-	.joinToString("-")
-	.replace("-+".toRegex(), "-")
+    .replace("\n", " ")
+    .replace("[^a-z\\d\\s]".toRegex(), " ")
+    .split(" ")
+    .joinToString("-")
+    .replace("-+".toRegex(), "-")
 ----
 
 We will leverage these extensions in the next section.
@@ -475,23 +475,23 @@ We create our model by using Kotlin https://kotlinlang.org/docs/classes.html#con
 ----
 @Table("article")
 data class Article(
-	val title: String,
-	val headline: String,
-	val content: String,
-	@Column("author_id")
-	val author: AggregateReference<User, Long>,
-	val slug: String = title.toSlug(),
-	val addedAt: LocalDateTime = LocalDateTime.now(),
-	@Id val id: Long? = null
+    val title: String,
+    val headline: String,
+    val content: String,
+    @Column("author_id")
+    val author: AggregateReference<User, Long>,
+    val slug: String = title.toSlug(),
+    val addedAt: LocalDateTime = LocalDateTime.now(),
+    @Id val id: Long? = null
 )
 
 @Table("users")
 data class User(
-	val login: String,
-	val firstname: String,
-	val lastname: String,
-	val description: String? = null,
-	@Id val id: Long? = null
+    val login: String,
+    val firstname: String,
+    val lastname: String,
+    val description: String? = null,
+    @Id val id: Long? = null
 )
 ----
 
@@ -506,12 +506,12 @@ We also declare our Spring Data JDBC repositories as follows:
 [source,kotlin]
 ----
 interface ArticleRepository : CrudRepository<Article, Long> {
-	fun findBySlug(slug: String): Article?
-	fun findAllByOrderByAddedAtDesc(): Iterable<Article>
+    fun findBySlug(slug: String): Article?
+    fun findAllByOrderByAddedAtDesc(): Iterable<Article>
 }
 
 interface UserRepository : CrudRepository<User, Long> {
-	fun findByLogin(login: String): User?
+    fun findByLogin(login: String): User?
 }
 ----
 
@@ -522,26 +522,26 @@ And we write JDBC tests to check whether basic use cases work as expected.
 ----
 @DataJdbcTest
 class RepositoriesTests @Autowired constructor(
-	val userRepository: UserRepository,
-	val articleRepository: ArticleRepository
+    val userRepository: UserRepository,
+    val articleRepository: ArticleRepository
 ) {
 
-	@Test
-	fun `When findByIdOrNull then return Article`() {
-		val johnDoe = userRepository.save(User("johnDoe", "John", "Doe"))
-		val article = articleRepository.save(
-			Article("Lorem", "Lorem", "dolor sit amet", AggregateReference.to(johnDoe.id!!))
-		)
-		val found = articleRepository.findByIdOrNull(article.id!!)
-		assertThat(found).isEqualTo(article)
-	}
+    @Test
+    fun `When findByIdOrNull then return Article`() {
+        val johnDoe = userRepository.save(User("johnDoe", "John", "Doe"))
+        val article = articleRepository.save(
+            Article("Lorem", "Lorem", "dolor sit amet", AggregateReference.to(johnDoe.id!!))
+        )
+        val found = articleRepository.findByIdOrNull(article.id!!)
+        assertThat(found).isEqualTo(article)
+    }
 
-	@Test
-	fun `When findByLogin then return User`() {
-		val johnDoe = userRepository.save(User("johnDoe", "John", "Doe"))
-		val user = userRepository.findByLogin(johnDoe.login)
-		assertThat(user).isEqualTo(johnDoe)
-	}
+    @Test
+    fun `When findByLogin then return User`() {
+        val johnDoe = userRepository.save(User("johnDoe", "John", "Doe"))
+        val user = userRepository.findByLogin(johnDoe.login)
+        assertThat(user).isEqualTo(johnDoe)
+    }
 }
 ----
 
@@ -560,17 +560,17 @@ We update the "blog" Mustache templates.
 
 <div class="articles">
 
-	{{#articles}}
-		<section>
-			<header class="article-header">
-				<h2 class="article-title"><a href="/article/{{slug}}">{{title}}</a></h2>
-				<div class="article-meta">By  <strong>{{author.firstname}}</strong>, on <strong>{{addedAt}}</strong></div>
-			</header>
-			<div class="article-description">
-				{{headline}}
-			</div>
-		</section>
-	{{/articles}}
+    {{#articles}}
+        <section>
+            <header class="article-header">
+                <h2 class="article-title"><a href="/article/{{slug}}">{{title}}</a></h2>
+                <div class="article-meta">By  <strong>{{author.firstname}}</strong>, on <strong>{{addedAt}}</strong></div>
+            </header>
+            <div class="article-description">
+                {{headline}}
+            </div>
+        </section>
+    {{/articles}}
 </div>
 
 {{> footer}}
@@ -584,16 +584,16 @@ And we create an "article" new one.
 {{> header}}
 
 <section class="article">
-	<header class="article-header">
-		<h1 class="article-title">{{article.title}}</h1>
-		<p class="article-meta">By  <strong>{{article.author.firstname}}</strong>, on <strong>{{article.addedAt}}</strong></p>
-	</header>
+    <header class="article-header">
+        <h1 class="article-title">{{article.title}}</h1>
+        <p class="article-meta">By  <strong>{{article.author.firstname}}</strong>, on <strong>{{article.addedAt}}</strong></p>
+    </header>
 
-	<div class="article-description">
-		{{article.headline}}
+    <div class="article-description">
+        {{article.headline}}
 
-		{{article.content}}
-	</div>
+        {{article.content}}
+    </div>
 </section>
 
 {{> footer}}
@@ -606,53 +606,53 @@ We update the `HtmlController` in order to render blog and article pages with th
 ----
 @Controller
 class HtmlController(
-	private val articleRepository: ArticleRepository,
-	private val userRepository: UserRepository,
-	private val properties: BlogProperties
+    private val articleRepository: ArticleRepository,
+    private val userRepository: UserRepository,
+    private val properties: BlogProperties
 ) {
 
-	@GetMapping("/")
-	fun blog(model: Model): String {
-		model["title"] = properties.title
-		model["banner"] = properties.banner
-		model["articles"] = articleRepository.findAllByOrderByAddedAtDesc()
-			.map { it.render() }
-		return "blog"
-	}
+    @GetMapping("/")
+    fun blog(model: Model): String {
+        model["title"] = properties.title
+        model["banner"] = properties.banner
+        model["articles"] = articleRepository.findAllByOrderByAddedAtDesc()
+            .map { it.render() }
+        return "blog"
+    }
 
-	@GetMapping("/article/{slug}")
-	fun article(@PathVariable slug: String, model: Model): String {
-		val article = articleRepository.findBySlug(slug)
-			?: throw ResponseStatusException(NOT_FOUND, "This article does not exist")
+    @GetMapping("/article/{slug}")
+    fun article(@PathVariable slug: String, model: Model): String {
+        val article = articleRepository.findBySlug(slug)
+            ?: throw ResponseStatusException(NOT_FOUND, "This article does not exist")
 
-		val renderedArticle = article.render()
-		model["title"] = renderedArticle.title
-		model["article"] = renderedArticle
-		return "article"
-	}
+        val renderedArticle = article.render()
+        model["title"] = renderedArticle.title
+        model["article"] = renderedArticle
+        return "article"
+    }
 
-	private fun Article.render(): RenderedArticle {
-		val author = userRepository.findById(author.id)
-			.orElseThrow { ResponseStatusException(NOT_FOUND, "Author not found") }
+    private fun Article.render(): RenderedArticle {
+        val author = userRepository.findById(author.id)
+            .orElseThrow { ResponseStatusException(NOT_FOUND, "Author not found") }
 
-		return RenderedArticle(
-			slug,
-			title,
-			headline,
-			content,
-			author,
-			addedAt.format()
-		)
-	}
+        return RenderedArticle(
+            slug,
+            title,
+            headline,
+            content,
+            author,
+            addedAt.format()
+        )
+    }
 
-	data class RenderedArticle(
-		val slug: String,
-		val title: String,
-		val headline: String,
-		val content: String,
-		val author: User,
-		val addedAt: String
-	)
+    data class RenderedArticle(
+        val slug: String,
+        val title: String,
+        val headline: String,
+        val content: String,
+        val author: User,
+        val addedAt: String
+    )
 }
 ----
 
@@ -664,30 +664,30 @@ Then, we add data initialization to a new `BlogConfiguration` class. Notice that
 @Configuration
 class BlogConfiguration {
 
-	@Bean
-	fun databaseInitializer(
-		userRepository: UserRepository,
-		articleRepository: ArticleRepository
-	) = ApplicationRunner {
-		val johnDoe = userRepository.save(User("johnDoe", "John", "Doe"))
-		articleRepository.save(
-			Article(
-				title = "Lorem",
-				headline = "Lorem",
-				content = "dolor sit amet",
-				author = AggregateReference.to(johnDoe.id!!)
-			)
-		)
+    @Bean
+    fun databaseInitializer(
+        userRepository: UserRepository,
+        articleRepository: ArticleRepository
+    ) = ApplicationRunner {
+        val johnDoe = userRepository.save(User("johnDoe", "John", "Doe"))
+        articleRepository.save(
+            Article(
+                title = "Lorem",
+                headline = "Lorem",
+                content = "dolor sit amet",
+                author = AggregateReference.to(johnDoe.id!!)
+            )
+        )
 
-		articleRepository.save(
-			Article(
-				title = "Ipsum",
-				headline = "Ipsum",
-				content = "dolor sit amet",
-				author = AggregateReference.to(johnDoe.id)
-			)
-		)
-	}
+        articleRepository.save(
+            Article(
+                title = "Ipsum",
+                headline = "Ipsum",
+                content = "dolor sit amet",
+                author = AggregateReference.to(johnDoe.id)
+            )
+        )
+    }
 }
 ----
 
@@ -702,34 +702,34 @@ And we also update the integration tests accordingly.
 @AutoConfigureRestTestClient
 class IntegrationTests(@Autowired val restClient: RestTestClient) {
 
-	@BeforeAll
-	fun setup() {
-		println(">> Setup")
-	}
+    @BeforeAll
+    fun setup() {
+        println(">> Setup")
+    }
 
-	@Test
-	fun `Assert blog page title, content and status code`() {
-		println(">> Assert blog page title, content and status code")
-		restClient.get().uri("/")
-			.exchangeSuccessfully()
-			.expectBody<String>()
-			.value { assertThat(it).contains("<h1>Blog</h1>", "Lorem") }
-	}
+    @Test
+    fun `Assert blog page title, content and status code`() {
+        println(">> Assert blog page title, content and status code")
+        restClient.get().uri("/")
+            .exchangeSuccessfully()
+            .expectBody<String>()
+            .value { assertThat(it).contains("<h1>Blog</h1>", "Lorem") }
+    }
 
-	@Test
-	fun `Assert article page title, content and status code`() {
-		println(">> Assert article page title, content and status code")
-		val title = "Lorem"
-		restClient.get().uri("/article/${title.toSlug()}")
-			.exchangeSuccessfully()
-			.expectBody<String>()
-			.value { assertThat(it).contains(title, "Lorem", "dolor sit amet") }
-	}
+    @Test
+    fun `Assert article page title, content and status code`() {
+        println(">> Assert article page title, content and status code")
+        val title = "Lorem"
+        restClient.get().uri("/article/${title.toSlug()}")
+            .exchangeSuccessfully()
+            .expectBody<String>()
+            .value { assertThat(it).contains(title, "Lorem", "dolor sit amet") }
+    }
 
-	@AfterAll
-	fun teardown() {
-		println(">> Tear down")
-	}
+    @AfterAll
+    fun teardown() {
+        println(">> Tear down")
+    }
 }
 ----
 
@@ -745,45 +745,45 @@ We are now going to implement the HTTP API via `@RestController` annotated contr
 @RestController
 @RequestMapping("/api/article")
 class ArticleController(
-	private val articleRepository: ArticleRepository,
-	private val userRepository: UserRepository
+    private val articleRepository: ArticleRepository,
+    private val userRepository: UserRepository
 ) {
 
-	@GetMapping("/")
-	fun findAll() = articleRepository.findAllByOrderByAddedAtDesc().map { it.toDto() }
+    @GetMapping("/")
+    fun findAll() = articleRepository.findAllByOrderByAddedAtDesc().map { it.toDto() }
 
-	@GetMapping("/{slug}")
-	fun findOne(@PathVariable slug: String) =
-		articleRepository.findBySlug(slug)?.toDto()
-			?: throw ResponseStatusException(NOT_FOUND, "This article does not exist")
+    @GetMapping("/{slug}")
+    fun findOne(@PathVariable slug: String) =
+        articleRepository.findBySlug(slug)?.toDto()
+            ?: throw ResponseStatusException(NOT_FOUND, "This article does not exist")
 
-	private fun Article.toDto(): ArticleDto {
-		val author = userRepository.findById(author.id)
-			.orElseThrow { ResponseStatusException(NOT_FOUND, "Author not found") }
-		return ArticleDto(slug, title, headline, content, author, addedAt.format())
-	}
+    private fun Article.toDto(): ArticleDto {
+        val author = userRepository.findById(author.id)
+            .orElseThrow { ResponseStatusException(NOT_FOUND, "Author not found") }
+        return ArticleDto(slug, title, headline, content, author, addedAt.format())
+    }
 
-	data class ArticleDto(
-		val slug: String,
-		val title: String,
-		val headline: String,
-		val content: String,
-		val author: User,
-		val addedAt: String
-	)
+    data class ArticleDto(
+        val slug: String,
+        val title: String,
+        val headline: String,
+        val content: String,
+        val author: User,
+        val addedAt: String
+    )
 }
 
 @RestController
 @RequestMapping("/api/user")
 class UserController(private val repository: UserRepository) {
 
-	@GetMapping("/")
-	fun findAll() = repository.findAll()
+    @GetMapping("/")
+    fun findAll() = repository.findAll()
 
-	@GetMapping("/{login}")
-	fun findOne(@PathVariable login: String) =
-		repository.findByLogin(login)
-			?: throw ResponseStatusException(NOT_FOUND, "This user does not exist")
+    @GetMapping("/{login}")
+    fun findOne(@PathVariable login: String) =
+        repository.findByLogin(login)
+            ?: throw ResponseStatusException(NOT_FOUND, "This user does not exist")
 }
 ----
 
@@ -805,10 +805,10 @@ Or with Maven:
 [source,xml]
 ----
 <dependency>
-	<groupId>com.ninja-squad</groupId>
-	<artifactId>springmockk</artifactId>
-	<version>5.0.1</version>
-	<scope>test</scope>
+    <groupId>com.ninja-squad</groupId>
+    <artifactId>springmockk</artifactId>
+    <version>5.0.1</version>
+    <scope>test</scope>
 </dependency>
 ----
 
@@ -818,40 +818,40 @@ Or with Maven:
 @WebMvcTest
 class HttpControllersTests(@Autowired val mockMvc: MockMvc) {
 
-	@MockkBean
-	lateinit var userRepository: UserRepository
+    @MockkBean
+    lateinit var userRepository: UserRepository
 
-	@MockkBean
-	lateinit var articleRepository: ArticleRepository
+    @MockkBean
+    lateinit var articleRepository: ArticleRepository
 
-	@Test
-	fun `List articles`() {
-		val johnDoe = User("johnDoe", "John", "Doe", id = 1L)
-		val authorRef = AggregateReference.to<User, Long>(1L)
-		val lorem5Article = Article("Lorem", "Lorem", "dolor sit amet", authorRef)
-		val ipsumArticle = Article("Ipsum", "Ipsum", "dolor sit amet", authorRef)
-		every { userRepository.findById(1L) } returns Optional.of(johnDoe)
-		every { articleRepository.findAllByOrderByAddedAtDesc() } returns listOf(lorem5Article, ipsumArticle)
-		mockMvc.perform(get("/api/article/").accept(MediaType.APPLICATION_JSON))
-			.andExpect(status().isOk)
-			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-			.andExpect(jsonPath("\$.[0].author.login").value(johnDoe.login))
-			.andExpect(jsonPath("\$.[0].slug").value(lorem5Article.slug))
-			.andExpect(jsonPath("\$.[1].author.login").value(johnDoe.login))
-			.andExpect(jsonPath("\$.[1].slug").value(ipsumArticle.slug))
-	}
+    @Test
+    fun `List articles`() {
+        val johnDoe = User("johnDoe", "John", "Doe", id = 1L)
+        val authorRef = AggregateReference.to<User, Long>(1L)
+        val lorem5Article = Article("Lorem", "Lorem", "dolor sit amet", authorRef)
+        val ipsumArticle = Article("Ipsum", "Ipsum", "dolor sit amet", authorRef)
+        every { userRepository.findById(1L) } returns Optional.of(johnDoe)
+        every { articleRepository.findAllByOrderByAddedAtDesc() } returns listOf(lorem5Article, ipsumArticle)
+        mockMvc.perform(get("/api/article/").accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk)
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("\$.[0].author.login").value(johnDoe.login))
+            .andExpect(jsonPath("\$.[0].slug").value(lorem5Article.slug))
+            .andExpect(jsonPath("\$.[1].author.login").value(johnDoe.login))
+            .andExpect(jsonPath("\$.[1].slug").value(ipsumArticle.slug))
+    }
 
-	@Test
-	fun `List users`() {
-		val johnDoe = User("johnDoe", "John", "Doe")
-		val janeDoe = User("janeDoe", "Jane", "Doe")
-		every { userRepository.findAll() } returns listOf(johnDoe, janeDoe)
-		mockMvc.perform(get("/api/user/").accept(MediaType.APPLICATION_JSON))
-			.andExpect(status().isOk)
-			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-			.andExpect(jsonPath("\$.[0].login").value(johnDoe.login))
-			.andExpect(jsonPath("\$.[1].login").value(janeDoe.login))
-	}
+    @Test
+    fun `List users`() {
+        val johnDoe = User("johnDoe", "John", "Doe")
+        val janeDoe = User("janeDoe", "Jane", "Doe")
+        every { userRepository.findAll() } returns listOf(johnDoe, janeDoe)
+        mockMvc.perform(get("/api/user/").accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk)
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("\$.[0].login").value(johnDoe.login))
+            .andExpect(jsonPath("\$.[1].login").value(janeDoe.login))
+    }
 }
 ----
 
@@ -866,7 +866,7 @@ In Kotlin, the recommended way to manage your application properties is to use r
 ----
 @ConfigurationProperties("blog")
 data class BlogProperties(var title: String, val banner: Banner) {
-	data class Banner(val title: String? = null, val content: String)
+    data class Banner(val title: String? = null, val content: String)
 }
 ----
 
@@ -900,18 +900,18 @@ Edit the template and the controller accordingly.
 
 <div class="articles">
 
-	{{#banner.title}}
-	<section>
-		<header class="banner">
-			<h2 class="banner-title">{{banner.title}}</h2>
-		</header>
-		<div class="banner-content">
-			{{banner.content}}
-		</div>
-	</section>
-	{{/banner.title}}
+    {{#banner.title}}
+    <section>
+        <header class="banner">
+            <h2 class="banner-title">{{banner.title}}</h2>
+        </header>
+        <div class="banner-content">
+            {{banner.content}}
+        </div>
+    </section>
+    {{/banner.title}}
 
-	...
+    ...
 
 </div>
 
@@ -923,20 +923,20 @@ Edit the template and the controller accordingly.
 ----
 @Controller
 class HtmlController(
-	private val articleRepository: ArticleRepository,
-	private val userRepository: UserRepository,
-	private val properties: BlogProperties
+    private val articleRepository: ArticleRepository,
+    private val userRepository: UserRepository,
+    private val properties: BlogProperties
 ) {
 
-	@GetMapping("/")
-	fun blog(model: Model): String {
-		model["title"] = properties.title
-		model["banner"] = properties.banner
-		model["articles"] = articleRepository.findAllByOrderByAddedAtDesc()
-			.map { it.render() }
-		return "blog"
-	}
-	// ...
+    @GetMapping("/")
+    fun blog(model: Model): String {
+        model["title"] = properties.title
+        model["banner"] = properties.banner
+        model["articles"] = articleRepository.findAllByOrderByAddedAtDesc()
+            .map { it.render() }
+        return "blog"
+    }
+    // ...
 ----
 
 Restart the web application, refresh `http://localhost:8080/`, you should see the banner on the blog homepage.
