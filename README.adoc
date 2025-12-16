@@ -62,17 +62,25 @@ Follow the steps of the wizard to use the following parameters:
  - Name: "Blog"
  - Dependencies: "Spring Web Starter", "Mustache", "Spring Data JDBC", "H2 Database", and "Spring Boot DevTools"
 
-[[gradle-build]]
-== Understanding the Gradle Build
+[[null-safety]]
+== Null safety
 
-If you're using a Maven Build, you can <<maven-build, skip to the dedicated section>>.
+One of Kotlin's key features is https://kotlinlang.org/docs/null-safety.html[null safety], which cleanly deals with `null` values at compile time rather than bumping into the famous `NullPointerException` at runtime. This makes applications safer through nullability declarations and expressing "value or no value" semantics without paying the cost of wrappers like `Optional`. Note that Kotlin allows using functional constructs with nullable values; check out this https://www.baeldung.com/kotlin-null-safety[comprehensive guide to Kotlin null-safety].
+
+Although Java does not allow one to express null-safety in its type-system, Spring provides https://docs.spring.io/spring-framework/reference/core/null-safety.html[null safety of its APIs] via tooling-friendly https://jspecify.dev/[JSpecify] annotations. Kotlin translates JSpecify annotations on Java APIs to Kotlin nullability out-of-the-box.
+
+[[build]]
+== Understanding the Build
 
 === Plugins
 
-In addition to the obvious https://kotlinlang.org/docs/gradle.html[Kotlin Gradle plugin], the default configuration declares the https://kotlinlang.org/docs/all-open-plugin.html[kotlin-spring plugin] which automatically opens classes and methods (unlike in Java, the default qualifier is `final` in Kotlin) annotated or meta-annotated with Spring annotations. This is useful to be able to create `@Configuration` or `@Transactional` beans without having to add the `open` qualifier required by CGLIB proxies for example.
+In addition to the obvious Kotlin https://kotlinlang.org/docs/gradle.html[Gradle] or https://kotlinlang.org/docs/maven.html[Maven] plugin, the default configuration declares the https://kotlinlang.org/docs/all-open-plugin.html[kotlin-spring plugin] which automatically opens classes and methods (unlike in Java, the default qualifier is `final` in Kotlin) annotated or meta-annotated with Spring annotations. This is useful to be able to create `@Configuration` or `@Transactional` beans without having to add the `open` qualifier required by CGLIB proxies for example.
 
-`build.gradle.kts`
-[source,kotlin]
+https://kotlinlang.org/docs/java-interop.html[Strict interpretation of JSR 305 annotations] (for libraries using them) and https://kotlinlang.org/docs/annotations.html#defaults-when-no-use-site-targets-are-specified[defaults when no use-site targets are specified] are also configured.
+
+====
+[source,kotlin,indent=0,subs="verbatim,quotes",role="primary"]
+.build.gradle.kts
 ----
 plugins {
     id("org.springframework.boot") version "4.0.0"
@@ -80,63 +88,17 @@ plugins {
     kotlin("jvm") version "2.2.21"
     kotlin("plugin.spring") version "2.2.21"
 }
-----
 
-=== Compiler options
+// ...
 
-One of Kotlin's key features is https://kotlinlang.org/docs/null-safety.html[null safety], which cleanly deals with `null` values at compile time rather than bumping into the famous `NullPointerException` at runtime. This makes applications safer through nullability declarations and expressing "value or no value" semantics without paying the cost of wrappers like `Optional`. Note that Kotlin allows using functional constructs with nullable values; check out this https://www.baeldung.com/kotlin/null-safety[comprehensive guide to Kotlin null-safety].
-
-Although Java does not allow one to express null-safety in its type-system, Spring Framework provides null-safety of the whole Spring Framework API via tooling-friendly annotations declared in the `org.springframework.lang` package. By default, types from Java APIs used in Kotlin are recognized as https://kotlinlang.org/docs/java-interop.html#null-safety-and-platform-types[platform types] for which null-checks are relaxed. https://kotlinlang.org/docs/java-interop.html#jsr-305-support[Kotlin support for JSR 305 annotations] + Spring nullability annotations provide null-safety for the whole Spring Framework API to Kotlin developers, with the advantage of dealing with `null` related issues at compile time.
-
-This feature can be enabled by adding the `-Xjsr305` compiler flag with the `strict` options.
-
-`build.gradle.kts`
-[source,kotlin]
-----
 kotlin {
     compilerOptions {
         freeCompilerArgs.addAll("-Xjsr305=strict", "-Xannotation-default-target=param-property")
     }
 }
 ----
-
-=== Dependencies
-
-2 Kotlin specific libraries are required (the standard library is added automatically with Gradle) for such a Spring Boot web application and configured by default:
-
- - `kotlin-reflect` is the Kotlin reflection library
- - `jackson-module-kotlin` adds support for serialization/deserialization of Kotlin classes and data classes (single constructor classes can be used automatically, and those with secondary constructors or static factories are also supported)
-
-`build.gradle.kts`
-[source,kotlin]
-----
-dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
-    implementation("org.springframework.boot:spring-boot-starter-mustache")
-    implementation("org.springframework.boot:spring-boot-starter-webmvc")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
-    runtimeOnly("com.h2database:h2")
-    runtimeOnly("org.springframework.boot:spring-boot-devtools")
-    testImplementation("org.springframework.boot:spring-boot-starter-data-jdbc-test")
-    testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-}
-----
-
-Spring Boot Gradle plugin automatically uses the Kotlin version declared via the Kotlin Gradle plugin.
-
-You can now take a <<understanding-generated-app, deeper look at the generated application>>.
-
-[[maven-build]]
-== Understanding the Maven Build
-
-=== Plugins
-
-In addition to the obvious https://kotlinlang.org/docs/maven.html[Kotlin Maven plugin], the default configuration declares the https://kotlinlang.org/docs/all-open-plugin.html[kotlin-spring plugin] which automatically opens classes and methods (unlike in Java, the default qualifier is `final` in Kotlin) annotated or meta-annotated with Spring annotations. This is useful to be able to create `@Configuration` or `@Transactional` beans without having to add the `open` qualifier required by CGLIB proxies for example.
-
-`pom.xml`
-[source,xml]
+[source,xml,indent=0,subs="verbatim,quotes",role="secondary"]
+.pom.xml
 ----
 <build>
     <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
@@ -169,20 +131,35 @@ In addition to the obvious https://kotlinlang.org/docs/maven.html[Kotlin Maven p
     </plugins>
 </build>
 ----
-
-One of Kotlin's key features is https://kotlinlang.org/docs/null-safety.html[null safety], which cleanly deals with `null` values at compile time rather than bumping into the famous `NullPointerException` at runtime. This makes applications safer through nullability declarations and expressing "value or no value" semantics without paying the cost of wrappers like `Optional`. Note that Kotlin allows using functional constructs with nullable values; check out this https://www.baeldung.com/kotlin-null-safety[comprehensive guide to Kotlin null-safety].
-
-Although Java does not allow one to express null-safety in its type-system, Spring Framework provides null safety of the whole Spring Framework API via tooling-friendly https://jspecify.dev/[JSpecify] annotations. Kotlin support for JSpecify annotations, and Spring nullability annotations provide null safety for the whole Spring Framework API to Kotlin developers with the advantage of dealing with `null` related issues at compile time.
+====
 
 === Dependencies
 
-Two Kotlin-specific libraries are required for such a Spring Boot web application and configured by default:
+Some Kotlin specific libraries are required for such a Spring Boot web application and configured by default:
 
+ - `kotlin-stdlib` is the Kotlin standard library (added automatically with Gradle)
  - `kotlin-reflect` is the Kotlin reflection library
  - `jackson-module-kotlin` adds support for serialization/deserialization of Kotlin classes and data classes (single constructor classes can be used automatically, and those with secondary constructors or static factories are also supported)
 
-`pom.xml`
-[source,xml]
+====
+[source,kotlin,indent=0,subs="verbatim,quotes",role="primary"]
+.build.gradle.kts
+----
+dependencies {
+    implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
+    implementation("org.springframework.boot:spring-boot-starter-mustache")
+    implementation("org.springframework.boot:spring-boot-starter-webmvc")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("org.jetbrains.kotlin:kotlin-reflect")
+    runtimeOnly("com.h2database:h2")
+    runtimeOnly("org.springframework.boot:spring-boot-devtools")
+    testImplementation("org.springframework.boot:spring-boot-starter-data-jdbc-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+}
+----
+[source,xml,indent=0,subs="verbatim,quotes",role="secondary"]
+.pom.xml
 ----
 <dependencies>
     <dependency>
@@ -204,6 +181,10 @@ Two Kotlin-specific libraries are required for such a Spring Boot web applicatio
     <dependency>
         <groupId>org.jetbrains.kotlin</groupId>
         <artifactId>kotlin-reflect</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-stdlib</artifactId>
     </dependency>
     <dependency>
         <groupId>org.springframework.boot</groupId>
@@ -232,6 +213,7 @@ Two Kotlin-specific libraries are required for such a Spring Boot web applicatio
     </dependency>
 </dependencies>
 ----
+====
 
 == Database Schema
 
@@ -791,18 +773,14 @@ For tests, instead of integration tests, we are going to leverage `@WebMvcTest` 
 
 Since `@MockBean` and `@SpyBean` annotations are specific to Mockito, we are going to leverage https://github.com/Ninja-Squad/springmockk[SpringMockK] which provides similar `@MockkBean` and `@SpykBean` annotations for Mockk.
 
-With Gradle:
-
-`build.gradle.kts`
-[source,kotlin]
+====
+[source,kotlin,indent=0,subs="verbatim,quotes",role="primary"]
+.build.gradle.kts
 ----
 testImplementation("com.ninja-squad:springmockk:5.0.1")
 ----
-
-Or with Maven:
-
-`pom.xml`
-[source,xml]
+[source,xml,indent=0,subs="verbatim,quotes",role="secondary"]
+.pom.xml
 ----
 <dependency>
     <groupId>com.ninja-squad</groupId>
@@ -811,6 +789,7 @@ Or with Maven:
     <scope>test</scope>
 </dependency>
 ----
+====
 
 `src/test/kotlin/com/example/blog/HttpControllersTests.kt`
 [source,kotlin]
