@@ -135,7 +135,7 @@ kotlin {
 
 === Dependencies
 
-Some Kotlin specific libraries are required for such a Spring Boot web application and configured by default:
+Kotlin-specific libraries are required for such a Spring Boot web application and configured by default:
 
  - `kotlin-stdlib` is the Kotlin standard library (added automatically with Gradle)
  - `kotlin-reflect` is the Kotlin reflection library
