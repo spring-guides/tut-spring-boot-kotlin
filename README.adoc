@@ -340,9 +340,9 @@ JUnit, used by default in Spring Boot, provides various features very handy with
 
 For the sake of this example, let's create an integration test to demonstrate various features:
 
- - We use real sentences between backticks instead of a camel-case to provide expressive test function names
- - JUnit allows injecting constructor and method parameters, which is a good fit with Kotlin read-only and non-nullable properties
- - This code leverages the `expectBody` Kotlin extension (you need to import it)
+ - We use real sentences between backticks instead of a camel-case to provide expressive test function names.
+ - JUnit allows injecting constructor and method parameters, which is a good fit with Kotlin read-only and non-nullable properties.
+ - This code leverages the `expectBody` Kotlin extension (you need to import it).
 
 `src/test/kotlin/com/example/blog/IntegrationTests.kt`
 [source,kotlin]
@@ -364,9 +364,9 @@ class IntegrationTests(@Autowired val restClient: RestTestClient) {
 
 === Test instance lifecycle
 
-Sometimes you need to execute a method before or after all tests of a given class. JUnit requires by default these methods to be static (which translates to https://kotlinlang.org/docs/object-declarations.html#companion-objects[`companion object`] in Kotlin, which is quite verbose and not straightforward) because test classes are instantiated one time per test.
+Sometimes you need to execute a method before or after all tests of a given class. JUnit requires by default these methods to be static (which translates to https://kotlinlang.org/docs/object-declarations.html#companion-objects[`companion object`] in Kotlin, which is quite verbose and not straightforward) because test classes are instantiated once per test.
 
-But Junit allows you to change this default behavior and instantiate test classes one time per class. This can be done in https://docs.junit.org/current/user-guide/#writing-tests-test-instance-lifecycle[various ways], here we will use a property file to change the default behavior for the whole project:
+But JUnit allows you to change this default behavior and instantiate test classes once per class. This can be done in https://docs.junit.org/current/writing-tests/test-instance-lifecycle.html[various ways]. Here we will use a property file to change the default behavior for the whole project:
 
 `src/test/resources/junit-platform.properties`
 [source,properties]
@@ -374,7 +374,7 @@ But Junit allows you to change this default behavior and instantiate test classe
 junit.jupiter.testinstance.lifecycle.default = per_class
 ----
 
-With this configuration, we can now use the `@BeforeAll` and `@AfterAll` annotations on regular methods like shown in the updated version of `IntegrationTests` above.
+With this configuration, we can now use the `@BeforeAll` and `@AfterAll` annotations on regular methods like shown in the updated version of `IntegrationTests` below.
 
 `src/test/kotlin/com/example/blog/IntegrationTests.kt`
 [source,kotlin]
