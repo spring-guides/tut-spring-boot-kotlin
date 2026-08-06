@@ -5,6 +5,7 @@ import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Table
 import org.springframework.data.relational.core.mapping.Column
 import org.springframework.data.jdbc.core.mapping.AggregateReference
+import java.time.temporal.ChronoUnit
 
 @Table("article")
 data class Article(
@@ -14,7 +15,7 @@ data class Article(
     @Column("author_id")
     val author: AggregateReference<User, Long>,
     val slug: String = title.toSlug(),
-    val addedAt: LocalDateTime = LocalDateTime.now(),
+    val addedAt: LocalDateTime = LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS),
     @Id val id: Long? = null
 )
 
